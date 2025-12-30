@@ -18,6 +18,9 @@
             --secondary: #fecfef;
             --wood: #8B4513;
             --red: #D32F2F;
+            --blue-main: #2196f3; /* Success Blue */
+            --blue-dark: #1976d2;
+            --blue-light: #64b5f6;
             --text-dark: #444;
         }
 
@@ -73,40 +76,77 @@
 
         #fortune-paper { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5); width: 280px; background: #fff; padding: 40px 30px; border: 4px solid var(--red); border-radius: 10px; text-align: center; opacity: 0; pointer-events: none; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 30px 100px rgba(0,0,0,0.5); z-index: 2000; }
         #fortune-paper.visible { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
-        .fortune-title { color: var(--red); font-weight: bold; letter-spacing: 2px; margin-bottom: 20px; font-size: 1.2rem; border-bottom: 1px solid #eee; padding-bottom: 10px;}
+        .fortune-title { color: var(--red); font-weight: bold; letter-spacing: 2px; margin-bottom: 20px; font-size: 1.2rem; border-bottom: 1px solid #eee; padding-bottom: 10px; font-family: 'Quicksand', sans-serif;}
         .fortune-msg { font-size: 1.3rem; line-height: 1.6; color: #333; font-weight: 500; }
         .action-area { margin-top: 30px; display: flex; flex-direction: column; gap: 10px; }
         .replay-btn { background: transparent; border: 1px solid #ccc; color: #888; padding: 8px 20px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; }
         .final-link-btn { background: var(--red); color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; }
         .permission-btn { margin-top: 150px; background: var(--red); color: white; padding: 15px 30px; border: none; border-radius: 50px; font-size: 1.1rem; z-index: 100; position: relative; }
 
-        /* SCENE 4: LETTER */
+        /* SCENE 4: LETTER (BLUE THEME) */
         #scene-final { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .envelope-wrapper { position: relative; cursor: pointer; }
-        .envelope { width: 300px; height: 200px; background: #ff9a9e; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: transform 0.5s ease; }
-        .envelope::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 0; border-style: solid; border-width: 0 0 200px 300px; border-color: transparent transparent #ff8085 transparent; z-index: 3; pointer-events: none; }
-        .envelope::before { content: ''; position: absolute; bottom: 0; right: 0; width: 0; height: 0; border-style: solid; border-width: 0 300px 200px 0; border-color: transparent #ffaeb2 transparent transparent; z-index: 3; pointer-events: none; }
-        .lid { position: absolute; top: 0; left: 0; width: 0; height: 0; border-style: solid; border-width: 120px 150px 0 150px; border-color: #ffb6ba transparent transparent transparent; transform-origin: top; transition: transform 0.5s ease 0.2s; z-index: 4; }
+        
+        .envelope { 
+            width: 300px; height: 200px; 
+            background: var(--blue-main); /* Blue Body */
+            position: relative; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+            transition: transform 0.5s ease; 
+        }
+        
+        /* Left/Right Flaps (Slightly darker blue) */
+        .envelope::after { 
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 0; 
+            border-style: solid; border-width: 0 0 200px 300px; 
+            border-color: transparent transparent var(--blue-dark) transparent; 
+            z-index: 3; pointer-events: none; 
+        }
+        
+        /* Bottom Flap (Slightly lighter blue) */
+        .envelope::before { 
+            content: ''; position: absolute; bottom: 0; right: 0; width: 0; height: 0; 
+            border-style: solid; border-width: 0 300px 200px 0; 
+            border-color: transparent var(--blue-light) transparent transparent; 
+            z-index: 3; pointer-events: none; 
+        }
+        
+        /* The Lid (Lightest Blue) */
+        .lid { 
+            position: absolute; top: 0; left: 0; width: 0; height: 0; 
+            border-style: solid; border-width: 120px 150px 0 150px; 
+            border-color: #90caf9 transparent transparent transparent; /* Very Light Blue */
+            transform-origin: top; 
+            transition: transform 0.5s ease 0.2s; 
+            z-index: 4; 
+        }
+
         .letter { position: absolute; top: 10px; left: 15px; width: 270px; height: 180px; background: white; padding: 20px; box-sizing: border-box; transition: transform 0.6s ease 0.6s, z-index 0.1s linear 0.6s; z-index: 1; display: flex; flex-direction: column; text-align: center; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .envelope-wrapper.open .lid { transform: rotateX(180deg); transition-delay: 0s; }
         .envelope-wrapper.open .letter { transform: translateY(-120px); z-index: 5; transition-delay: 0.3s; }
         .envelope-wrapper.open .envelope { transform: translateY(100px); }
         .letter h2 { font-family: 'Dancing Script', cursive; color: var(--text-dark); margin: 0; font-size: 1.8rem; }
         .letter p { font-size: 0.9rem; color: #666; margin-top: 10px; line-height: 1.5; }
-        .heart-seal { position: absolute; top: 80px; left: 50%; transform: translateX(-50%); font-size: 2rem; color: #D32F2F; z-index: 5; transition: opacity 0.3s; }
+        
+        /* Blue Heart Seal */
+        .heart-seal { 
+            position: absolute; top: 80px; left: 50%; transform: translateX(-50%); 
+            font-size: 2rem; color: #0d47a1; /* Deep Blue Seal */
+            z-index: 5; transition: opacity 0.3s; 
+        }
         .envelope-wrapper.open .heart-seal { opacity: 0; }
         .click-hint { position: absolute; bottom: -50px; width: 100%; text-align: center; color: #888; font-size: 0.9rem; transition: opacity 0.5s; }
     </style>
 </head>
 <body>
 
-    <!-- SCENE 1 -->
+    <!-- SCENE 1: INTRO -->
     <div id="scene-intro">
         <span id="typewriter"></span>
         <button class="soft-btn" id="intro-btn" onclick="goToListener()">I'm listening...</button>
     </div>
 
-    <!-- SCENE 2 -->
+    <!-- SCENE 2: LISTENER -->
     <div id="scene-listener" class="hidden">
         <div class="card">
             <h1 id="ai-question">Hey, honestly, are you feeling tired right now?</h1>
@@ -117,7 +157,7 @@
         <video class="input_video" style="display: none;" playsinline muted></video>
     </div>
 
-    <!-- SCENE 3 -->
+    <!-- SCENE 3: FORTUNE -->
     <div id="scene-fortune" class="hidden">
         <h2 style="color: var(--wood);">Ask for a sign...</h2>
         <p style="font-size: 0.9rem; color: #777; margin-bottom: 20px;">Think about your exam, then shake your phone.</p>
@@ -136,7 +176,7 @@
         </div>
     </div>
 
-    <!-- SCENE 4 -->
+    <!-- SCENE 4: LETTER -->
     <div id="scene-final" class="hidden">
         <div class="envelope-wrapper" onclick="openEnvelope(this)">
             <div class="envelope">
@@ -183,7 +223,6 @@
         function onAIResults(results) {
             if (interactionDone || !results.multiFaceLandmarks || results.multiFaceLandmarks.length === 0) return;
             const nose = results.multiFaceLandmarks[0][1];
-            // Simple gesture logic
             xBuffer.push(nose.x); yBuffer.push(nose.y);
             if(xBuffer.length > 20) { xBuffer.shift(); yBuffer.shift(); } else return;
             let xRange = Math.max(...xBuffer) - Math.min(...xBuffer);
@@ -208,35 +247,27 @@
             setTimeout(() => { document.getElementById('scene-listener').classList.add('hidden'); document.getElementById('scene-fortune').classList.remove('hidden'); document.getElementById('scene-fortune').classList.add('fade-in'); document.body.style.background = "#fff8e1"; }, 1000);
         }
 
-        // --- 3. FORTUNE LOGIC (Here is the RANDOM part) ---
+        // --- 3. FORTUNE LOGIC (VIETNAMESE) ---
         
-        // I have added 20 unique positive messages here!
+        // Updated List with 12 Unique Vietnamese Wishes
         const fortunes = [
-            { cat: "Great Luck (上上吉)", msg: "The stars align perfectly. Everything you studied will appear." },
-            { cat: "Great Luck (上上吉)", msg: "Your intuition is razor sharp today. Trust it completely." },
-            { cat: "Upper Luck (大吉)", msg: "Your hard work has built a bridge to success. Cross it proudly." },
-            { cat: "Upper Luck (大吉)", msg: "Victory is certain. Walk into that room with your head high." },
-            { cat: "Medium Luck (中吉)", msg: "Steady progress wins the race. Stay calm and focused." },
-            { cat: "Medium Luck (中吉)", msg: "The answer will come to you in a moment of clarity." },
-            { cat: "Small Luck (小吉)", msg: "A pleasant surprise awaits you on the exam paper." },
-            { cat: "Small Luck (小吉)", msg: "Don't panic. Deep breaths will reveal the answers." },
-            { cat: "Blessing (吉)", msg: "Luck follows those who work hard. You are ready." },
-            { cat: "Blessing (吉)", msg: "You are stronger than this challenge. Smash it!" },
-            { cat: "Victory Sign", msg: "This is the moment you've been waiting for. Grab it!" },
-            { cat: "Guidance", msg: "If you are stuck, trust your first instinct." },
-            { cat: "Harmony", msg: "Your mind is clear. No obstacles remain." },
-            { cat: "Power", msg: "You have an inner strength that will carry you through." },
-            { cat: "Focus", msg: "Distractions will fade. Only the answers will remain." },
-            { cat: "Peace", msg: "Enter the hall with a peaceful heart. You have done enough." },
-            { cat: "Support", msg: "The universe (and I) are cheering for you right now." },
-            { cat: "Wisdom", msg: "You know more than you think you do." },
-            { cat: "Destiny", msg: "Success is written in your path. Just keep walking." },
-            { cat: "Joy", msg: "You will feel a wave of relief and joy very soon." }
+            { cat: "Trí Tuệ (智慧)", msg: "Khai mở trí tuệ, làm bài sáng suốt." },
+            { cat: "Cát Tường (吉祥)", msg: "Vạn sự cát tường, thi cử hanh thông." },
+            { cat: "Tự Tin (自信)", msg: "Giữ vững tự tin, chiến thắng trong tầm tay." },
+            { cat: "Đăng Khoa (登科)", msg: "Nỗ lực hôm nay, ngày mai đăng khoa." },
+            { cat: "Bình Tĩnh (平静)", msg: "Tâm thế bình tĩnh, trí sáng như gương." },
+            { cat: "Kiên Trì (坚持)", msg: "Bền bỉ kiên trì, ắt gặt hái quả ngọt." },
+            { cat: "Thuận Lợi (顺利)", msg: "Mọi điều thuận lợi, vượt vũ môn hóa rồng." },
+            { cat: "Trạng Nguyên (状元)", msg: "Phấn đấu hết mình, giành ngôi Trạng Nguyên." },
+            { cat: "Chuyên Tâm (专心)", msg: "Một lòng chuyên tâm, bút thần khai hoa." },
+            { cat: "Công Danh (功名)", msg: "Đường trần rộng mở, công danh rạng rỡ." },
+            { cat: "Hồng Phúc (鸿福)", msg: "Hưởng trọn hồng phúc, thi đâu đậu đó." },
+            { cat: "Bác Học (博学)", msg: "Học rộng hiểu sâu, uyên thâm bác học." }
         ];
 
         let lastUpdate = 0, lastX=0, lastY=0, lastZ=0;
         let revealed = false;
-        let lastFortuneIndex = -1; // To remember the previous result
+        let lastFortuneIndex = -1; 
 
         function requestMotion() {
             if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -265,13 +296,11 @@
             document.getElementById('winning-stick').classList.add('stick-reveal');
             if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
             
-            // --- LOGIC TO PREVENT REPEATS ---
+            // Random Logic with No Repeats
             let newIndex;
-            do {
-                newIndex = Math.floor(Math.random() * fortunes.length);
-            } while (newIndex === lastFortuneIndex); // Keep rolling if it's the same as last time
+            do { newIndex = Math.floor(Math.random() * fortunes.length); } while (newIndex === lastFortuneIndex);
             
-            lastFortuneIndex = newIndex; // Save this turn
+            lastFortuneIndex = newIndex; 
             const data = fortunes[newIndex];
             
             document.getElementById('fortune-category').innerText = data.cat;
@@ -288,7 +317,13 @@
 
         function goToLetter() {
             document.getElementById('scene-fortune').classList.add('fade-out');
-            setTimeout(() => { document.getElementById('scene-fortune').classList.add('hidden'); document.getElementById('scene-final').classList.remove('hidden'); document.getElementById('scene-final').classList.add('fade-in'); document.body.style.background = "#ffebee"; }, 1000);
+            setTimeout(() => { 
+                document.getElementById('scene-fortune').classList.add('hidden'); 
+                document.getElementById('scene-final').classList.remove('hidden'); 
+                document.getElementById('scene-final').classList.add('fade-in'); 
+                // Change BG to Sky Blue for Success Theme
+                document.body.style.background = "#e3f2fd"; 
+            }, 1000);
         }
         function openEnvelope(element) { element.classList.add('open'); document.querySelector('.click-hint').style.opacity = '0'; }
     </script>
