@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=Dancing+Script:wght@600&display=swap');
 
         :root {
             --primary: #ff9a9e;
@@ -19,6 +19,7 @@
             --wood: #8B4513;
             --red: #D32F2F;
             --gold: #FFD700;
+            --text-dark: #444;
         }
 
         body {
@@ -30,7 +31,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #444;
+            color: var(--text-dark);
             transition: background 1s ease;
         }
 
@@ -47,14 +48,18 @@
             text-align: left;
             width: 80%;
             max-width: 600px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-        .cursor {
-            display: inline-block; width: 2px; height: 1.5rem;
-            background-color: var(--primary);
-            animation: blink 1s infinite;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
         
+        #typewriter {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            display: inline;
+        }
+
         .soft-btn {
             margin-top: 40px;
             padding: 12px 30px;
@@ -66,6 +71,7 @@
             font-family: inherit;
             transition: all 0.3s;
             opacity: 0; 
+            align-self: center;
         }
         .soft-btn:hover {
             border-color: var(--primary);
@@ -108,53 +114,40 @@
             position: relative;
         }
 
-        /* The Cylinder Cup - Layer 1 */
         .chim-cup {
-            width: 120px;
-            height: 200px;
+            width: 120px; height: 200px;
             background: linear-gradient(90deg, #6d4c41, #8d6e63, #6d4c41);
             border-radius: 0 0 20px 20px;
-            position: relative;
-            margin-top: 50px;
+            position: relative; margin-top: 50px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            z-index: 5; /* Lower than result */
+            z-index: 5; 
         }
         
-        /* Rim of the cup */
         .chim-cup::before {
             content: ''; position: absolute; top: -15px; left: 0;
             width: 100%; height: 30px;
             background: #5d4037;
-            border-radius: 50%;
-            border: 2px solid #4e342e;
+            border-radius: 50%; border: 2px solid #4e342e;
             z-index: 6;
         }
 
-        /* The Sticks inside */
         .sticks-group {
             position: absolute; top: -40px; left: 20px;
             width: 80px; height: 100px;
             z-index: 4;
         }
         .stick {
-            width: 6px; height: 120px;
-            background: #d7ccc8;
-            border-radius: 3px;
-            position: absolute; bottom: 0;
+            width: 6px; height: 120px; background: #d7ccc8;
+            border-radius: 3px; position: absolute; bottom: 0;
             border: 1px solid #a1887f;
         }
-        /* Random positioning for effect */
         .stick:nth-child(1) { left: 10px; transform: rotate(-5deg); height: 130px; background: #e0e0e0; }
         .stick:nth-child(2) { left: 30px; transform: rotate(2deg); height: 125px; }
         .stick:nth-child(3) { left: 50px; transform: rotate(-3deg); height: 135px; }
         .stick:nth-child(4) { left: 20px; transform: rotate(5deg); height: 120px; background: #cfd8dc; }
         .stick:nth-child(5) { left: 45px; transform: rotate(-8deg); height: 128px; }
 
-        /* Animation: Shaking */
-        .shaking .chim-cup, .shaking .sticks-group {
-            animation: shakeCup 0.2s infinite;
-        }
-
+        .shaking .chim-cup, .shaking .sticks-group { animation: shakeCup 0.2s infinite; }
         @keyframes shakeCup {
             0% { transform: rotate(0deg) translate(0, 0); }
             25% { transform: rotate(-5deg) translate(-2px, 2px); }
@@ -163,82 +156,121 @@
             100% { transform: rotate(0deg) translate(0, 0); }
         }
 
-        /* The Winning Stick */
         .winning-stick {
-            position: absolute;
-            top: 20px; left: 50%; margin-left: -15px;
-            width: 30px; height: 200px;
-            background: #fff8e1;
-            border: 2px solid var(--red);
-            z-index: 3; /* Starts hidden inside cup */
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 10px;
-            font-weight: bold;
-            color: var(--red);
-            font-size: 0.8rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            opacity: 0;
-            transform: translateY(100px);
+            position: absolute; top: 20px; left: 50%; margin-left: -15px;
+            width: 30px; height: 200px; background: #fff8e1;
+            border: 2px solid var(--red); z-index: 3; 
+            display: flex; justify-content: center; align-items: flex-start;
+            padding-top: 10px; font-weight: bold; color: var(--red);
+            font-size: 0.8rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            opacity: 0; transform: translateY(100px);
             transition: all 0.5s ease;
         }
+        .stick-reveal { opacity: 1; transform: translateY(-180px) rotate(10deg); z-index: 10; }
 
-        /* Animation: Stick Falls Out */
-        .stick-reveal {
-            opacity: 1;
-            transform: translateY(-180px) rotate(10deg);
-            z-index: 10; /* Pops out of cup */
-        }
-
-        /* The Paper Result Modal - Layer Top */
         #fortune-paper {
-            position: fixed; 
-            top: 50%; 
-            left: 50%;
+            position: fixed; top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0.5);
-            width: 280px;
-            background: #fff;
-            padding: 40px 30px;
-            border: 4px solid var(--red);
-            border-radius: 10px;
-            text-align: center;
-            opacity: 0; 
-            pointer-events: none;
+            width: 280px; background: #fff; padding: 40px 30px;
+            border: 4px solid var(--red); border-radius: 10px;
+            text-align: center; opacity: 0; pointer-events: none;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 30px 100px rgba(0,0,0,0.5);
-            
-            /* KEY FIX: High Z-Index ensures it's on top of everything */
-            z-index: 2000; 
+            box-shadow: 0 30px 100px rgba(0,0,0,0.5); z-index: 2000; 
         }
-        
-        #fortune-paper.visible {
-            opacity: 1; 
-            pointer-events: auto;
-            transform: translate(-50%, -50%) scale(1);
-        }
+        #fortune-paper.visible { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
         
         .fortune-title { color: var(--red); font-weight: bold; letter-spacing: 2px; margin-bottom: 20px; font-size: 1.2rem; border-bottom: 1px solid #eee; padding-bottom: 10px;}
         .fortune-msg { font-size: 1.3rem; line-height: 1.6; color: #333; font-weight: 500; }
         
-        .replay-btn {
-            margin-top: 20px;
-            background: transparent;
-            border: 1px solid #ccc;
-            color: #888;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+        .action-area { margin-top: 30px; display: flex; flex-direction: column; gap: 10px; }
+        .replay-btn { background: transparent; border: 1px solid #ccc; color: #888; padding: 8px 20px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; }
+        .final-link-btn { background: var(--red); color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; }
+
+        .permission-btn {
+            margin-top: 150px; background: var(--red); color: white;
+            padding: 15px 30px; border: none; border-radius: 50px;
+            font-size: 1.1rem; z-index: 100; position: relative;
+        }
+
+        /* ================= SCENE 4: THE LETTER (FINAL) ================= */
+        #scene-final {
+            width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            perspective: 1000px;
+        }
+
+        .envelope-wrapper {
+            position: relative;
             cursor: pointer;
         }
 
-        .permission-btn {
-            margin-top: 150px;
-            background: var(--red); color: white;
-            padding: 15px 30px; border: none; border-radius: 50px;
-            font-size: 1.1rem;
-            z-index: 100;
+        .envelope {
+            width: 300px; height: 200px;
+            background: #ff9a9e;
             position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.5s ease;
+        }
+        
+        .envelope::after { /* Left/Right Flaps */
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 0; height: 0;
+            border-style: solid;
+            border-width: 0 0 200px 300px;
+            border-color: transparent transparent #ff8085 transparent;
+            z-index: 3;
+            pointer-events: none;
+        }
+        .envelope::before { /* Bottom Flap */
+            content: ''; position: absolute; bottom: 0; right: 0;
+            width: 0; height: 0;
+            border-style: solid;
+            border-width: 0 300px 200px 0;
+            border-color: transparent #ffaeb2 transparent transparent;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .lid {
+            position: absolute; top: 0; left: 0; width: 0; height: 0;
+            border-style: solid;
+            border-width: 120px 150px 0 150px;
+            border-color: #ffb6ba transparent transparent transparent;
+            transform-origin: top;
+            transition: transform 0.5s ease 0.2s;
+            z-index: 4;
+        }
+
+        .letter {
+            position: absolute; top: 10px; left: 15px;
+            width: 270px; height: 180px;
+            background: white;
+            padding: 20px; box-sizing: border-box;
+            transition: transform 0.6s ease 0.6s, z-index 0.1s linear 0.6s;
+            z-index: 1;
+            display: flex; flex-direction: column;
+            text-align: center;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .envelope-wrapper.open .lid { transform: rotateX(180deg); transition-delay: 0s; }
+        .envelope-wrapper.open .letter { transform: translateY(-120px); z-index: 5; transition-delay: 0.3s; }
+        .envelope-wrapper.open .envelope { transform: translateY(100px); }
+
+        .letter h2 { font-family: 'Dancing Script', cursive; color: var(--text-dark); margin: 0; font-size: 1.8rem; }
+        .letter p { font-size: 0.9rem; color: #666; margin-top: 10px; line-height: 1.5; }
+        
+        .heart-seal {
+            position: absolute; top: 80px; left: 50%; transform: translateX(-50%);
+            font-size: 2rem; color: #D32F2F; z-index: 5;
+            transition: opacity 0.3s;
+        }
+        .envelope-wrapper.open .heart-seal { opacity: 0; }
+
+        .click-hint {
+            position: absolute; bottom: -50px; width: 100%; text-align: center;
+            color: #888; font-size: 0.9rem; opacity: 1; transition: opacity 0.5s;
         }
 
     </style>
@@ -247,10 +279,8 @@
 
     <!-- ==================== SCENE 1: INTRO ==================== -->
     <div id="scene-intro">
-        <span id="typewriter"></span><span class="cursor"></span>
-        <div style="text-align: center;">
-            <button class="soft-btn" id="intro-btn" onclick="goToListener()">I'm listening...</button>
-        </div>
+        <span id="typewriter"></span>
+        <button class="soft-btn" id="intro-btn" onclick="goToListener()">I'm listening...</button>
     </div>
 
     <!-- ==================== SCENE 2: LISTENER ==================== -->
@@ -264,10 +294,7 @@
                 I have one last surprise...
             </button>
         </div>
-        
-        <!-- Hidden Video for AI -->
         <video class="input_video" style="display: none;" playsinline muted></video>
-        <div style="margin-top:10px; font-size:0.7rem; color:#ccc;">Camera active for gesture detection</div>
     </div>
 
     <!-- ==================== SCENE 3: FORTUNE STICKS ==================== -->
@@ -276,34 +303,47 @@
         <p style="font-size: 0.9rem; color: #777; margin-bottom: 20px;">Think about your exam, then shake your phone.</p>
         
         <div style="position: relative;">
-            <!-- The Winning Stick (Hidden inside cup initially) -->
             <div class="winning-stick" id="winning-stick">
                 <span style="writing-mode: vertical-rl;">Good Luck</span>
             </div>
-
-            <!-- The Cup -->
             <div class="chim-cup" id="cup">
                 <div class="sticks-group">
-                    <div class="stick"></div>
-                    <div class="stick"></div>
-                    <div class="stick"></div>
-                    <div class="stick"></div>
-                    <div class="stick"></div>
+                    <div class="stick"></div><div class="stick"></div><div class="stick"></div><div class="stick"></div><div class="stick"></div>
                 </div>
             </div>
         </div>
+        <button class="permission-btn" id="perm-btn" onclick="requestMotion()">Tap to Enable Shake</button>
 
-        <button class="permission-btn" id="perm-btn" onclick="requestMotion()">
-            Tap to Enable Shake
-        </button>
-
-        <!-- Result Modal (High Z-Index) -->
+        <!-- Result Modal -->
         <div id="fortune-paper">
             <div class="fortune-title" id="fortune-category">UPPER LUCKY SIGN</div>
-            <div class="fortune-msg" id="fortune-text">
-                Your hard work will pay off.
+            <div class="fortune-msg" id="fortune-text">Your hard work will pay off.</div>
+            
+            <div class="action-area">
+                <button class="final-link-btn" onclick="goToLetter()">Read Message</button>
+                <button class="replay-btn" onclick="resetFortune()">Shake Again</button>
             </div>
-            <button class="replay-btn" onclick="resetFortune()">Shake Again</button>
+        </div>
+    </div>
+
+    <!-- ==================== SCENE 4: THE LETTER ==================== -->
+    <div id="scene-final" class="hidden">
+        <div class="envelope-wrapper" onclick="openEnvelope(this)">
+            <div class="envelope">
+                <div class="lid"></div>
+                <div class="heart-seal">❤</div>
+                
+                <!-- YOUR PERSONAL MESSAGE HERE -->
+                <div class="letter">
+                    <h2>To My Favorite Person</h2>
+                    <p>
+                        No matter what the sticks say, or what the grades show, I am already so proud of how hard you've worked.<br><br>
+                        Good luck. You've got this.<br>
+                        I'm always here for you.
+                    </p>
+                </div>
+            </div>
+            <div class="click-hint">Tap to open</div>
         </div>
     </div>
 
@@ -322,12 +362,10 @@
                 charIndex++;
                 setTimeout(typeWriter, typeSpeed);
             } else {
-                setTimeout(() => {
-                    document.getElementById('intro-btn').style.opacity = '1';
-                }, 1000);
+                setTimeout(() => { document.getElementById('intro-btn').style.opacity = '1'; }, 1000);
             }
         }
-        window.onload = typeWriter;
+        window.onload = function() { setTimeout(typeWriter, 5000); };
 
         function goToListener() {
             document.getElementById('scene-intro').classList.add('fade-out');
@@ -353,11 +391,7 @@
             const faceMesh = new FaceMesh({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`});
             faceMesh.setOptions({ maxNumFaces: 1, refineLandmarks: true, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
             faceMesh.onResults(onAIResults);
-
-            const camera = new Camera(videoElement, {
-                onFrame: async () => { await faceMesh.send({image: videoElement}); },
-                width: 640, height: 480
-            });
+            const camera = new Camera(videoElement, { onFrame: async () => { await faceMesh.send({image: videoElement}); }, width: 640, height: 480 });
             camera.start();
         }
 
@@ -369,13 +403,10 @@
 
         function detectGesture(x, y) {
             xBuffer.push(x); yBuffer.push(y);
-            if (xBuffer.length > bufferSize) xBuffer.shift();
-            if (yBuffer.length > bufferSize) yBuffer.shift();
+            if (xBuffer.length > bufferSize) xBuffer.shift(); if (yBuffer.length > bufferSize) yBuffer.shift();
             if (xBuffer.length < bufferSize) return;
-
             let xRange = Math.max(...xBuffer) - Math.min(...xBuffer);
             let yRange = Math.max(...yBuffer) - Math.min(...yBuffer);
-
             if (xRange > 0.08 && yRange < 0.03) doShakeAction();
             else if (yRange > 0.05 && xRange < 0.03) doNodAction();
         }
@@ -385,15 +416,12 @@
             questionText.innerHTML = "It's okay. Close your eyes, I'll count for you.";
             document.querySelector('.subtext').style.display = 'none';
             countdownDisplay.classList.remove('hidden');
-            
             let count = 10;
             countdownDisplay.innerText = count;
             const timer = setInterval(() => {
-                count--;
-                countdownDisplay.innerText = count;
+                count--; countdownDisplay.innerText = count;
                 if(count <= 0) {
-                    clearInterval(timer);
-                    countdownDisplay.style.fontSize = "1.5rem";
+                    clearInterval(timer); countdownDisplay.style.fontSize = "1.5rem";
                     countdownDisplay.innerText = "You can open your eyes now.";
                     document.getElementById('to-fortune-btn').classList.remove('hidden');
                 }
@@ -404,18 +432,12 @@
             interactionDone = true;
             questionText.innerHTML = "That's the spirit! Let's power through!";
             document.querySelector('.subtext').innerText = "Playing your song...";
-            audioPlayer.volume = 0.5;
-            audioPlayer.play().catch(e => console.log("Audio block", e));
-            
-            setTimeout(() => {
-                document.getElementById('to-fortune-btn').classList.remove('hidden');
-            }, 3000);
+            audioPlayer.volume = 0.5; audioPlayer.play().catch(e => console.log("Audio block", e));
+            setTimeout(() => { document.getElementById('to-fortune-btn').classList.remove('hidden'); }, 3000);
         }
 
         function goToFortune() {
-            const stream = videoElement.srcObject;
-            if (stream) stream.getTracks().forEach(track => track.stop());
-
+            const stream = videoElement.srcObject; if (stream) stream.getTracks().forEach(track => track.stop());
             document.getElementById('scene-listener').classList.add('fade-out');
             setTimeout(() => {
                 document.getElementById('scene-listener').classList.add('hidden');
@@ -425,70 +447,41 @@
             }, 1000);
         }
 
-        /* ==================== LOGIC: FORTUNE (KAU CIM) ==================== */
-        // EXPANDED LIST FOR MORE RANDOMNESS
+        /* ==================== LOGIC: FORTUNE ==================== */
         const fortunes = [
             { cat: "Great Luck (上上吉)", msg: "The stars align perfectly for you. Success is inevitable." },
             { cat: "Upper Luck (大吉)", msg: "Your efforts have built a solid foundation. Trust yourself." },
             { cat: "Medium Luck (中吉)", msg: "Steady progress. Keep going and you will reach the top." },
             { cat: "Small Luck (小吉)", msg: "A pleasant surprise awaits you in the exam hall." },
             { cat: "Blessing (吉)", msg: "Calmness is your weapon. You know more than you think." },
-            { cat: "Great Luck (上上吉)", msg: "Everything you studied will appear. You are ready." },
-            { cat: "Upper Luck (大吉)", msg: "Fortune favors the brave. Walk in with confidence." },
-            { cat: "Medium Luck (中吉)", msg: "Do not rush. Your patience will yield high scores." },
-            { cat: "Blessing (吉)", msg: "Breathe. You have prepared enough. It will go well." },
             { cat: "Victory Sign", msg: "This is the moment you've been working for. Grab it!" },
-            { cat: "Guidance", msg: "Trust your first instinct on the difficult questions." },
-            { cat: "Harmony", msg: "Your mind is clear and sharp. No obstacles remain." }
+            { cat: "Guidance", msg: "Trust your first instinct on the difficult questions." }
         ];
 
-        let motionAllowed = false;
         let lastUpdate = 0, lastX=0, lastY=0, lastZ=0;
-        let isShaking = false;
         let revealed = false;
 
         function requestMotion() {
             if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
-                DeviceMotionEvent.requestPermission()
-                    .then(state => {
-                        if (state === 'granted') enableShake();
-                        else alert("I need permission to feel the shake!");
-                    })
-                    .catch(console.error);
-            } else {
-                enableShake();
-            }
+                DeviceMotionEvent.requestPermission().then(state => { if (state === 'granted') enableShake(); else alert("Permission needed!"); }).catch(console.error);
+            } else { enableShake(); }
         }
 
         function enableShake() {
-            motionAllowed = true;
             document.getElementById('perm-btn').style.display = 'none';
             window.addEventListener('devicemotion', handleMotion);
         }
 
         function handleMotion(e) {
             if(revealed) return;
-
             let acc = e.accelerationIncludingGravity;
             let curTime = new Date().getTime();
-
             if ((curTime - lastUpdate) > 100) {
-                let diffTime = curTime - lastUpdate;
-                lastUpdate = curTime;
-                
+                let diffTime = curTime - lastUpdate; lastUpdate = curTime;
                 let speed = Math.abs(acc.x + acc.y + acc.z - lastX - lastY - lastZ) / diffTime * 10000;
-
-                if (speed > 300) {
-                    document.getElementById('cup').classList.add('shaking');
-                    if(navigator.vibrate) navigator.vibrate(50);
-                } else {
-                    document.getElementById('cup').classList.remove('shaking');
-                }
-
-                if (speed > 2000) { 
-                    revealStick();
-                }
-
+                if (speed > 300) { document.getElementById('cup').classList.add('shaking'); if(navigator.vibrate) navigator.vibrate(50); }
+                else { document.getElementById('cup').classList.remove('shaking'); }
+                if (speed > 2000) { revealStick(); }
                 lastX = acc.x; lastY = acc.y; lastZ = acc.z;
             }
         }
@@ -497,39 +490,38 @@
             revealed = true;
             window.removeEventListener('devicemotion', handleMotion);
             document.getElementById('cup').classList.remove('shaking');
-            
-            // 1. Animate Stick
-            const stick = document.getElementById('winning-stick');
-            stick.classList.add('stick-reveal');
+            document.getElementById('winning-stick').classList.add('stick-reveal');
             if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
-
-            // 2. Select Fortune (Use Math.random completely fresh)
-            const randIndex = Math.floor(Math.random() * fortunes.length);
-            const data = fortunes[randIndex];
             
+            const data = fortunes[Math.floor(Math.random() * fortunes.length)];
             document.getElementById('fortune-category').innerText = data.cat;
             document.getElementById('fortune-text').innerText = data.msg;
-
-            // 3. Show Paper Modal (Wait for stick animation)
-            setTimeout(() => {
-                document.getElementById('fortune-paper').classList.add('visible');
-            }, 1000);
+            setTimeout(() => { document.getElementById('fortune-paper').classList.add('visible'); }, 1000);
         }
 
         function resetFortune() {
-            // Hide paper
             document.getElementById('fortune-paper').classList.remove('visible');
-            
-            // Reset stick animation
-            const stick = document.getElementById('winning-stick');
-            stick.classList.remove('stick-reveal');
-            
-            // Reset state
+            document.getElementById('winning-stick').classList.remove('stick-reveal');
             revealed = false;
-            
-            // Start listening for shake again immediately
             window.addEventListener('devicemotion', handleMotion);
         }
+
+        /* ==================== LOGIC: FINAL LETTER ==================== */
+        function goToLetter() {
+            document.getElementById('scene-fortune').classList.add('fade-out');
+            setTimeout(() => {
+                document.getElementById('scene-fortune').classList.add('hidden');
+                document.getElementById('scene-final').classList.remove('hidden');
+                document.getElementById('scene-final').classList.add('fade-in');
+                document.body.style.background = "#ffebee"; // Soft pink BG for love
+            }, 1000);
+        }
+
+        function openEnvelope(element) {
+            element.classList.add('open');
+            document.querySelector('.click-hint').style.opacity = '0';
+        }
+
     </script>
 </body>
 </html>
