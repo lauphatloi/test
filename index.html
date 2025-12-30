@@ -171,7 +171,7 @@
             <div class="fortune-msg" id="fortune-text"></div>
             <div class="action-area">
                 <button class="final-link-btn" onclick="goToLetter()">Qua cái khác</button>
-                <button class="replay-btn" onclick="resetFortune()">Lắc lại nữa !</button>
+                <button class="replay-btn" onclick="resetFortune()">Lắc cái nữa !</button>
             </div>
         </div>
     </div>
@@ -182,11 +182,11 @@
             <div class="envelope">
                 <div class="lid"></div><div class="heart-seal">😁</div>
                 <div class="letter">
-                    <h2>To My Favorite Person</h2>
-                    <p>No matter what the sticks say, I am already so proud of how hard you've worked.<br><br>Good luck. You've got this.<br>I'm always here for you.</p>
+                    <h2>Sến tý nha bà</h2>
+                    <p>Bà thi tốt nha !!!</p>
                 </div>
             </div>
-            <div class="click-hint">Tap to open</div>
+            <div class="click-hint">Ấn để mở</div>
         </div>
     </div>
 
@@ -194,7 +194,7 @@
 
     <script>
         // --- 1. INTRO LOGIC ---
-        const message = "I know things have been heavy lately. You don't always have to be strong. Sometimes, you just need to be heard.";
+        const message = "Cho tui xin 3 phút nha !";
         let charIndex = 0;
         function typeWriter() {
             if (charIndex < message.length) { document.getElementById('typewriter').innerHTML += message.charAt(charIndex); charIndex++; setTimeout(typeWriter, 50); }
@@ -233,11 +233,11 @@
             interactionDone = true; questionText.innerHTML = "Hít vào đếm đên 4 và thở nhẹ ra trong 6s còn lại nha ";
             document.querySelector('.subtext').style.display = 'none'; countdownDisplay.classList.remove('hidden');
             let count = 10; countdownDisplay.innerText = count;
-            const timer = setInterval(() => { count--; countdownDisplay.innerText = count; if(count <= 0) { clearInterval(timer); countdownDisplay.style.fontSize = "1.5rem"; countdownDisplay.innerText = "You can open your eyes now."; document.getElementById('to-fortune-btn').classList.remove('hidden'); } }, 1000);
+            const timer = setInterval(() => { count--; countdownDisplay.innerText = count; if(count <= 0) { clearInterval(timer); countdownDisplay.style.fontSize = "1.5rem"; countdownDisplay.innerText = "Nhẹ hơn k bà @@ "; document.getElementById('to-fortune-btn').classList.remove('hidden'); } }, 1000);
         }
         function doShakeAction() {
-            interactionDone = true; questionText.innerHTML = "That's the spirit! Let's power through!";
-            document.querySelector('.subtext').innerText = "Playing your song...";
+            interactionDone = true; questionText.innerHTML = "Tự tin quá !!";
+            document.querySelector('.subtext').innerText = "Đang chạy nhạc ...";
             audioPlayer.volume = 0.5; audioPlayer.play().catch(e => console.log(e));
             setTimeout(() => { document.getElementById('to-fortune-btn').classList.remove('hidden'); }, 3000);
         }
@@ -247,7 +247,6 @@
             setTimeout(() => { document.getElementById('scene-listener').classList.add('hidden'); document.getElementById('scene-fortune').classList.remove('hidden'); document.getElementById('scene-fortune').classList.add('fade-in'); document.body.style.background = "#fff8e1"; }, 1000);
         }
 
-        // --- 3. FORTUNE LOGIC (VIETNAMESE) ---
         
         // Updated List with 12 Unique Vietnamese Wishes
         const fortunes = [
