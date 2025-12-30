@@ -149,7 +149,7 @@
     <!-- SCENE 2: LISTENER -->
     <div id="scene-listener" class="hidden">
         <div class="card">
-            <h1 id="ai-question">Bà có áp lực không ?</h1>
+            <h1 id="ai-question">Bà có cảm thấy áp lực không ?</h1>
             <p class="subtext">(Chỉ cần gật đầu hoặc lắc đầu)</p>
             <div id="countdown" class="hidden"></div>
             <button id="to-fortune-btn" class="next-btn hidden" onclick="goToFortune()">Bắt đầu chơi</button>
@@ -236,7 +236,7 @@
             const timer = setInterval(() => { count--; countdownDisplay.innerText = count; if(count <= 0) { clearInterval(timer); countdownDisplay.style.fontSize = "1.5rem"; countdownDisplay.innerText = "Nhẹ hơn k bà @@ "; document.getElementById('to-fortune-btn').classList.remove('hidden'); } }, 1000);
         }
         function doShakeAction() {
-            interactionDone = true; questionText.innerHTML = "Tự tin quá !!";
+            interactionDone = true; questionText.innerHTML = "Kkk chính là sự tự tin này !!";
             document.querySelector('.subtext').innerText = "";
             audioPlayer.volume = 0.5; audioPlayer.play().catch(e => console.log(e));
             setTimeout(() => { document.getElementById('to-fortune-btn').classList.remove('hidden'); }, 3000);
