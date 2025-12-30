@@ -237,7 +237,7 @@
         }
         function doShakeAction() {
             interactionDone = true; questionText.innerHTML = "Tự tin quá !!";
-            document.querySelector('.subtext').innerText = "Đang chạy nhạc ...";
+            document.querySelector('.subtext').innerText = "";
             audioPlayer.volume = 0.5; audioPlayer.play().catch(e => console.log(e));
             setTimeout(() => { document.getElementById('to-fortune-btn').classList.remove('hidden'); }, 3000);
         }
