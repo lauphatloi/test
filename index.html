@@ -143,35 +143,35 @@
     <!-- SCENE 1: INTRO -->
     <div id="scene-intro">
         <span id="typewriter"></span>
-        <button class="soft-btn" id="intro-btn" onclick="goToListener()">I'm listening...</button>
+        <button class="soft-btn" id="intro-btn" onclick="goToListener()">Tiếp nè bà ...</button>
     </div>
 
     <!-- SCENE 2: LISTENER -->
     <div id="scene-listener" class="hidden">
         <div class="card">
-            <h1 id="ai-question">Hey, honestly, are you feeling tired right now?</h1>
-            <p class="subtext">(Nod head for Yes, Shake for No)</p>
+            <h1 id="ai-question">Bà có áp lực không ?</h1>
+            <p class="subtext">(Chỉ cần gật đầu hoặc lắc đầu)</p>
             <div id="countdown" class="hidden"></div>
-            <button id="to-fortune-btn" class="next-btn hidden" onclick="goToFortune()">I have one last surprise...</button>
+            <button id="to-fortune-btn" class="next-btn hidden" onclick="goToFortune()">Bắt đầu chơi</button>
         </div>
         <video class="input_video" style="display: none;" playsinline muted></video>
     </div>
 
     <!-- SCENE 3: FORTUNE -->
     <div id="scene-fortune" class="hidden">
-        <h2 style="color: var(--wood);">Ask for a sign...</h2>
-        <p style="font-size: 0.9rem; color: #777; margin-bottom: 20px;">Think about your exam, then shake your phone.</p>
+        <h2 style="color: var(--wood);">Lắc quẻ kkk</h2>
+        <p style="font-size: 0.9rem; color: #777; margin-bottom: 20px;">Lắc điện thoại để ra quẻ nha !</p>
         <div style="position: relative;">
-            <div class="winning-stick" id="winning-stick"><span style="writing-mode: vertical-rl;">Good Luck</span></div>
+            <div class="winning-stick" id="winning-stick"><span style="writing-mode: vertical-rl;">Thẻ Bốc Được</span></div>
             <div class="chim-cup" id="cup"><div class="sticks-group"><div class="stick"></div><div class="stick"></div><div class="stick"></div></div></div>
         </div>
-        <button class="permission-btn" id="perm-btn" onclick="requestMotion()">Tap to Enable Shake</button>
+        <button class="permission-btn" id="perm-btn" onclick="requestMotion()">Chấp nhận quyền lắc </button>
         <div id="fortune-paper">
             <div class="fortune-title" id="fortune-category"></div>
             <div class="fortune-msg" id="fortune-text"></div>
             <div class="action-area">
-                <button class="final-link-btn" onclick="goToLetter()">Read Message</button>
-                <button class="replay-btn" onclick="resetFortune()">Shake Again</button>
+                <button class="final-link-btn" onclick="goToLetter()">Qua cái khác</button>
+                <button class="replay-btn" onclick="resetFortune()">Lắc lại nữa !</button>
             </div>
         </div>
     </div>
@@ -180,7 +180,7 @@
     <div id="scene-final" class="hidden">
         <div class="envelope-wrapper" onclick="openEnvelope(this)">
             <div class="envelope">
-                <div class="lid"></div><div class="heart-seal">❤</div>
+                <div class="lid"></div><div class="heart-seal">😁</div>
                 <div class="letter">
                     <h2>To My Favorite Person</h2>
                     <p>No matter what the sticks say, I am already so proud of how hard you've worked.<br><br>Good luck. You've got this.<br>I'm always here for you.</p>
@@ -230,7 +230,7 @@
             if (xRange > 0.08 && yRange < 0.03) { doShakeAction(); } else if (yRange > 0.05 && xRange < 0.03) { doNodAction(); }
         }
         function doNodAction() {
-            interactionDone = true; questionText.innerHTML = "It's okay. Close your eyes, I'll count for you.";
+            interactionDone = true; questionText.innerHTML = "Hít vào đếm đên 4 và thở nhẹ ra trong 6s còn lại nha ";
             document.querySelector('.subtext').style.display = 'none'; countdownDisplay.classList.remove('hidden');
             let count = 10; countdownDisplay.innerText = count;
             const timer = setInterval(() => { count--; countdownDisplay.innerText = count; if(count <= 0) { clearInterval(timer); countdownDisplay.style.fontSize = "1.5rem"; countdownDisplay.innerText = "You can open your eyes now."; document.getElementById('to-fortune-btn').classList.remove('hidden'); } }, 1000);
@@ -251,18 +251,18 @@
         
         // Updated List with 12 Unique Vietnamese Wishes
         const fortunes = [
-            { cat: "Trí Tuệ (智慧)", msg: "Khai mở trí tuệ, làm bài sáng suốt." },
-            { cat: "Cát Tường (吉祥)", msg: "Vạn sự cát tường, thi cử hanh thông." },
-            { cat: "Tự Tin (自信)", msg: "Giữ vững tự tin, chiến thắng trong tầm tay." },
-            { cat: "Đăng Khoa (登科)", msg: "Nỗ lực hôm nay, ngày mai đăng khoa." },
-            { cat: "Bình Tĩnh (平静)", msg: "Tâm thế bình tĩnh, trí sáng như gương." },
-            { cat: "Kiên Trì (坚持)", msg: "Bền bỉ kiên trì, ắt gặt hái quả ngọt." },
-            { cat: "Thuận Lợi (顺利)", msg: "Mọi điều thuận lợi, vượt vũ môn hóa rồng." },
-            { cat: "Trạng Nguyên (状元)", msg: "Phấn đấu hết mình, giành ngôi Trạng Nguyên." },
-            { cat: "Chuyên Tâm (专心)", msg: "Một lòng chuyên tâm, bút thần khai hoa." },
-            { cat: "Công Danh (功名)", msg: "Đường trần rộng mở, công danh rạng rỡ." },
-            { cat: "Hồng Phúc (鸿福)", msg: "Hưởng trọn hồng phúc, thi đâu đậu đó." },
-            { cat: "Bác Học (博学)", msg: "Học rộng hiểu sâu, uyên thâm bác học." }
+            { cat: "Trí Tuệ (智慧)", msg: "Chúc Bà Khai mở trí tuệ, làm bài sáng suốt." },
+            { cat: "Cát Tường (吉祥)", msg: "Chúc Bà  Vạn sự cát tường, thi cử hanh thông." },
+            { cat: "Tự Tin (自信)", msg: "Chúc Bà Giữ vững tự tin, chiến thắng trong tầm tay." },
+            { cat: "Đăng Khoa (登科)", msg: "Chúc Bà Nỗ lực hôm nay, ngày mai đăng khoa." },
+            { cat: "Bình Tĩnh (平静)", msg: "Chúc Bà Tâm thế bình tĩnh, trí sáng như gương." },
+            { cat: "Kiên Trì (坚持)", msg: "Chúc Bà Bền bỉ kiên trì, ắt gặt hái quả ngọt." },
+            { cat: "Thuận Lợi (顺利)", msg: "Chúc Bà Mọi điều thuận lợi, vượt vũ môn hóa rồng." },
+            { cat: "Trạng Nguyên (状元)", msg: "Chúc Bà Phấn đấu hết mình, giành ngôi Trạng Nguyên." },
+            { cat: "Chuyên Tâm (专心)", msg: "Chúc Bà Một lòng chuyên tâm, bút thần khai hoa." },
+            { cat: "Công Danh (功名)", msg: "Chúc Bà Đường trần rộng mở, công danh rạng rỡ." },
+            { cat: "Hồng Phúc (鸿福)", msg: "Chúc Bà Hưởng trọn hồng phúc, thi đâu đậu đó." },
+            { cat: "Bác Học (博学)", msg: "Chúc Bà Học rộng hiểu sâu, uyên thâm bác học." }
         ];
 
         let lastUpdate = 0, lastX=0, lastY=0, lastZ=0;
