@@ -1,4 +1,6 @@
-node_modules\n.DS_Store\ndist\n.env
 node_modules/
 dist/
-
+dist-ssr/
+*.local
+.DS_Store
+.env
