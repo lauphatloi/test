@@ -49,23 +49,31 @@ export default function BannerSection({ onOpenTestRide }) {
         pointerEvents: 'none',
       }, 0.05);
 
-      // Stage 2: Central illuminated aperture ring appears and scales up
+      // Stage 2: Central white border ring (vòng tròn viền trắng ở trung tâm)
       tl.fromTo(portalRingRef.current, {
         scale: 0,
         opacity: 0,
       }, {
         scale: 1,
         opacity: 1,
-        duration: 0.3,
+        duration: 0.25,
         ease: 'power1.out',
       }, 0.35);
 
+      // Mở rộng kích thước đồng bộ cùng hành trình 1.4s (từ 0.4 đến 1.8)
       tl.to(portalRingRef.current, {
-        scale: 35,
-        opacity: 0.2,
-        duration: 1.2,
+        scale: 18,
         ease: 'power2.inOut',
-      }, 0.5);
+        duration: 1.4,
+      }, 0.4);
+
+      // Khi đi được 3/10 hành trình (0.4 + 1.4 * 0.3 = 0.82) thì bắt đầu mờ dần,
+      // tới 7/10 hành trình (0.4 + 1.4 * 0.7 = 1.38) bắt buộc phải mất hoàn toàn (opacity: 0)
+      tl.to(portalRingRef.current, {
+        opacity: 0,
+        ease: 'power1.in',
+        duration: 0.56,
+      }, 0.82);
 
       // Stage 3: Circle at the center opens up according to scroll (clipPath: 0% -> 150%)
       tl.fromTo(portalLayerRef.current, {
@@ -203,7 +211,7 @@ export default function BannerSection({ onOpenTestRide }) {
       {/* ============================================================ */}
       <div 
         ref={portalRingRef}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full border-2 border-white/80 shadow-[0_0_50px_rgba(255,255,255,0.6)] pointer-events-none z-30 opacity-0 will-change-transform"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full border border-white/90 shadow-[0_0_25px_rgba(255,255,255,0.5)] pointer-events-none z-30 opacity-0 will-change-transform"
       />
 
       {/* ============================================================ */}
