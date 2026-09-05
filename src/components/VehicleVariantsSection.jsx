@@ -12,6 +12,7 @@ const VARIANTS = [
     number: '01',
     name: 'Xám Đương Đại',
     subname: 'Phiên Bản Thể Thao',
+    shapeSymbol: 'Cơ Khí Khí Động Học',
     image: './images/motorcycle-grey.png',
     accentColor: '#94a3b8',
     tag: 'Phong cách đô thị hiện đại',
@@ -24,6 +25,7 @@ const VARIANTS = [
     number: '02',
     name: 'Đen Nhám Doanh Nhân',
     subname: 'Phiên Bản Đặc Biệt',
+    shapeSymbol: 'Khối Bát Giác Hoàng Gia',
     image: './images/motorcycle-dark-grey.png',
     accentColor: '#c5a880',
     tag: 'Đẳng cấp doanh nhân thành đạt',
@@ -36,6 +38,7 @@ const VARIANTS = [
     number: '03',
     name: 'Trắng Ngọc Trai Thanh Lịch',
     subname: 'Phiên Bản Cao Cấp',
+    shapeSymbol: 'Giọt Ngọc Trai Hữu Cơ',
     image: './images/motorcycle-white.png',
     accentColor: '#cbd5e1',
     tag: 'Vẻ đẹp thanh lịch vượt thời gian',
@@ -48,6 +51,7 @@ const VARIANTS = [
     number: '04',
     name: 'Xanh Lục Bảo Tinh Hoa',
     subname: 'Phiên Bản Giới Hạn',
+    shapeSymbol: 'Giác Cắt Bảo Thạch Đa Diện',
     image: './images/motorcycle-green.png',
     accentColor: '#34d399',
     tag: 'Độc bản quý phái',
@@ -69,7 +73,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Pinned scrollytelling timeline for the 4 vehicle versions
-      // Hành trình cuộn 350% rộng rãi để người dùng thấy rõ màu loang từ từ ở giữa ra
+      // Hành trình cuộn 350% rộng rãi để người dùng thấy rõ hình dạng biểu trưng loang từ từ ở giữa ra
       const totalScroll = 350;
 
       const tl = gsap.timeline({
@@ -97,27 +101,30 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
       gsap.set(bikeRefs.current[0], { opacity: 1, x: 0, y: 0, scale: 1, filter: 'none' });
       gsap.set(bikeRefs.current.slice(1), { opacity: 0, x: 0, y: 0, scale: 1, filter: 'none' });
 
-      // 2. Vệt loang màu: Ban đầu ở tâm (scale: 0, transformOrigin: 50% 50%)
-      // Khi cuộn sẽ loang từ từ từ giữa ra và tràn ngập khắp màn hình đè lên màu phiên bản trước
-      gsap.set(bleed1Ref.current, { scale: 0, opacity: 1, transformOrigin: '50% 50%' });
-      gsap.set(bleed2Ref.current, { scale: 0, opacity: 1, transformOrigin: '50% 50%' });
-      gsap.set(bleed3Ref.current, { scale: 0, opacity: 1, transformOrigin: '50% 50%' });
+      // 2. Vệt loang hình dạng biểu trưng: Khởi điểm từ tâm (scale: 0)
+      // Bản 02: Bát Giác Doanh Nhân Hoàng Gia (rotate: -8)
+      gsap.set(bleed1Ref.current, { scale: 0, opacity: 1, rotate: -8, transformOrigin: '50% 50%' });
+      // Bản 03: Giọt Ngọc Trai Hữu Cơ Ý (rotate: 12)
+      gsap.set(bleed2Ref.current, { scale: 0, opacity: 1, rotate: 12, transformOrigin: '50% 50%' });
+      // Bản 04: Giác Cắt Đá Quý Đa Diện (rotate: -15)
+      gsap.set(bleed3Ref.current, { scale: 0, opacity: 1, rotate: -15, transformOrigin: '50% 50%' });
 
       // 3. Ánh sáng hắt sàn ban đầu
       gsap.set(floorGlowRefs.current[0], { opacity: 1 });
       gsap.set(floorGlowRefs.current.slice(1), { opacity: 0 });
 
       // =========================================================================
-      // GIAI ĐOẠN 1: Chuyển sang Bản 02 (Đen Nhám - Vàng Đồng Bronze Gold)
-      // Màu vàng đồng loang từ từ ở giữa ra (0.5 -> 2.2), tràn ngập đè lên màu xám
+      // GIAI ĐOẠN 1: Chuyển sang Bản 02 (Đen Nhám Doanh Nhân - Vàng Đồng)
+      // HÌNH DẠNG: Khối Bát Giác Hoàng Gia nở từ tâm ra, xoay nhẹ uy quyền
       // =========================================================================
       tl.to(bleed1Ref.current, {
-        scale: 1.25,
+        scale: 1.35,
+        rotate: 12,
         duration: 1.8,
         ease: 'none',
       }, 0.5);
 
-      // Xe đứng im tại chỗ, chuyển mượt mà độ trong suốt khi màu đang tràn qua xe
+      // Xe đứng im tại chỗ, chuyển mượt mà độ trong suốt khi khối bát giác tràn qua xe
       tl.to(bikeRefs.current[0], { opacity: 0, duration: 0.8, ease: 'power1.inOut' }, 1.0);
       tl.to(bikeRefs.current[1], { opacity: 1, duration: 0.8, ease: 'power1.inOut' }, 1.0);
 
@@ -127,10 +134,11 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
 
       // =========================================================================
       // GIAI ĐOẠN 2: Chuyển sang Bản 03 (Trắng Ngọc Trai - Băng Tinh Pearl Ice)
-      // Màu trắng ngọc trai loang từ từ ở giữa ra (2.5 -> 4.2), tràn ngập đè lên màu vàng đồng
+      // HÌNH DẠNG: Giọt Ngọc Trai Hữu Cơ Ý uốn lượn nở từ tâm ra, xoay mềm mại
       // =========================================================================
       tl.to(bleed2Ref.current, {
-        scale: 1.25,
+        scale: 1.35,
+        rotate: -18,
         duration: 1.8,
         ease: 'none',
       }, 2.5);
@@ -145,10 +153,11 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
 
       // =========================================================================
       // GIAI ĐOẠN 3: Chuyển sang Bản 04 (Xanh Lục Bảo - Emerald Jade)
-      // Màu xanh lục bảo loang từ từ ở giữa ra (4.5 -> 6.2), tràn ngập đè lên màu trắng ngọc trai
+      // HÌNH DẠNG: Giác Cắt Đá Quý Đa Diện nở từ tâm ra, xoay lấp lánh như kim cương
       // =========================================================================
       tl.to(bleed3Ref.current, {
-        scale: 1.25,
+        scale: 1.35,
+        rotate: 22,
         duration: 1.8,
         ease: 'none',
       }, 4.5);
@@ -190,8 +199,8 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
       className="relative w-full h-screen overflow-hidden bg-[#07090e] select-none flex flex-col justify-between"
     >
       {/* ============================================================ */}
-      {/* 1. FULL-SCREEN EXPANDING COLOR SPILL LAYERS                  */}
-      {/*    Màu loang từ từ ở giữa ra, tràn ngập đè lên màu phiên bản trước */}
+      {/* 1. FULL-SCREEN EXPANDING SHAPES BY COLOR MEANING             */}
+      {/*    Mỗi phiên bản sở hữu một hình dạng biểu trưng độc bản    */}
       {/* ============================================================ */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Lớp nền gốc: Bản 01 - Xám Đương Đại (Màu xám kim loại studio sâu thẳm) */}
@@ -202,49 +211,68 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
           }}
         />
 
-        {/* Lớp màu loang Bản 02: Vàng Đồng Sang Trọng (Bronze Gold) */}
-        {/* Nằm đè lên lớp Xám, loang từ tâm (50% 50%) ra ngoài */}
+        {/* Lớp 02: KHỐI BÁT GIÁC HOÀNG GIA (Executive Octagon Crest - Bản Đen Nhám Doanh Nhân) */}
+        {/* Nở từ tâm ra, vát 8 góc quyền uy, ánh vàng đồng quý phái */}
         <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none">
           <div
             ref={bleed1Ref}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full will-change-transform pointer-events-none"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-none flex items-center justify-center filter drop-shadow-[0_0_40px_rgba(245,158,11,0.5)]"
             style={{
               width: '180vmax',
               height: '180vmax',
-              background: 'radial-gradient(circle at 50% 50%, #d97706 0%, #b45309 22%, #78350f 45%, #1c1006 70%, #07090e 90%)',
-              filter: 'blur(50px)',
             }}
-          />
+          >
+            <div 
+              className="w-full h-full"
+              style={{
+                clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
+                background: 'radial-gradient(circle at 50% 50%, #f59e0b 0%, #d97706 18%, #b45309 35%, #78350f 55%, #1f1206 75%, #07090e 92%)',
+              }}
+            />
+          </div>
         </div>
 
-        {/* Lớp màu loang Bản 03: Trắng Ngọc Trai Băng Tinh (Pearl White & Ice Blue) */}
-        {/* Nằm đè lên lớp Vàng Đồng, loang từ tâm (50% 50%) ra ngoài */}
+        {/* Lớp 03: ĐƯỜNG CONG GIỌT NGỌC HỮU CƠ Ý (Organic Fluid Pearl Wave - Bản Trắng Ngọc Trai) */}
+        {/* Nở từ tâm ra, uốn lượn mềm mại bất đối xứng, ánh ngọc trai và băng tinh */}
         <div className="absolute inset-0 z-20 overflow-hidden pointer-events-none">
           <div
             ref={bleed2Ref}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full will-change-transform pointer-events-none"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-none flex items-center justify-center filter drop-shadow-[0_0_50px_rgba(56,189,248,0.5)]"
             style={{
               width: '180vmax',
               height: '180vmax',
-              background: 'radial-gradient(circle at 50% 50%, #ffffff 0%, #bae6fd 20%, #38bdf8 42%, #0369a1 68%, #091424 88%)',
-              filter: 'blur(50px)',
             }}
-          />
+          >
+            <div 
+              className="w-full h-full"
+              style={{
+                borderRadius: '42% 58% 68% 32% / 46% 36% 64% 54%',
+                background: 'radial-gradient(circle at 50% 50%, #ffffff 0%, #e0f2fe 18%, #38bdf8 40%, #0284c7 62%, #081d33 80%, #07090e 94%)',
+                filter: 'blur(30px)',
+              }}
+            />
+          </div>
         </div>
 
-        {/* Lớp màu loang Bản 04: Xanh Lục Bảo Quý Tộc (Emerald Green & Jade) */}
-        {/* Nằm đè lên lớp Trắng Ngọc Trai, loang từ tâm (50% 50%) ra ngoài */}
+        {/* Lớp 04: GIÁC CẮT NGỌC BẢO THẠCH ĐA DIỆN (Faceted Emerald Brilliant Gem - Bản Xanh Lục Bảo) */}
+        {/* Nở từ tâm ra, giác cắt đá quý 8 cạnh sắc sảo độc bản, ánh ngọc bích kiêu kỳ */}
         <div className="absolute inset-0 z-30 overflow-hidden pointer-events-none">
           <div
             ref={bleed3Ref}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full will-change-transform pointer-events-none"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-none flex items-center justify-center filter drop-shadow-[0_0_45px_rgba(52,211,153,0.55)]"
             style={{
               width: '180vmax',
               height: '180vmax',
-              background: 'radial-gradient(circle at 50% 50%, #34d399 0%, #10b981 20%, #047857 45%, #064e3b 70%, #04140e 90%)',
-              filter: 'blur(50px)',
             }}
-          />
+          >
+            <div 
+              className="w-full h-full"
+              style={{
+                clipPath: 'polygon(50% 0%, 82% 18%, 100% 50%, 82% 82%, 50% 100%, 18% 82%, 0% 50%, 18% 18%)',
+                background: 'radial-gradient(circle at 50% 50%, #34d399 0%, #10b981 18%, #059669 38%, #047857 58%, #032d22 78%, #07090e 92%)',
+              }}
+            />
+          </div>
         </div>
 
         {/* Tech Grid Texture Overlay */}
@@ -278,7 +306,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
               
               <div>
                 {/* Badge & Edition */}
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center gap-2 mb-2 flex-wrap">
                   <span 
                     className="w-2.5 h-2.5 rounded-full shadow-sm"
                     style={{ backgroundColor: currentData.accentColor }}
@@ -286,7 +314,10 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                   <span className="text-[10px] font-semibold tracking-wider uppercase px-2.5 py-0.5 rounded bg-white/[0.06] text-neutral-200 border border-white/[0.06] font-body">
                     {currentData.subname}
                   </span>
-                  <span className="text-[11px] text-neutral-400 font-body">| {currentData.tag}</span>
+                  <span className="text-[10px] font-medium tracking-wide px-2 py-0.5 rounded bg-white/[0.04] text-neutral-300 border border-white/[0.06] font-body">
+                    {currentData.shapeSymbol}
+                  </span>
+                  <span className="text-[11px] text-neutral-400 font-body hidden sm:inline">| {currentData.tag}</span>
                 </div>
 
                 {/* Vehicle Name Headline - Locked min height */}
