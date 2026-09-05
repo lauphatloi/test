@@ -7,131 +7,147 @@ gsap.registerPlugin(ScrollTrigger);
 export default function App() {
   const containerRef = useRef(null);
   const bannerRef = useRef(null);
-  const headlineRefs = useRef([]);
-  const headlineContainerRef = useRef(null);
-  const motoARef = useRef(null);
-  const displacementRef = useRef(null);
-  const inkBleedRef = useRef(null);
-  const motoBRef = useRef(null);
-  const zenTextRef = useRef(null);
-  const shockwavesRef = useRef([]);
+  const bikesContainerRef = useRef(null);
+  const greenBikeRef = useRef(null);
+  const greyBikeRef = useRef(null);
+  const whiteBikeRef = useRef(null);
+  const darkBikeRef = useRef(null);
+  const greenCharsRef = useRef([]);
+  const greyTextRef = useRef(null);
+  const whiteTextRef = useRef(null);
+  const darkTextRef = useRef(null);
 
   useEffect(() => {
-    gsap.to(bannerRef.current, {
-      scale: 1.15,
-      duration: 25,
-      ease: 'none',
-      repeat: -1,
-      yoyo: true
-    });
-
-    gsap.fromTo(headlineRefs.current, {
+    gsap.fromTo(greenCharsRef.current, {
       yPercent: 120,
       opacity: 0,
-      filter: 'blur(10px) drop-shadow(0px 10px 10px rgba(255,255,255,0.5))'
+      filter: 'blur(8px)'
     }, {
       yPercent: 0,
       opacity: 1,
-      filter: 'blur(0px) drop-shadow(0px 0px 0px rgba(255,255,255,0))',
-      duration: 2.5,
-      stagger: 0.3,
+      filter: 'blur(0px)',
+      duration: 1.5,
+      stagger: 0.05,
       ease: 'power3.out',
-      delay: 0.5
+      delay: 0.2
     });
 
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=5000',
+        end: '+=400%',
         scrub: 1,
         pin: true,
         anticipatePin: 1
       }
     });
 
-    const filterVal = { scale: 0 };
+    const maskVals = { grey1: 100, grey2: 150, white1: 0, white2: 0 };
 
     tl.to(bannerRef.current, {
-      scale: 1.3,
-      opacity: 0,
-      filter: 'blur(30px) brightness(0)',
+      scale: 0.8,
+      filter: 'blur(20px) brightness(0.2)',
       duration: 2
     }, 0)
-    .to(headlineContainerRef.current, {
-      opacity: 0,
-      y: -150,
-      filter: 'blur(15px)',
-      duration: 1.5
-    }, 0)
-    .fromTo(motoARef.current, {
-      y: '100vh',
-      rotation: 15,
-      rotationX: 30,
-      rotationZ: -10,
-      filter: 'blur(20px)',
-      scale: 0.6,
+    .fromTo(bikesContainerRef.current, {
+      y: 200,
+      scale: 0.8,
       opacity: 0
-    }, {
-      y: '0vh',
-      rotation: 0,
-      rotationX: 0,
-      rotationZ: 0,
-      filter: 'blur(0px)',
-      scale: 1,
-      opacity: 1,
-      duration: 2,
-      ease: 'power2.out'
-    }, 0.5)
-    .to(filterVal, {
-      scale: 120,
-      duration: 1.5,
-      ease: 'power1.inOut',
-      onUpdate: () => {
-        if (displacementRef.current) {
-          displacementRef.current.setAttribute('scale', filterVal.scale);
-        }
-      }
-    }, 2.5)
-    .fromTo(inkBleedRef.current, {
-      scale: 0,
-      opacity: 0
-    }, {
-      scale: 150,
-      opacity: 1,
-      duration: 2,
-      ease: 'power2.inOut'
-    }, 2.5)
-    .fromTo(motoBRef.current, {
-      clipPath: 'circle(0% at 50% 50%)'
-    }, {
-      clipPath: 'circle(150% at 50% 50%)',
-      duration: 2.5,
-      ease: 'power3.inOut'
-    }, 3.5)
-    .fromTo(zenTextRef.current, {
-      y: -100,
-      opacity: 0,
-      scale: 0.9
     }, {
       y: 0,
+      scale: 1,
+      opacity: 1,
+      duration: 2,
+      ease: 'power2.out'
+    }, 0)
+    .to(greenBikeRef.current, {
+      clipPath: 'polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%, 50% 50%)',
+      opacity: 0,
+      scale: 1.1,
+      duration: 1.5,
+      ease: 'power2.inOut'
+    }, 2.5)
+    .to(greenCharsRef.current, {
+      y: () => Math.random() * 100 + 50,
+      opacity: 0,
+      rotation: () => Math.random() * 40 - 20,
+      duration: 1.5,
+      stagger: 0.02,
+      ease: 'power2.in'
+    }, 2.5)
+    .fromTo(greyTextRef.current, {
+      scale: 1.5,
+      opacity: 0,
+    }, {
+      scale: 1,
+      opacity: 1,
+      duration: 1.5,
+      ease: 'power2.out'
+    }, 2.5)
+    .to(maskVals, {
+      grey1: -50,
+      grey2: 0,
+      duration: 2,
+      ease: 'power1.inOut',
+      onUpdate: () => {
+        if (greyBikeRef.current) {
+          greyBikeRef.current.style.setProperty('--mask-stop-1', `${maskVals.grey1}%`);
+          greyBikeRef.current.style.setProperty('--mask-stop-2', `${maskVals.grey2}%`);
+        }
+      }
+    }, 4.5)
+    .to(greyTextRef.current, {
+      x: 100,
+      filter: 'blur(10px)',
+      opacity: 0,
+      duration: 2
+    }, 4.5)
+    .fromTo(whiteTextRef.current, {
+      opacity: 0,
+      filter: 'blur(10px)',
+      x: -50
+    }, {
+      opacity: 1,
+      filter: 'blur(0px)',
+      x: 0,
+      duration: 2,
+      ease: 'power2.out'
+    }, 4.5)
+    .to(maskVals, {
+      white1: 100,
+      white2: 150,
+      duration: 2,
+      ease: 'power2.in',
+      onUpdate: () => {
+        if (whiteBikeRef.current) {
+          whiteBikeRef.current.style.setProperty('--radial-stop-1', `${maskVals.white1}%`);
+          whiteBikeRef.current.style.setProperty('--radial-stop-2', `${maskVals.white2}%`);
+        }
+      }
+    }, 7)
+    .to(whiteTextRef.current, {
+      opacity: 0,
+      scale: 0.9,
+      filter: 'blur(10px)',
+      duration: 1.5
+    }, 7)
+    .fromTo(darkTextRef.current, {
+      opacity: 0,
+      scale: 1.2,
+      textShadow: '0 0 0px rgba(255, 215, 0, 0)'
+    }, {
       opacity: 1,
       scale: 1,
-      duration: 1.5,
-      ease: 'bounce.out'
-    }, 5)
-    .fromTo(shockwavesRef.current, {
-      scale: 0.1,
-      opacity: 1,
-      borderWidth: '4px'
-    }, {
-      scale: 4,
-      opacity: 0,
-      borderWidth: '0px',
-      duration: 1.5,
-      stagger: 0.2,
+      textShadow: '0 0 20px rgba(255, 215, 0, 0.8)',
+      duration: 1,
       ease: 'power2.out'
-    }, 6.5);
+    }, 7)
+    .to(darkTextRef.current, {
+      textShadow: '0 0 5px rgba(255, 215, 0, 0.3)',
+      duration: 1,
+      ease: 'power2.inOut'
+    }, 8);
 
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -139,87 +155,91 @@ export default function App() {
   }, []);
 
   return (
-    <div className="bg-black text-white font-sans selection:bg-red-900">
-      <div ref={containerRef} className="relative h-screen w-full overflow-hidden bg-black">
+    <div className="bg-black text-white font-sans selection:bg-gray-800">
+      <div ref={containerRef} className="relative h-[100dvh] w-full overflow-hidden bg-black flex flex-col items-center justify-center">
         
-        <svg className="hidden">
-          <filter id="liquid-ripple">
-            <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" />
-            <feDisplacementMap 
-              ref={displacementRef}
-              in="SourceGraphic" 
-              in2="noise" 
-              scale="0" 
-              xChannelSelector="R" 
-              yChannelSelector="G" 
-            />
-          </filter>
-        </svg>
-
         <div 
           ref={bannerRef}
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 origin-center"
-          style={{ backgroundImage: 'url(/images/banner.jpg)' }}
+          className="absolute inset-0 bg-cover bg-center origin-center z-0"
+          style={{ backgroundImage: 'url(/images/banner-bg.jpg)' }}
         />
-        <div className="absolute inset-0 bg-black/40 z-10" />
-
-        <div ref={headlineContainerRef} className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-20">
-          <div className="overflow-hidden">
-            <h1 ref={el => headlineRefs.current[0] = el} className="text-6xl md:text-8xl font-light tracking-widest uppercase mb-6 opacity-0 text-center text-white">
-              Pure Force
-            </h1>
+        
+        <div className="absolute top-[15%] w-full flex flex-col items-center z-50">
+          <div className="absolute w-full flex justify-center overflow-hidden h-20">
+            <div className="flex text-4xl font-black tracking-tighter text-[#A1B59C] drop-shadow-lg">
+              {"HONDA SH350i".split("").map((c, i) => (
+                <span key={i} ref={el => greenCharsRef.current[i] = el} className="inline-block origin-bottom">
+                  {c === " " ? "\u00A0" : c}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="overflow-hidden">
-            <p ref={el => headlineRefs.current[1] = el} className="text-xl md:text-3xl font-light tracking-[0.4em] opacity-0 text-center text-gray-300">
-              The New Standard
-            </p>
+          
+          <div ref={greyTextRef} className="absolute w-full flex justify-center opacity-0 mt-2">
+            <h2 className="text-4xl font-black tracking-tighter text-[#9ca3af] drop-shadow-lg">
+              TITANIUM GREY
+            </h2>
+          </div>
+          
+          <div ref={whiteTextRef} className="absolute w-full flex justify-center opacity-0 mt-2">
+            <h2 className="text-4xl font-black tracking-tighter text-white drop-shadow-lg">
+              PEARL WHITE
+            </h2>
+          </div>
+          
+          <div ref={darkTextRef} className="absolute w-full flex justify-center opacity-0 mt-2">
+            <h2 className="text-4xl font-black tracking-tighter text-[#4b5563]">
+              STEALTH BLACK
+            </h2>
           </div>
         </div>
 
         <div 
-          ref={motoARef}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none z-30 opacity-0"
+          ref={bikesContainerRef}
+          className="absolute inset-0 flex items-center justify-center opacity-0 z-30"
         >
           <img 
-            src="/images/motocycle-main.png" 
+            ref={darkBikeRef}
+            src="/images/motorcycle-dark-grey.png" 
             alt="" 
-            className="w-full max-w-6xl object-contain drop-shadow-2xl"
-            style={{ filter: 'url(#liquid-ripple)' }}
+            className="absolute w-[90%] object-contain drop-shadow-2xl z-10"
           />
-        </div>
 
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
-          <div 
-            ref={inkBleedRef}
-            className="w-[10vw] h-[10vw] rounded-full bg-[#7a0016] blur-[40px] opacity-0 mix-blend-screen"
+          <img 
+            ref={whiteBikeRef}
+            src="/images/motorcycle-white.png" 
+            alt="" 
+            className="absolute w-[90%] object-contain drop-shadow-2xl z-20"
+            style={{ 
+              '--radial-stop-1': '0%', 
+              '--radial-stop-2': '0%',
+              WebkitMaskImage: 'radial-gradient(circle at 50% 55%, rgba(0,0,0,0) var(--radial-stop-1), rgba(0,0,0,1) var(--radial-stop-2))',
+              maskImage: 'radial-gradient(circle at 50% 55%, rgba(0,0,0,0) var(--radial-stop-1), rgba(0,0,0,1) var(--radial-stop-2))'
+            }}
           />
-        </div>
 
-        <div 
-          ref={motoBRef}
-          className="absolute inset-0 z-50 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: 'url(/images/motorcycle-red.jpg)', clipPath: 'circle(0% at 50% 50%)' }}
-        />
+          <img 
+            ref={greyBikeRef}
+            src="/images/motorcycle-grey.png" 
+            alt="" 
+            className="absolute w-[90%] object-contain drop-shadow-2xl z-30"
+            style={{ 
+              '--mask-stop-1': '100%', 
+              '--mask-stop-2': '150%',
+              WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,1) var(--mask-stop-1), rgba(0,0,0,0) var(--mask-stop-2))',
+              maskImage: 'linear-gradient(to right, rgba(0,0,0,1) var(--mask-stop-1), rgba(0,0,0,0) var(--mask-stop-2))'
+            }}
+          />
 
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50">
-          <div className="relative flex flex-col items-center">
-            
-            <div className="absolute top-1/2 left-1/2 w-2 h-2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
-               {[0, 1, 2].map(i => (
-                 <div 
-                   key={i}
-                   ref={el => shockwavesRef.current[i] = el}
-                   className="absolute w-[300px] h-[300px] rounded-full border-white/50 shadow-[0_0_30px_rgba(255,255,255,0.7)] opacity-0"
-                 />
-               ))}
-            </div>
-            
-            <div ref={zenTextRef} className="text-center opacity-0 z-10">
-              <h2 className="text-7xl md:text-9xl font-thin tracking-tighter mb-4 drop-shadow-[0_10px_20px_rgba(0,0,0,0.9)] text-white">SH350i</h2>
-              <p className="text-2xl font-light tracking-[0.5em] text-white/90 drop-shadow-lg">$5,499</p>
-            </div>
-
-          </div>
+          <img 
+            ref={greenBikeRef}
+            src="/images/motorcycle-green.png" 
+            alt="" 
+            className="absolute w-[90%] object-contain drop-shadow-2xl z-40"
+            style={{ 
+              clipPath: 'polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%)'
+            }}
+          />
         </div>
       </div>
     </div>
