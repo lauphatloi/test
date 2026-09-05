@@ -82,7 +82,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
           start: 'top top',
           end: `+=${totalScroll}%`,
           pin: true,
-          scrub: 0.8,
+          scrub: 0.5,
           anticipatePin: 1,
           onUpdate: (self) => {
             const p = self.progress;
@@ -91,23 +91,23 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
             else if (p < 0.52) index = 1;
             else if (p < 0.82) index = 2;
             else index = 3;
-            setActiveVariant(index);
+            setActiveVariant((prev) => (prev !== index ? index : prev));
           }
         }
       });
 
       // 1. Initial setup: 
       // SẢN PHẨM ĐỨNG IM TUYỆT ĐỐI (x: 0, y: 0, scale: 1, filter: none, không tilt, không xê dịch)
-      gsap.set(bikeRefs.current[0], { opacity: 1, x: 0, y: 0, scale: 1, filter: 'none' });
-      gsap.set(bikeRefs.current.slice(1), { opacity: 0, x: 0, y: 0, scale: 1, filter: 'none' });
+      gsap.set(bikeRefs.current[0], { opacity: 1, x: 0, y: 0, scale: 1, filter: 'none', force3D: true });
+      gsap.set(bikeRefs.current.slice(1), { opacity: 0, x: 0, y: 0, scale: 1, filter: 'none', force3D: true });
 
       // 2. KHỐI BÁT GIÁC HIỆU NĂNG CAO (Không lag, chuẩn GPU transform):
       // Bản 02: Bát Giác Đen Nhám (bleed1Ref) - Khởi điểm từ tâm (scale: 0, rotate: -8)
-      gsap.set(bleed1Ref.current, { scale: 0, opacity: 1, rotate: -8, transformOrigin: '50% 50%' });
-      // Bản 03: Bát Giác Trắng Ngọc Trai (bleed2Ref) - Đặt ở lớp dưới (scale: 1.35, opacity: 0, rotate: 8)
-      gsap.set(bleed2Ref.current, { scale: 1.35, opacity: 0, rotate: 8, transformOrigin: '50% 50%' });
+      gsap.set(bleed1Ref.current, { scale: 0, opacity: 1, rotate: -8, transformOrigin: '50% 50%', force3D: true });
+      // Bản 03: Bát Giác Trắng Ngọc Trai (bleed2Ref) - Đặt ở lớp dưới sẵn sàng (scale: 1.35, opacity: 0, rotate: 0)
+      gsap.set(bleed2Ref.current, { scale: 1.35, opacity: 0, rotate: 0, transformOrigin: '50% 50%', force3D: true });
       // Bản 04: Bát Giác Xanh Lục Bảo (bleed3Ref) - Khởi điểm từ tâm (scale: 0, opacity: 1, rotate: -15)
-      gsap.set(bleed3Ref.current, { scale: 0, opacity: 1, rotate: -15, transformOrigin: '50% 50%' });
+      gsap.set(bleed3Ref.current, { scale: 0, opacity: 1, rotate: -15, transformOrigin: '50% 50%', force3D: true });
 
       // 3. Ánh sáng hắt sàn ban đầu
       gsap.set(floorGlowRefs.current[0], { opacity: 1 });
@@ -115,16 +115,17 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
 
       // =========================================================================
       // GIAI ĐOẠN 1: Chuyển sang Bản 02 (Đen Nhám Doanh Nhân - Vàng Đồng)
-      // HOẠT ẢNH: Khối Bát Giác BUNG MỞ TỪ TÂM RA (scale: 0 -> 1.35)
+      // HOẠT ẢNH: Chỉ duy nhất Khối Bát Giác Đen Nhám bung mở từ tâm (0 -> 1.35)
       // =========================================================================
       tl.to(bleed1Ref.current, {
         scale: 1.35,
         rotate: 12,
         duration: 1.8,
         ease: 'none',
+        force3D: true,
       }, 0.5);
 
-      // Xe đứng im tại chỗ, chuyển mượt mà độ trong suốt khi khối bát giác tràn qua xe
+      // Xe đứng im tại chỗ, chuyển mượt mà độ trong suốt
       tl.to(bikeRefs.current[0], { opacity: 0, duration: 0.8, ease: 'power1.inOut' }, 1.0);
       tl.to(bikeRefs.current[1], { opacity: 1, duration: 0.8, ease: 'power1.inOut' }, 1.0);
 
@@ -132,26 +133,20 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
       tl.to(floorGlowRefs.current[0], { opacity: 0, duration: 0.8 }, 1.0);
       tl.to(floorGlowRefs.current[1], { opacity: 1, duration: 0.8 }, 1.0);
 
-      // Kích hoạt ngầm lớp Trắng Ngọc Trai bên dưới (lúc này bleed1Ref đang ở scale 1.35 che kín 100%)
-      tl.to(bleed2Ref.current, { opacity: 1, duration: 0.2 }, 2.2);
+      // Kích hoạt ngầm lớp Trắng Ngọc Trai bên dưới khi bleed1Ref đang che kín màn hình
+      tl.to(bleed2Ref.current, { opacity: 1, duration: 0.1 }, 2.2);
 
       // =========================================================================
       // GIAI ĐOẠN 2: Chuyển sang Bản 03 (Trắng Ngọc Trai - Băng Tinh Pearl Ice)
-      // HOẠT ẢNH: Khối Bát Giác Đen Nhám ZOOM NGƯỢC LẠI VÀO TÂM (scale: 1.35 -> 0)
-      // Khối đen thu gọn về tâm điểm ảo diệu, để lộ không gian Trắng Băng Tinh ngập tràn
+      // HOẠT ẢNH: Chỉ duy nhất Khối Bát Giác Đen Nhám thu ngược về tâm (1.35 -> 0)
+      // (Đảm bảo hiệu năng đơn tải tuyệt đối giống hệt Giai đoạn 1, triệt tiêu 100% lag)
       // =========================================================================
       tl.to(bleed1Ref.current, {
         scale: 0,
         rotate: -8,
         duration: 1.8,
         ease: 'none',
-      }, 2.5);
-
-      // Lớp Trắng Ngọc Trai bên dưới xoay nhẹ tạo chiều sâu quang học
-      tl.to(bleed2Ref.current, {
-        rotate: -10,
-        duration: 1.8,
-        ease: 'none',
+        force3D: true,
       }, 2.5);
 
       // Xe đứng im tại chỗ, hòa tan độ trong suốt
@@ -164,13 +159,14 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
 
       // =========================================================================
       // GIAI ĐOẠN 3: Chuyển sang Bản 04 (Xanh Lục Bảo - Emerald Jade)
-      // HOẠT ẢNH: Xen kẽ nhịp điệu, Khối Bát Giác LẠI BUNG MỞ TỪ TÂM RA (scale: 0 -> 1.35)
+      // HOẠT ẢNH: Chỉ duy nhất Khối Bát Giác Xanh Lục Bảo bung mở từ tâm (0 -> 1.35)
       // =========================================================================
       tl.to(bleed3Ref.current, {
         scale: 1.35,
         rotate: 18,
         duration: 1.8,
         ease: 'none',
+        force3D: true,
       }, 4.5);
 
       // Xe đứng im tại chỗ, hòa tan độ trong suốt
@@ -213,7 +209,10 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
       {/* 1. KHỐI BÁT GIÁC ĐỒNG BỘ HIỆU NĂNG CAO (GPU OPTIMIZED)        */}
       {/*    Hoạt ảnh xen kẽ: Bung mở -> Thu ngược về tâm -> Bung mở   */}
       {/* ============================================================ */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div 
+        className="absolute inset-0 pointer-events-none overflow-hidden"
+        style={{ contain: 'paint layout', transform: 'translateZ(0)' }}
+      >
         {/* Lớp 01: Nền khởi đầu - Bản Xám Đương Đại (z-0) */}
         <div 
           className="absolute inset-0 z-0"
@@ -227,10 +226,12 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
         <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none">
           <div
             ref={bleed2Ref}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-none flex items-center justify-center filter drop-shadow-[0_0_45px_rgba(147,197,253,0.35)]"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-none flex items-center justify-center"
             style={{
               width: '180vmax',
               height: '180vmax',
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
             }}
           >
             <div 
@@ -248,10 +249,12 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
         <div className="absolute inset-0 z-20 overflow-hidden pointer-events-none">
           <div
             ref={bleed1Ref}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-none flex items-center justify-center filter drop-shadow-[0_0_40px_rgba(245,158,11,0.4)]"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-none flex items-center justify-center"
             style={{
               width: '180vmax',
               height: '180vmax',
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
             }}
           >
             <div 
@@ -269,10 +272,12 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
         <div className="absolute inset-0 z-30 overflow-hidden pointer-events-none">
           <div
             ref={bleed3Ref}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-none flex items-center justify-center filter drop-shadow-[0_0_40px_rgba(52,211,153,0.4)]"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-none flex items-center justify-center"
             style={{
               width: '180vmax',
               height: '180vmax',
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
             }}
           >
             <div 
