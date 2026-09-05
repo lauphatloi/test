@@ -4,7 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
 import Navbar from './components/Navbar';
-import HeroSection from './components/HeroSection';
+import BannerSection from './components/BannerSection';
+import VehicleVariantsSection from './components/VehicleVariantsSection';
 import DesignSection from './components/DesignSection';
 import EngineHighlight from './components/EngineHighlight';
 import TechFeaturesSection from './components/TechFeaturesSection';
@@ -43,7 +44,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#030407] text-white selection:bg-red-600 selection:text-white font-sans">
+    <div className="min-h-screen bg-[#08090d] text-white selection:bg-red-600 selection:text-white font-sans">
       {/* Floating Glass Navigation */}
       <Navbar 
         onOpenTestRide={() => handleOpenTestRide()} 
@@ -51,8 +52,11 @@ export default function App() {
       />
 
       <main>
-        {/* Selection Area 1: Hero & Color Variants Scrollytelling (banner-bg.jpg + 4 colors) */}
-        <HeroSection onOpenTestRide={handleOpenTestRide} />
+        {/* Standalone Banner Section with banner-bg.jpg scroll zoom effect */}
+        <BannerSection onOpenTestRide={handleOpenTestRide} />
+
+        {/* Standalone Vehicle Versions Showcase with clean showroom background */}
+        <VehicleVariantsSection onOpenTestRide={handleOpenTestRide} />
 
         {/* Selection Area 2 Part A: Design Visuals (fluid, graceful scrolling) */}
         <DesignSection />

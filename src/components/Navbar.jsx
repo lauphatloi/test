@@ -43,7 +43,8 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
   };
 
   const navLinks = [
-    { label: 'Màu Sắc 3D', id: '#colors' },
+    { label: 'Tổng Quan', id: '#banner' },
+    { label: 'Phiên Bản Màu', id: '#colors' },
     { label: 'Thiết Kế', id: '#design' },
     { label: 'Động Cơ eSP+', id: '#engine' },
     { label: 'Công Nghệ', id: '#technology' },
