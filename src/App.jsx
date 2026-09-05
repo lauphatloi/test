@@ -17,6 +17,8 @@ export default function App() {
   const whiteTextRef = useRef(null);
   const darkTextRef = useRef(null);
 
+  const baseUrl = import.meta.env.BASE_URL;
+
   useEffect(() => {
     gsap.fromTo(greenCharsRef.current, {
       yPercent: 120,
@@ -149,6 +151,8 @@ export default function App() {
       ease: 'power2.inOut'
     }, 8);
 
+    ScrollTrigger.refresh();
+
     return () => {
       ScrollTrigger.getAll().forEach(t => t.kill());
     };
@@ -161,7 +165,7 @@ export default function App() {
         <div 
           ref={bannerRef}
           className="absolute inset-0 bg-cover bg-center origin-center z-0"
-          style={{ backgroundImage: 'url(/images/banner-bg.jpg)' }}
+          style={{ backgroundImage: `url(${baseUrl}images/banner-bg.jpg)` }}
         />
         
         <div className="absolute top-[15%] w-full flex flex-col items-center z-50">
@@ -200,14 +204,14 @@ export default function App() {
         >
           <img 
             ref={darkBikeRef}
-            src="/images/motorcycle-dark-grey.png" 
+            src={`${baseUrl}images/motorcycle-dark-grey.png`} 
             alt="" 
             className="absolute w-[90%] object-contain drop-shadow-2xl z-10"
           />
 
           <img 
             ref={whiteBikeRef}
-            src="/images/motorcycle-white.png" 
+            src={`${baseUrl}images/motorcycle-white.png`} 
             alt="" 
             className="absolute w-[90%] object-contain drop-shadow-2xl z-20"
             style={{ 
@@ -220,7 +224,7 @@ export default function App() {
 
           <img 
             ref={greyBikeRef}
-            src="/images/motorcycle-grey.png" 
+            src={`${baseUrl}images/motorcycle-grey.png`} 
             alt="" 
             className="absolute w-[90%] object-contain drop-shadow-2xl z-30"
             style={{ 
@@ -233,7 +237,7 @@ export default function App() {
 
           <img 
             ref={greenBikeRef}
-            src="/images/motorcycle-green.png" 
+            src={`${baseUrl}images/motorcycle-green.png`} 
             alt="" 
             className="absolute w-[90%] object-contain drop-shadow-2xl z-40"
             style={{ 
