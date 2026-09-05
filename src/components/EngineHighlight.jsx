@@ -168,88 +168,88 @@ export default function EngineHighlight() {
       ref={containerRef} 
       className="relative w-full min-h-screen bg-black py-24 sm:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
-      {/* Dynamic Background Grid & Energy Glow */}
-      <div className="absolute inset-0 bg-tech-grid opacity-25 pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-red-600/15 rounded-full blur-[160px] pointer-events-none" />
+      {/* Dynamic Background Grid & Subtle Ambient Glow */}
+      <div className="absolute inset-0 bg-tech-grid opacity-15 pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-slate-700/10 rounded-full blur-[160px] pointer-events-none" />
       
-      {/* Shockwave expanding ring (Triggered on scroll) */}
+      {/* Shockwave expanding ring (Clean mechanical pulse on scroll) */}
       <div 
         ref={shockwaveRef}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border-2 border-red-500/80 pointer-events-none blur-sm"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-white/20 pointer-events-none blur-[1px]"
       />
 
       <div className="relative max-w-7xl mx-auto z-10">
         
-        {/* Section Surprising Header */}
+        {/* Section Professional Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-600/20 border border-red-500/40 text-red-400 text-xs font-bold tracking-[0.25em] uppercase mb-4 shadow-[0_0_20px_rgba(225,29,72,0.4)]">
-            <Flame size={14} className="animate-bounce" />
-            ĐỘT PHÁ CÔNG NGHỆ ĐỘNG CƠ • SURPRISING HIGHLIGHT
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-neutral-300 text-[11px] font-semibold tracking-[0.2em] uppercase mb-4 font-body">
+            <Cpu size={13} className="text-neutral-400" />
+            CƠ KHÍ CHÍNH XÁC • HONDA ADVANCED POWERTRAIN
           </div>
 
-          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase">
-            ĐỘNG CƠ <span className="text-gradient-red">eSP+ 330CC</span> THỦ LĨNH
+          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight uppercase">
+            ĐỘNG CƠ <span className="text-gradient-platinum">eSP+ 330CC</span> THẾ HỆ MỚI
           </h2>
-          <p className="mt-4 text-sm sm:text-base text-neutral-400 leading-relaxed max-w-2xl mx-auto">
-            Khám phá khối động cơ tân tiến mang lại cảm giác lái mãnh liệt, phản hồi ga tức thì nhưng êm ái mượt mà ở mọi dải tốc độ.
+          <p className="mt-3 text-xs sm:text-sm text-neutral-400 leading-relaxed max-w-2xl mx-auto font-body">
+            Sức mạnh bền bỉ, phản hồi ga êm ái và hiệu suất đốt cháy nhiên liệu tối ưu dựa trên triết lý kỹ thuật cơ khí chính xác hàng đầu của Honda.
           </p>
         </div>
 
         {/* Center Stage: Engine Showcase & Interactive HUD */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
-          {/* Engine Visual with 3D HUD Framing (7 Columns) */}
+          {/* Engine Visual with Precision Blueprint HUD (7 Columns) */}
           <div className="lg:col-span-7 relative flex items-center justify-center">
             
-            {/* Rotating Tech Tachometer Circle */}
+            {/* Rotating Tech Precision Circle */}
             <div 
               ref={hudCircleRef}
-              className="absolute w-[360px] sm:w-[480px] lg:w-[560px] h-[360px] sm:h-[480px] lg:h-[560px] rounded-full border border-dashed border-red-500/20 pointer-events-none"
+              className="absolute w-[360px] sm:w-[480px] lg:w-[540px] h-[360px] sm:h-[480px] lg:h-[540px] rounded-full border border-dashed border-white/10 pointer-events-none"
             >
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 bg-red-500 rounded-full shadow-[0_0_10px_#ef4444]" />
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-cyan-400 rounded-full shadow-[0_0_10px_#06b6d4]" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-white/60 rounded-full" />
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-neutral-400 rounded-full" />
             </div>
 
             {/* The Engine Photograph Container */}
             <div 
               ref={imageFrameRef}
-              className="relative w-full aspect-[16/10] max-h-[480px] rounded-3xl overflow-hidden glass-panel border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.9)] group"
+              className="relative w-full aspect-[16/10] max-h-[480px] rounded-3xl overflow-hidden glass-panel border border-white/[0.1] shadow-2xl group"
             >
               <img 
                 src="./images/dong-co.jpg" 
                 alt="Động cơ Honda SH350i eSP+ 330cc" 
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-1000 filter brightness-105"
+                className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-1000 filter brightness-100"
               />
 
-              {/* High-tech Vignette and Blue-red Lighting */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
+              {/* High-tech Vignette and Neutral Lighting */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/30 pointer-events-none" />
 
               {/* Floating Blueprint Markers */}
-              <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-[11px] font-mono text-red-400">
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
-                SYSTEM: eSP+ 4-VALVE SOHC
+              <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/[0.08] text-[10px] font-mono text-neutral-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                SYSTEM: eSP+ 4-VALVE SOHC PGM-FI
               </div>
 
-              {/* Live Tachometer RPM Overlay on Image */}
-              <div className="absolute bottom-4 right-4 bg-black/80 backdrop-blur-md p-3 rounded-2xl border border-white/10 flex items-center gap-3">
-                <Gauge size={22} className={`transition-colors ${isRevving ? 'text-red-500 animate-pulse' : 'text-neutral-400'}`} />
+              {/* Live Precision Tachometer RPM Overlay on Image */}
+              <div className="absolute bottom-4 right-4 bg-black/80 backdrop-blur-md p-2.5 sm:p-3 rounded-xl border border-white/[0.08] flex items-center gap-3">
+                <Gauge size={18} className="text-neutral-400" />
                 <div className="flex flex-col">
-                  <span className="text-[10px] uppercase tracking-wider text-neutral-400 font-bold">Vòng Tua Máy</span>
-                  <span className="font-mono text-lg font-extrabold text-white tracking-wider">
-                    {rpmVal} <span className="text-xs text-red-400">RPM</span>
+                  <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold font-body">Vòng Tua Máy</span>
+                  <span className="font-mono text-base sm:text-lg font-bold text-white tracking-wider">
+                    {rpmVal} <span className="text-[10px] text-neutral-400">vòng/phút</span>
                   </span>
                 </div>
               </div>
 
-              {/* Interactive Rev Throttle Button */}
+              {/* Interactive Engine Response Button */}
               <div className="absolute bottom-4 left-4">
                 <button
                   onClick={handleRevEngine}
                   onMouseEnter={() => soundFx.playHover()}
-                  className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-red-600/40 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold tracking-wide flex items-center gap-2 backdrop-blur-md border border-white/15 transition-all cursor-pointer font-body"
                 >
-                  <Play size={14} className={isRevving ? 'animate-spin' : ''} />
-                  <span>{isRevving ? 'Đang Tăng Tốc...' : 'Thử Ga Động Cơ'}</span>
+                  <Activity size={13} className={isRevving ? 'animate-pulse text-red-400' : 'text-neutral-400'} />
+                  <span>{isRevving ? 'Kiểm Tra Vận Hành...' : 'Mô Phỏng Vận Hành'}</span>
                 </button>
               </div>
 
@@ -260,15 +260,15 @@ export default function EngineHighlight() {
           <div className="lg:col-span-5 flex flex-col justify-center">
             
             {/* Mode Switch Tabs */}
-            <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-md mb-6">
+            <div className="flex items-center gap-1.5 p-1 rounded-xl bg-white/[0.03] border border-white/[0.07] backdrop-blur-md mb-6">
               {ENGINE_MODES.map((mode, idx) => (
                 <button
                   key={mode.id}
                   onClick={() => { soundFx.playClick(); setActiveMode(idx); }}
-                  className={`flex-1 py-2 px-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer text-center ${
+                  className={`flex-1 py-2 px-2 rounded-lg text-xs font-medium tracking-wide transition-all cursor-pointer text-center font-body ${
                     activeMode === idx
-                      ? 'bg-red-600 text-white shadow-lg shadow-red-600/30'
-                      : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-white/15 text-white shadow-sm border border-white/10 font-semibold'
+                      : 'text-neutral-400 hover:text-white hover:bg-white/[0.04]'
                   }`}
                 >
                   {mode.name.split(' ')[0]} {mode.name.split(' ')[1]}
@@ -277,27 +277,27 @@ export default function EngineHighlight() {
             </div>
 
             {/* Active Mode Details Card */}
-            <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 backdrop-blur-xl shadow-2xl animate-in fade-in duration-300">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: currentMode.color }} />
-                <span className="text-xs font-bold tracking-wider uppercase" style={{ color: currentMode.color }}>
+            <div className="glass-panel p-6 sm:p-7 rounded-2xl border border-white/[0.08] backdrop-blur-xl shadow-xl animate-in fade-in duration-300">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-2 h-2 rounded-full bg-neutral-300" />
+                <span className="text-[11px] font-semibold tracking-wider uppercase text-neutral-300 font-body">
                   {currentMode.name}
                 </span>
               </div>
 
-              <h3 className="font-display text-xl sm:text-2xl font-bold text-white tracking-tight leading-tight">
+              <h3 className="font-display text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug">
                 {currentMode.title}
               </h3>
 
-              <p className="mt-3 text-xs sm:text-sm text-neutral-300 leading-relaxed font-body">
+              <p className="mt-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-body">
                 {currentMode.desc}
               </p>
 
               {/* Feature Bullet Points */}
-              <div className="mt-6 space-y-2.5 pt-4 border-t border-white/10">
+              <div className="mt-5 space-y-2 pt-4 border-t border-white/[0.08]">
                 {currentMode.features.map((feat, i) => (
-                  <div key={i} className="flex items-center gap-2.5 text-xs text-neutral-200">
-                    <CheckCircle2 size={14} className="text-red-400 shrink-0" />
+                  <div key={i} className="flex items-center gap-2 text-xs text-neutral-300 font-body">
+                    <CheckCircle2 size={13} className="text-neutral-400 shrink-0" />
                     <span>{feat}</span>
                   </div>
                 ))}
@@ -308,22 +308,22 @@ export default function EngineHighlight() {
 
         </div>
 
-        {/* Bottom Telemetry Counter Cards (Live animated counters on scroll) */}
+        {/* Bottom Telemetry Counter Cards - Clean Engineering Metrics */}
         <div className="mt-16 sm:mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {ENGINE_SPECS.map((spec, idx) => (
             <div 
               key={idx}
-              className="glass-panel p-5 sm:p-6 rounded-2xl border border-white/10 backdrop-blur-md hover:border-red-500/40 transition-all duration-300 group"
+              className="glass-panel p-5 sm:p-6 rounded-2xl border border-white/[0.08] backdrop-blur-md hover:border-white/20 transition-all duration-300 group"
             >
-              <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 flex items-center justify-between mb-2">
+              <div className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400 flex items-center justify-between mb-2 font-body">
                 <span>{spec.label}</span>
-                <Activity size={13} className="text-red-500 opacity-70 group-hover:opacity-100 transition-opacity" />
+                <Activity size={12} className="text-neutral-500 group-hover:text-white transition-colors" />
               </div>
-              <div className="flex items-baseline gap-1.5 font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white">
+              <div className="flex items-baseline gap-1.5 font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
                 <span>{counters[idx] || spec.value}</span>
-                <span className="text-base sm:text-lg font-semibold text-red-500">{spec.unit}</span>
+                <span className="text-sm sm:text-base font-medium text-neutral-400 font-body">{spec.unit}</span>
               </div>
-              <p className="mt-2 text-[11px] sm:text-xs text-neutral-400 line-clamp-1">
+              <p className="mt-2 text-[11px] sm:text-xs text-neutral-400 line-clamp-1 font-body">
                 {spec.desc}
               </p>
             </div>

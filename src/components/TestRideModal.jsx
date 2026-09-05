@@ -148,7 +148,7 @@ export default function TestRideModal({ isOpen, onClose, preselectedEdition }) {
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-red-600/40 hover:scale-[1.02] active:scale-95 transition-all cursor-pointer"
+                  className="w-full py-3 rounded-xl honda-red-btn text-white text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer font-display"
                 >
                   Xác Nhận Đăng Ký Lái Thử
                 </button>

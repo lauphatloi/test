@@ -146,24 +146,24 @@ export default function PricingSection({ onOpenTestRide }) {
       ref={containerRef} 
       className="relative w-full min-h-screen bg-[#030509] py-24 sm:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
-      {/* Background Lighting */}
-      <div className="absolute inset-0 bg-tech-grid opacity-15 pointer-events-none" />
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-amber-500/10 rounded-full blur-[180px] pointer-events-none" />
+      {/* Background Lighting - Subtle executive ambience */}
+      <div className="absolute inset-0 bg-tech-grid opacity-10 pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-slate-700/10 rounded-full blur-[180px] pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto z-10">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold tracking-[0.25em] uppercase mb-4">
-            <DollarSign size={14} />
-            SELECTION AREA 04 • BẢNG GIÁ & CHÍNH SÁCH
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-neutral-300 text-[11px] font-semibold tracking-[0.2em] uppercase mb-4 font-body">
+            <DollarSign size={13} className="text-neutral-400" />
+            HONDA FINANCIAL SERVICES • CHÍNH SÁCH BÁN HÀNG
           </div>
 
-          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase">
-            BẢNG GIÁ & <span className="text-gradient-gold">DỰ TOÁN TRẢ GÓP</span>
+          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight uppercase">
+            BẢNG GIÁ & <span className="text-gradient-platinum">DỰ TOÁN TRẢ GÓP</span>
           </h2>
-          <p className="mt-4 text-sm sm:text-base text-neutral-400 leading-relaxed">
-            Lựa chọn phiên bản xứng tầm vị thế, cùng các giải pháp tài chính linh hoạt ưu đãi 0% lãi suất được thiết kế riêng cho khách hàng thượng lưu.
+          <p className="mt-3 text-xs sm:text-sm text-neutral-400 leading-relaxed font-body">
+            Sở hữu Honda SH350i với các giải pháp tài chính linh hoạt, thủ tục tinh gọn và minh bạch từ hệ thống Honda HEAD trên toàn quốc.
           </p>
         </div>
 
@@ -178,62 +178,62 @@ export default function PricingSection({ onOpenTestRide }) {
                 onClick={() => { soundFx.playClick(); setSelectedEdition(idx); }}
                 className={`relative rounded-3xl transition-all duration-500 cursor-pointer flex flex-col justify-between p-6 sm:p-8 backdrop-blur-xl border ${
                   edition.popular 
-                    ? 'glass-panel-glow border-amber-500/50 shadow-[0_20px_50px_rgba(217,119,6,0.2)] md:-translate-y-3' 
-                    : 'glass-panel border-white/10 hover:border-white/25 hover:-translate-y-1'
-                } ${isSelected ? 'ring-2 ring-red-500' : ''}`}
+                    ? 'glass-panel-glow border-white/20 shadow-xl md:-translate-y-2' 
+                    : 'glass-panel border-white/[0.08] hover:border-white/20 hover:-translate-y-1'
+                } ${isSelected ? 'ring-1 ring-white/40' : ''}`}
               >
                 {/* Popular Highlight Badge */}
                 {edition.popular && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-black text-[11px] font-black uppercase tracking-widest shadow-lg flex items-center gap-1.5">
-                    <Sparkles size={12} /> {edition.badge}
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3.5 py-0.5 rounded-full bg-white text-black text-[10px] font-bold uppercase tracking-wider shadow-md flex items-center gap-1.5 font-body">
+                    <Sparkles size={11} /> {edition.badge}
                   </div>
                 )}
 
                 <div>
                   {/* Top Category */}
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400 font-body">
                       {edition.sub}
                     </span>
                     <span 
-                      className="w-3 h-3 rounded-full" 
+                      className="w-2.5 h-2.5 rounded-full" 
                       style={{ backgroundColor: edition.colorAccent }}
                     />
                   </div>
 
                   {/* Edition Name */}
-                  <h3 className="font-display text-2xl font-extrabold text-white mt-2">
+                  <h3 className="font-display text-2xl font-bold text-white mt-2">
                     {edition.name}
                   </h3>
 
                   {/* Color Options Available */}
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {edition.colors.map((c, i) => (
-                      <span key={i} className="text-[11px] px-2.5 py-0.5 rounded-md bg-white/5 text-neutral-300 border border-white/5">
+                      <span key={i} className="text-[11px] px-2.5 py-0.5 rounded bg-white/[0.04] text-neutral-300 border border-white/[0.06] font-body">
                         {c}
                       </span>
                     ))}
                   </div>
 
                   {/* Price Tag */}
-                  <div className="mt-6 pt-6 border-t border-white/10">
-                    <span className="text-[11px] text-neutral-400 uppercase font-medium">Giá Bán Lẻ Đề Xuất</span>
+                  <div className="mt-6 pt-6 border-t border-white/[0.08]">
+                    <span className="text-[10px] text-neutral-400 uppercase font-semibold font-body">Giá Bán Lẻ Đề Xuất</span>
                     <div className="flex items-baseline gap-1 mt-1">
-                      <span className="font-display text-3xl sm:text-4xl font-black text-white tracking-tight">
+                      <span className="font-display text-3xl sm:text-4xl font-bold text-white tracking-tight">
                         {edition.priceFormatted}
                       </span>
-                      <span className="text-xs font-bold text-red-500">VNĐ</span>
+                      <span className="text-xs font-semibold text-neutral-400 font-body">VNĐ</span>
                     </div>
-                    <span className="block text-[11px] text-neutral-400 mt-0.5">
+                    <span className="block text-[11px] text-neutral-400 mt-0.5 font-body">
                       Đã bao gồm VAT 10%
                     </span>
                   </div>
 
                   {/* Feature Checklist */}
-                  <div className="mt-6 space-y-2.5 pt-4 border-t border-white/10">
+                  <div className="mt-6 space-y-2.5 pt-4 border-t border-white/[0.08]">
                     {edition.features.map((feat, i) => (
-                      <div key={i} className="flex items-start gap-2.5 text-xs text-neutral-300">
-                        <Check size={14} className="text-emerald-400 shrink-0 mt-0.5" />
+                      <div key={i} className="flex items-start gap-2.5 text-xs text-neutral-300 font-body">
+                        <Check size={13} className="text-white/80 shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </div>
                     ))}
@@ -248,14 +248,14 @@ export default function PricingSection({ onOpenTestRide }) {
                       soundFx.playRev();
                       onOpenTestRide(edition.name);
                     }}
-                    className={`w-full py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+                    className={`w-full py-3 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer font-display ${
                       edition.popular
-                        ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-black shadow-lg hover:shadow-amber-500/40 hover:scale-[1.02]'
-                        : 'bg-white/10 text-white hover:bg-white/20 hover:scale-[1.02]'
+                        ? 'honda-red-btn'
+                        : 'bg-white/[0.06] text-white hover:bg-white/[0.1] border border-white/10'
                     }`}
                   >
-                    <span>Đăng Ký Đặt Xe Ngay</span>
-                    <ArrowRight size={14} />
+                    <span>Đăng Ký Đặt Xe</span>
+                    <ArrowRight size={13} />
                   </button>
                 </div>
 
@@ -407,20 +407,20 @@ export default function PricingSection({ onOpenTestRide }) {
               </div>
 
               {/* Total Monthly Payment Big Box */}
-              <div className="mt-6 pt-6 border-t border-white/15">
-                <span className="text-xs uppercase font-bold text-neutral-400 block">
-                  Tổng Trả Góp Hàng Tháng
+              <div className="mt-6 pt-6 border-t border-white/[0.08]">
+                <span className="text-[10px] uppercase font-semibold text-neutral-400 block font-body">
+                  Tổng Trả Góp Ước Tính Hàng Tháng
                 </span>
-                <div className="font-display text-3xl sm:text-4xl font-extrabold text-gradient-gold mt-1">
+                <div className="font-display text-3xl sm:text-4xl font-bold text-gradient-platinum mt-1">
                   {formatVND(totalMonthly)}
-                  <span className="text-xs font-normal text-neutral-400 ml-1">/tháng</span>
+                  <span className="text-xs font-normal text-neutral-400 ml-1 font-body">/tháng</span>
                 </div>
 
                 <button
                   onClick={() => { soundFx.playRev(); onOpenTestRide(EDITIONS[selectedEdition].name); }}
-                  className="mt-5 w-full py-3.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-red-600/40 hover:scale-[1.02] active:scale-95 transition-all cursor-pointer"
+                  className="mt-5 w-full py-3 rounded-xl honda-red-btn text-white text-xs font-semibold uppercase tracking-wider hover:scale-[1.01] active:scale-95 transition-all cursor-pointer font-display"
                 >
-                  Nhận Bảng Tính Chi Tiết Qua Zalo / SMS
+                  Nhận Báo Giá Lăn Bánh Chi Tiết
                 </button>
               </div>
 

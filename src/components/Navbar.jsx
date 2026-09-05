@@ -52,10 +52,10 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
 
   return (
     <>
-      {/* Top Scroll Indicator */}
-      <div className="fixed top-0 left-0 right-0 z-50 h-[3px] bg-white/5">
+      {/* Top Scroll Indicator - Clean refined Honda red */}
+      <div className="fixed top-0 left-0 right-0 z-50 h-[2px] bg-white/5">
         <div 
-          className="h-full bg-gradient-to-r from-red-600 via-rose-500 to-amber-400 transition-all duration-75"
+          className="h-full bg-gradient-to-r from-red-600 via-rose-500 to-slate-200 transition-all duration-75"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
@@ -63,26 +63,26 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
           scrolled 
-            ? 'py-3 bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.8)]' 
-            : 'py-6 bg-gradient-to-b from-black/80 via-black/30 to-transparent'
+            ? 'py-3.5 bg-[#08090d]/90 backdrop-blur-xl border-b border-white/[0.08] shadow-lg' 
+            : 'py-6 bg-gradient-to-b from-[#08090d]/90 via-[#08090d]/40 to-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Brand Logo */}
+          {/* Brand Logo - Official Honda Corporate Style */}
           <a 
             href="#" 
             onClick={(e) => { e.preventDefault(); scrollToSection(0); }}
             className="group flex items-center gap-3 cursor-pointer"
           >
             <div className="flex flex-col">
-              <span className="text-xs font-semibold tracking-[0.3em] text-red-500 uppercase transition-colors group-hover:text-red-400">
-                HONDA MOTORS
+              <span className="text-[10px] font-semibold tracking-[0.25em] text-neutral-400 uppercase transition-colors group-hover:text-white">
+                HONDA MOTOR
               </span>
               <div className="flex items-center gap-2">
-                <span className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-white group-hover:text-gradient-silver transition-all">
+                <span className="font-display text-xl sm:text-2xl font-bold tracking-tight text-white transition-all">
                   SH350i
                 </span>
-                <span className="px-2 py-0.5 text-[10px] font-bold tracking-widest uppercase bg-gradient-to-r from-red-600 to-rose-700 text-white rounded-full shadow-[0_0_12px_rgba(225,29,72,0.6)]">
+                <span className="px-2 py-0.5 text-[9px] font-semibold tracking-wider uppercase bg-white/10 text-neutral-200 border border-white/10 rounded">
                   eSP+
                 </span>
               </div>
@@ -90,13 +90,13 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1 bg-white/[0.04] p-1.5 rounded-full border border-white/10 backdrop-blur-md">
+          <nav className="hidden lg:flex items-center gap-1 bg-white/[0.03] p-1 rounded-full border border-white/[0.07] backdrop-blur-md">
             {navLinks.map((link) => (
               <button
                 key={link.id}
                 onClick={() => scrollToSection(link.id)}
                 onMouseEnter={() => soundFx.playHover()}
-                className="px-4 py-2 text-xs font-medium tracking-wider text-neutral-300 hover:text-white rounded-full hover:bg-white/10 transition-all cursor-pointer"
+                className="px-4 py-1.5 text-xs font-medium tracking-wide text-neutral-300 hover:text-white rounded-full hover:bg-white/[0.06] transition-all cursor-pointer font-body"
               >
                 {link.label}
               </button>
@@ -108,15 +108,15 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
             {/* Sound Toggle */}
             <button
               onClick={handleSoundToggle}
-              title={soundActive ? "Tắt âm thanh môi trường" : "Bật âm thanh động cơ chân thực"}
-              className={`relative p-2.5 rounded-full border transition-all cursor-pointer flex items-center gap-2 ${
+              title={soundActive ? "Tắt âm thanh môi trường" : "Bật âm thanh động cơ"}
+              className={`relative p-2 rounded-full border transition-all cursor-pointer flex items-center gap-2 text-xs font-medium ${
                 soundActive 
-                  ? 'border-red-500/50 bg-red-500/10 text-red-400 shadow-[0_0_15px_rgba(225,29,72,0.4)]' 
-                  : 'border-white/10 bg-white/[0.03] text-neutral-400 hover:text-white hover:border-white/20'
+                  ? 'border-white/20 bg-white/10 text-white' 
+                  : 'border-white/[0.08] bg-white/[0.02] text-neutral-400 hover:text-white hover:border-white/15'
               }`}
             >
-              {soundActive ? <Volume2 size={16} className="animate-pulse" /> : <VolumeX size={16} />}
-              <span className="text-[11px] font-medium hidden md:inline">
+              {soundActive ? <Volume2 size={15} /> : <VolumeX size={15} />}
+              <span className="text-[11px] hidden md:inline font-body">
                 {soundActive ? 'Audio ON' : 'Audio OFF'}
               </span>
             </button>
@@ -124,23 +124,22 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
             {/* Quick Specs Trigger */}
             <button
               onClick={() => { soundFx.playClick(); onOpenSpecs(); }}
-              className="px-3.5 py-2 rounded-full border border-white/10 bg-white/[0.03] text-xs font-medium text-neutral-300 hover:text-white hover:border-white/20 transition-all flex items-center gap-1.5 cursor-pointer"
+              className="px-3.5 py-2 rounded-full border border-white/[0.08] bg-white/[0.02] text-xs font-medium text-neutral-300 hover:text-white hover:border-white/20 transition-all flex items-center gap-1.5 cursor-pointer font-body"
             >
-              <Sliders size={14} className="text-amber-400" />
+              <Sliders size={13} className="text-neutral-400" />
               <span>Thông Số</span>
             </button>
 
-            {/* Book Test Ride CTA */}
+            {/* Book Test Ride CTA - Clean Refined Honda Red */}
             <button
               onClick={() => { soundFx.playRev(); onOpenTestRide(); }}
-              className="relative group overflow-hidden px-5 py-2.5 rounded-full bg-gradient-to-r from-red-600 via-rose-600 to-red-700 text-white text-xs font-semibold tracking-wider uppercase transition-all duration-300 shadow-[0_0_20px_rgba(225,29,72,0.5)] hover:shadow-[0_0_30px_rgba(225,29,72,0.8)] hover:scale-105 active:scale-95 cursor-pointer flex items-center gap-1.5"
+              className="relative group overflow-hidden px-5 py-2 rounded-full honda-red-btn text-xs font-semibold tracking-wide uppercase transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer flex items-center gap-1.5 font-display"
             >
               <span className="relative z-10 flex items-center gap-1.5">
-                <Calendar size={14} />
-                Lái Thử Ngay
-                <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <Calendar size={13} />
+                Lái Thử Xe
+                <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </span>
-              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent" />
             </button>
           </div>
 

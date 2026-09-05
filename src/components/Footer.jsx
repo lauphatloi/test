@@ -22,15 +22,15 @@ export default function Footer({ onOpenTestRide }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Pre-Footer Action Banner */}
-        <div className="glass-panel p-8 sm:p-12 rounded-3xl border border-white/15 backdrop-blur-xl mb-16 flex flex-col lg:flex-row items-center justify-between gap-6">
+        <div className="glass-panel p-8 sm:p-12 rounded-3xl border border-white/[0.08] backdrop-blur-xl mb-16 flex flex-col lg:flex-row items-center justify-between gap-6">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-red-400">
-              TRẢI NGHIỆM ĐỘC QUYỀN
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-400 font-body">
+              HONDA VIỆT NAM • ĐẶC QUYỀN TRẢI NGHIỆM
             </span>
-            <h3 className="font-display text-2xl sm:text-4xl font-extrabold text-white mt-1">
-              Sẵn Sàng Làm Chủ Đỉnh Cao SH350i?
+            <h3 className="font-display text-2xl sm:text-3xl font-bold text-white mt-1">
+              Khám Phá Trực Tiếp Tại Honda HEAD
             </h3>
-            <p className="mt-2 text-xs sm:text-sm text-neutral-400 max-w-xl">
+            <p className="mt-2 text-xs sm:text-sm text-neutral-400 max-w-xl font-body">
               Liên hệ ngay hệ thống Cửa hàng Bán xe và Dịch vụ do Honda Ủy nhiệm (HEAD) trên toàn quốc để nhận tư vấn chuyên sâu và đặt lịch lái thử riêng biệt.
             </p>
           </div>
@@ -38,16 +38,16 @@ export default function Footer({ onOpenTestRide }) {
           <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={() => { soundFx.playRev(); onOpenTestRide(); }}
-              className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-red-600/40 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              className="px-6 py-3 rounded-xl honda-red-btn text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer font-display"
             >
-              Đăng Ký Lái Thử Ngay
+              Đăng Ký Lái Thử
             </button>
             <a
               href="tel:18008001"
-              className="px-5 py-3.5 rounded-xl bg-white/5 border border-white/15 text-white text-xs font-semibold hover:bg-white/10 transition-colors flex items-center gap-2"
+              className="px-5 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white text-xs font-medium hover:bg-white/[0.08] transition-colors flex items-center gap-2 font-body"
             >
-              <Phone size={14} className="text-emerald-400" />
-              <span>Hotline: 1800 8001</span>
+              <Phone size={13} className="text-neutral-400" />
+              <span>Hotline: 1800 8001 (Miễn phí)</span>
             </a>
           </div>
         </div>

@@ -142,18 +142,18 @@ export default function DesignSection() {
       ref={sectionRef} 
       className="relative w-full h-screen bg-[#07090e] overflow-hidden select-none"
     >
-      {/* Background ambient lighting and grain */}
+      {/* Background ambient lighting - Soft executive tones */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 -left-48 w-96 h-96 bg-red-600/10 rounded-full blur-[140px]" />
-        <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-amber-500/10 rounded-full blur-[140px]" />
-        <div className="absolute inset-0 bg-tech-grid opacity-15" />
+        <div className="absolute top-1/4 -left-48 w-96 h-96 bg-slate-700/10 rounded-full blur-[140px]" />
+        <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-slate-600/10 rounded-full blur-[140px]" />
+        <div className="absolute inset-0 bg-tech-grid opacity-10" />
       </div>
 
       {/* Floating Section Header Tag */}
       <div className="absolute top-8 sm:top-12 left-6 sm:left-12 lg:left-16 z-30 flex items-center gap-3">
-        <span className="w-8 h-[2px] bg-red-600" />
-        <span className="text-[11px] sm:text-xs font-bold tracking-[0.3em] uppercase text-neutral-400">
-          SELECTION AREA 02 • THIẾT KẾ ĐỈNH CAO
+        <span className="w-6 h-[2px] bg-red-600" />
+        <span className="text-[10px] sm:text-[11px] font-semibold tracking-[0.25em] uppercase text-neutral-400 font-body">
+          NGÔN NGỮ THIẾT KẾ CHÂU ÂU • KHÍ CHẤT THỦ LĨNH
         </span>
       </div>
 
@@ -166,25 +166,23 @@ export default function DesignSection() {
           className="relative w-full lg:w-[54%] h-[46vh] sm:h-[54vh] lg:h-[72vh] flex items-center justify-center"
         >
           {/* Decorative Framing Ring */}
-          <div className="absolute inset-0 border border-white/10 rounded-3xl pointer-events-none -m-2 sm:-m-4" />
-          <div className="absolute -top-2 -left-2 w-4 h-4 border-t-2 border-l-2 border-red-500 pointer-events-none" />
-          <div className="absolute -bottom-2 -right-2 w-4 h-4 border-b-2 border-r-2 border-red-500 pointer-events-none" />
+          <div className="absolute inset-0 border border-white/[0.07] rounded-3xl pointer-events-none -m-2 sm:-m-4" />
 
           {/* Cards Stack */}
           {DESIGN_CARDS.map((card, idx) => (
             <div
               key={card.id}
               ref={(el) => (cardsRef.current[idx] = el)}
-              className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden glass-panel border border-white/10 shadow-2xl flex items-center justify-center p-3 sm:p-6"
+              className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden glass-panel border border-white/[0.08] shadow-2xl flex items-center justify-center p-3 sm:p-6"
             >
               {card.isPng ? (
                 // Transparent PNG Showcase
                 <div className="relative w-full h-full flex items-center justify-center">
-                  <div className="absolute w-[80%] h-12 bottom-6 bg-red-600/20 rounded-full blur-3xl" />
+                  <div className="absolute w-[80%] h-12 bottom-6 bg-slate-500/10 rounded-full blur-3xl" />
                   <img
                     src={card.image}
                     alt={card.title}
-                    className="max-w-full max-h-full object-contain filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.9)] animate-float-subtle"
+                    className="max-w-full max-h-full object-contain filter drop-shadow-[0_20px_30px_rgba(0,0,0,0.85)] animate-float-subtle"
                   />
                 </div>
               ) : (
@@ -193,15 +191,15 @@ export default function DesignSection() {
                   <img
                     src={card.image}
                     alt={card.title}
-                    className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-cover object-center transform group-hover:scale-102 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-neutral-300">
-                    <span className="font-mono text-[11px] text-white/60 bg-black/60 px-3 py-1 rounded-full backdrop-blur-md border border-white/10">
-                      HONDA DESIGN ARCHITECTURE • {card.category.toUpperCase()}
+                    <span className="font-mono text-[10px] text-neutral-400 bg-black/60 px-3 py-1 rounded border border-white/[0.08] backdrop-blur-md">
+                      HONDA DESIGN • {card.category.toUpperCase()}
                     </span>
-                    <span className="text-red-400 font-bold flex items-center gap-1">
-                      <Sparkles size={12} /> SH350i
+                    <span className="text-white/80 font-medium text-xs flex items-center gap-1 font-body">
+                      SH350i
                     </span>
                   </div>
                 </div>
@@ -219,9 +217,9 @@ export default function DesignSection() {
                 key={item.id}
                 onClick={() => selectStep(idx)}
                 onMouseEnter={() => soundFx.playHover()}
-                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
                   activeStep === idx 
-                    ? 'w-10 bg-red-600 shadow-[0_0_10px_rgba(225,29,72,0.8)]' 
+                    ? 'w-8 bg-white' 
                     : 'w-2 bg-white/20 hover:bg-white/40'
                 }`}
                 title={`Xem ${item.category}`}
@@ -234,34 +232,34 @@ export default function DesignSection() {
 
           {/* Badge & Category */}
           <div className="flex items-center gap-2 mb-3">
-            <span className="px-3 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold tracking-wider uppercase">
+            <span className="px-2.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-neutral-200 text-[11px] font-semibold tracking-wider uppercase font-body">
               {current.category}
             </span>
-            <span className="text-xs text-neutral-400 font-medium">
+            <span className="text-xs text-neutral-400 font-body">
               {current.subtitle}
             </span>
           </div>
 
           {/* Main Headline */}
-          <h3 className="font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight transition-all duration-300">
+          <h3 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-tight transition-all duration-300">
             {current.title}
           </h3>
 
           {/* Description */}
-          <p className="mt-4 text-sm sm:text-base text-neutral-300 leading-relaxed font-body">
+          <p className="mt-4 text-xs sm:text-sm text-neutral-300 leading-relaxed font-body">
             {current.description}
           </p>
 
           {/* Key Engineering Highlight Box */}
-          <div className="mt-6 p-4 rounded-xl bg-white/[0.04] border border-white/10 backdrop-blur-md flex items-start gap-3.5">
-            <div className="p-2 rounded-lg bg-red-600/20 text-red-400 shrink-0 mt-0.5">
-              <Compass size={18} />
+          <div className="mt-6 p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-md flex items-start gap-3.5">
+            <div className="p-2 rounded-lg bg-white/[0.05] text-white shrink-0 mt-0.5">
+              <Compass size={16} />
             </div>
             <div>
-              <span className="block text-[11px] uppercase tracking-widest text-neutral-400 font-bold">
-                Điểm Nhấn Độc Quyền
+              <span className="block text-[10px] uppercase tracking-wider text-neutral-400 font-semibold font-body">
+                Chi Tiết Hoàn Thiện
               </span>
-              <p className="text-xs sm:text-sm text-neutral-200 mt-1 font-medium leading-normal">
+              <p className="text-xs sm:text-sm text-neutral-200 mt-1 font-medium leading-normal font-body">
                 {current.highlight}
               </p>
             </div>
@@ -273,10 +271,10 @@ export default function DesignSection() {
               <button
                 key={card.id}
                 onClick={() => selectStep(idx)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer font-body ${
                   activeStep === idx
-                    ? 'bg-red-600 text-white font-semibold shadow-md'
-                    : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10'
+                    ? 'bg-white/15 text-white font-semibold border border-white/20 shadow-sm'
+                    : 'bg-white/[0.03] text-neutral-400 hover:text-white hover:bg-white/[0.06] border border-transparent'
                 }`}
               >
                 {card.number}. {card.category.split('&')[0]}
