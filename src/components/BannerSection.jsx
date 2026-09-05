@@ -199,10 +199,10 @@ export default function BannerSection({ onOpenTestRide }) {
         {/* Bottom Scroll Cue */}
         <div 
           onClick={scrollToVariants}
-          className="flex items-center gap-2 text-[11px] uppercase tracking-widest text-neutral-400 font-body cursor-pointer hover:text-white transition-colors"
+          className="w-full flex items-center justify-center gap-2 text-xs text-neutral-400 font-body cursor-pointer hover:text-white transition-colors pt-2"
         >
-          <ArrowDown size={13} className="animate-bounce" />
-          <span>Cuộn chuột để mở vòng tròn trung tâm vào phần các phiên bản</span>
+          <ArrowDown size={14} className="text-red-600 animate-bounce" />
+          <span className="tracking-wider text-xs font-medium text-neutral-300">Cuộn xuống</span>
         </div>
       </div>
 
@@ -257,10 +257,12 @@ export default function BannerSection({ onOpenTestRide }) {
             />
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-neutral-400 font-body animate-bounce">
-            <ArrowDown size={14} className="text-red-500" />
-            <span>Tiếp tục cuộn để tương tác và chọn phiên bản</span>
-            <ArrowDown size={14} className="text-red-500" />
+          <div 
+            onClick={scrollToVariants}
+            className="flex items-center justify-center gap-2 text-xs text-neutral-400 font-body cursor-pointer hover:text-white transition-colors"
+          >
+            <ArrowDown size={14} className="text-red-600 animate-bounce" />
+            <span className="tracking-wider text-xs font-medium text-neutral-300">Cuộn xuống</span>
           </div>
         </div>
 

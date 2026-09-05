@@ -379,8 +379,8 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
 
         </div>
 
-        {/* Bottom Swatches Dock & Navigation Guide */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+        {/* Bottom Controls: Centered Swatches Dock & Centered Scroll Prompt */}
+        <div className="flex flex-col items-center justify-center gap-2.5 pt-2">
           {/* Swatches Dock */}
           <div className="flex items-center gap-1.5 sm:gap-2 p-1.5 rounded-full glass-panel border border-white/[0.09] backdrop-blur-2xl shadow-xl">
             {VARIANTS.map((v, i) => {
@@ -410,10 +410,16 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
             })}
           </div>
 
-          {/* Subdued scroll prompt */}
-          <div className="hidden sm:flex items-center gap-2 text-[11px] tracking-widest uppercase font-medium text-neutral-400 font-body">
-            <ArrowDown size={12} className="text-neutral-400" />
-            <span>Cuộn tiếp để khám phá Thiết kế & Động cơ eSP+</span>
+          {/* Centered Scroll Prompt: Mũi tên đỏ và chữ "Cuộn xuống" tối giản ở trung tâm */}
+          <div 
+            onClick={() => {
+              const el = document.getElementById('design');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="flex items-center justify-center gap-1.5 text-xs text-neutral-400 font-body cursor-pointer hover:text-white transition-colors"
+          >
+            <ArrowDown size={14} className="text-red-600 animate-bounce" />
+            <span className="tracking-wider text-xs font-medium text-neutral-300">Cuộn xuống</span>
           </div>
         </div>
 
