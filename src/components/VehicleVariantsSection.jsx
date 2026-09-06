@@ -225,9 +225,12 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
     <section 
       id="colors" 
       ref={containerRef} 
-      className={`relative w-full h-screen overflow-hidden select-none flex flex-col justify-between transition-colors duration-500 ${
+      className={`relative z-30 w-full h-screen overflow-hidden select-none flex flex-col justify-between transition-colors duration-500 shadow-[0_-30px_80px_rgba(0,0,0,0.6)] border-t border-white/15 dark:border-white/15 light:border-slate-300 ${
         isDark ? 'bg-[#07090e]' : 'bg-[#dce3ea]'
       }`}
+      style={{
+        marginTop: '-100vh',
+      }}
     >
       {/* ============================================================ */}
       {/* 1. KHỐI BÁT GIÁC ĐỒNG BỘ HIỆU NĂNG CAO (GPU OPTIMIZED)        */}

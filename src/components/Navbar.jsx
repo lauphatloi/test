@@ -4,8 +4,9 @@ import { soundFx } from '../utils/audio';
 import { useTheme } from '../context/ThemeContext';
 import gsap from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollToPlugin);
+gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
 
 export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
   const { isDark } = useTheme();
@@ -37,6 +38,19 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
   const scrollToSection = (targetId) => {
     soundFx.playClick();
     setMobileMenuOpen(false);
+
+    if (targetId === '#colors') {
+      const st = ScrollTrigger.getAll().find(t => t.trigger && t.trigger.id === 'colors');
+      if (st) {
+        gsap.to(window, {
+          duration: 1.2,
+          scrollTo: st.start + 5,
+          ease: 'power3.inOut'
+        });
+        return;
+      }
+    }
+
     gsap.to(window, {
       duration: 1.2,
       scrollTo: { y: targetId, offsetY: 70 },

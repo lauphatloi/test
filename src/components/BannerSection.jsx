@@ -13,6 +13,7 @@ export default function BannerSection({ onOpenTestRide }) {
   const bgRef = useRef(null);
   const bannerContentRef = useRef(null);
   const portalLayerRef = useRef(null);
+  const portalContentRef = useRef(null);
   const portalSvgRef = useRef(null);
   const portalGlowRingRef = useRef(null);
   const portalCoreRingRef = useRef(null);
@@ -40,12 +41,14 @@ export default function BannerSection({ onOpenTestRide }) {
       // Pinned ScrollTrigger:
       // 1. Banner zooms while pinned (zoom ghim cứng)
       // 2. High-precision vector aperture circle in the center opens up smoothly (no pixelation or blur)
-      // 3. Transitions smoothly into the vehicle versions section
+      // 3. Showroom portal revealed with high-contrast text and edition preview chips
+      // 4. Generous resting time for showroom portal
+      // 5. Smooth layer overlap: portalContent drifts up & dims slightly while VehicleVariantsSection slides up over it
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: bannerRef.current,
           start: 'top top',
-          end: '+=180%',
+          end: '+=320%',
           pin: true,
           scrub: 1,
           anticipatePin: 1,
@@ -53,14 +56,14 @@ export default function BannerSection({ onOpenTestRide }) {
         }
       });
 
-      // Stage 1: Banner Zoom while pinned (0.0 -> 1.5)
+      // Stage 1: Banner Zoom while pinned (0.0 -> 1.1)
       // On vertical mobile screens, use a subtle zoom (1.06) so the motorcycle remains fully framed; on desktop use 1.28
       const isMobile = window.innerWidth < 640;
       tl.to(bgRef.current, {
         scale: isMobile ? 1.06 : 1.28,
         y: isMobile ? '2%' : '5%',
         ease: 'none',
-        duration: 1.5,
+        duration: 1.1,
       }, 0);
 
       // Banner text elements gently fade out and scale up
@@ -69,7 +72,7 @@ export default function BannerSection({ onOpenTestRide }) {
         scale: 1.06,
         y: -35,
         filter: 'blur(8px)',
-        duration: 0.6,
+        duration: 0.5,
         ease: 'power2.inOut',
         pointerEvents: 'none',
       }, 0.05);
@@ -79,29 +82,42 @@ export default function BannerSection({ onOpenTestRide }) {
         opacity: 0,
       }, {
         opacity: 1,
-        duration: 0.2,
+        duration: 0.18,
         ease: 'power1.out',
-      }, 0.35);
+      }, 0.2);
 
-      // Stage 3: Smooth synchronized vector aperture expansion (0.4 to 1.8)
+      // Stage 3: Smooth synchronized vector aperture expansion (0.25 to 1.3)
       // Pure mathematical vector radius - completely eliminates blurriness, stretching and raster pixelation
       const apertureState = { radius: 0 };
       tl.to(apertureState, {
         radius: () => getMaxRadius(),
-        duration: 1.4,
+        duration: 1.05,
         ease: 'power2.inOut',
         onUpdate: () => {
           updateAperture(apertureState.radius);
         },
-      }, 0.4);
+      }, 0.25);
 
       // Stage 4: As the white ring expands past the screen edges, gently dissolve its stroke
-      // so it cleanly clears the viewport (1.45 to 1.8)
       tl.to(portalSvgRef.current, {
         opacity: 0,
         ease: 'power1.in',
-        duration: 0.35,
-      }, 1.45);
+        duration: 0.25,
+      }, 1.05);
+
+      // Stage 5: Smooth Layer Overlap (Đè lớp) (2.2 to 3.2)
+      // While VehicleVariantsSection slides up over BannerSection,
+      // the showroom portal content subtly drifts up and dims for deep cinematic parallax
+      if (portalContentRef.current) {
+        tl.to(portalContentRef.current, {
+          y: -80,
+          scale: 0.95,
+          opacity: 0.3,
+          filter: 'blur(5px)',
+          duration: 1.0,
+          ease: 'power1.inOut',
+        }, 2.2);
+      }
 
     }, bannerRef);
 
@@ -294,47 +310,76 @@ export default function BannerSection({ onOpenTestRide }) {
         </div>
 
         {/* Center Portal Content: Revealing the Vehicle Versions Preview */}
-        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center flex flex-col items-center justify-center">
-          <div className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3 backdrop-blur-md font-body ${
+        <div 
+          ref={portalContentRef}
+          className="relative z-10 max-w-5xl mx-auto px-4 text-center flex flex-col items-center justify-center translate-y-1 sm:translate-y-4 will-change-transform pointer-events-auto"
+        >
+          <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 sm:mb-4 backdrop-blur-md font-body ${
             isDark ? 'bg-white/[0.08] border border-white/15 text-neutral-200' : 'bg-white/95 border border-slate-300 text-slate-900 shadow-sm'
           }`}>
-            <Sparkles size={13} className="text-red-500" />
+            <Sparkles size={14} className="text-red-500" />
             <span>KHÔNG GIAN TRƯNG BÀY XE SANG</span>
           </div>
 
-          <h2 className={`font-display font-black text-3xl sm:text-5xl tracking-tight uppercase ${
+          <h2 className={`font-display font-black text-3xl sm:text-5xl lg:text-6xl tracking-tight uppercase leading-tight ${
             isDark ? 'text-white' : 'text-slate-950'
           }`}>
             BỘ SƯU TẬP PHIÊN BẢN SH350i
           </h2>
           
-          <p className={`mt-2 text-xs sm:text-sm font-body max-w-lg mx-auto ${
-            isDark ? 'text-neutral-400' : 'text-slate-800 font-semibold'
+          <p className={`mt-2.5 sm:mt-3.5 text-xs sm:text-base font-body max-w-2xl mx-auto leading-relaxed ${
+            isDark ? 'text-neutral-300' : 'text-slate-800 font-semibold'
           }`}>
-            Khám phá 4 phong thái màu sắc đương đại được chế tác tỉ mỉ cho từng đẳng cấp phong cách.
+            Khám phá 4 phong thái màu sắc đương đại được chế tác tỉ mỉ cho từng đẳng cấp phong cách và uy quyền của thủ lĩnh.
           </p>
 
-          {/* Vehicle Silhouette & Shadow Preview */}
-          <div className="relative w-[85vw] max-w-[650px] h-[32vh] sm:h-[40vh] my-4 flex items-center justify-center">
-            <div className={`absolute bottom-4 w-[75%] h-8 rounded-full blur-xl ${
-              isDark ? 'bg-slate-400/20' : 'bg-slate-400/30'
-            }`} />
-            <div className="absolute bottom-6 w-[65%] h-4 bg-slate-950/80 rounded-full blur-md" />
-            <img 
-              src="./images/motorcycle-grey.png" 
-              alt="Honda SH350i" 
-              className="max-w-full max-h-full object-contain filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)]"
-            />
+          {/* 4 Luxury Edition Indicator Chips */}
+          <div className="mt-5 sm:mt-7 flex flex-wrap items-center justify-center gap-2 sm:gap-3 max-w-3xl">
+            <div className={`flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md transition-all ${
+              isDark ? 'bg-white/[0.06] border border-white/15 text-slate-200' : 'bg-white/90 border border-slate-300 text-slate-900 shadow-sm'
+            }`}>
+              <span className="w-2.5 h-2.5 rounded-full bg-slate-400 ring-2 ring-slate-400/40" />
+              <span>01 • Xám Đương Đại</span>
+            </div>
+            <div className={`flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md transition-all ${
+              isDark ? 'bg-white/[0.06] border border-white/15 text-slate-200' : 'bg-white/90 border border-slate-300 text-slate-900 shadow-sm'
+            }`}>
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 ring-2 ring-amber-500/40" />
+              <span>02 • Đen Nhám Doanh Nhân</span>
+            </div>
+            <div className={`flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md transition-all ${
+              isDark ? 'bg-white/[0.06] border border-white/15 text-slate-200' : 'bg-white/90 border border-slate-300 text-slate-900 shadow-sm'
+            }`}>
+              <span className="w-2.5 h-2.5 rounded-full bg-slate-200 ring-2 ring-slate-300/60" />
+              <span>03 • Trắng Ngọc Trai</span>
+            </div>
+            <div className={`flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md transition-all ${
+              isDark ? 'bg-white/[0.06] border border-white/15 text-slate-200' : 'bg-white/90 border border-slate-300 text-slate-900 shadow-sm'
+            }`}>
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-500/40" />
+              <span>04 • Xanh Lục Bảo</span>
+            </div>
           </div>
 
-          <div 
-            onClick={scrollToVariants}
-            className={`flex items-center justify-center gap-2 text-xs font-body cursor-pointer transition-colors ${
-              isDark ? 'text-neutral-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <ArrowDown size={14} className="text-red-600 animate-bounce" />
-            <span className="tracking-wider text-xs font-medium">Cuộn xuống</span>
+          {/* Interactive Navigation & Scroll Cue */}
+          <div className="mt-6 sm:mt-9 flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+            <button
+              onClick={scrollToVariants}
+              className="px-6 sm:px-7 py-2.5 sm:py-3 rounded-full honda-red-btn text-xs font-semibold tracking-wider uppercase flex items-center justify-center gap-2 shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer font-display"
+            >
+              <span>Xem Chi Tiết 4 Phiên Bản</span>
+              <ChevronRight size={15} />
+            </button>
+
+            <div 
+              onClick={scrollToVariants}
+              className={`flex items-center justify-center gap-2 text-xs font-body cursor-pointer transition-colors px-3 py-1.5 rounded-full ${
+                isDark ? 'text-neutral-400 hover:text-white' : 'text-slate-700 hover:text-slate-950'
+              }`}
+            >
+              <ArrowDown size={14} className="text-red-600 animate-bounce" />
+              <span className="tracking-wider text-xs font-medium">Cuộn để xem bộ sưu tập</span>
+            </div>
           </div>
         </div>
 
