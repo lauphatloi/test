@@ -12,12 +12,13 @@ const VARIANTS = [
     number: '01',
     name: 'Xám Đương Đại',
     subname: 'Phiên Bản Thể Thao',
-    shapeSymbol: 'Khối Bát Giác • Khởi Nền Cơ Khí',
+    editionTag: 'Sport Edition',
+    price: '152.490.000',
     image: './images/motorcycle-grey.png',
     accentColor: '#94a3b8',
-    tag: 'Phong cách đô thị hiện đại',
+    tag: 'Phong cách thể thao đường đua',
     specs: { power: '21.5 kW', torque: '31.8 Nm', speed: '329.6 cc' },
-    desc: 'Sắc xám đương đại tinh tế, kết hợp hài hòa cùng các chi tiết hoàn thiện tỉ mỉ mang lại diện mạo đĩnh đạc và phong thái đĩnh đạc của người dẫn đầu.',
+    desc: 'Sắc xám thời thượng kết hợp cùng các chi tiết sơn đỏ thể thao tương phản, toát lên phong thái đĩnh đạc và uy quyền của thủ lĩnh.',
     floorGlow: 'rgba(148, 163, 184, 0.45)',
   },
   {
@@ -25,7 +26,8 @@ const VARIANTS = [
     number: '02',
     name: 'Đen Nhám Doanh Nhân',
     subname: 'Phiên Bản Đặc Biệt',
-    shapeSymbol: 'Khối Bát Giác • Bung Mở Từ Tâm',
+    editionTag: 'Special Edition',
+    price: '151.990.000',
     image: './images/motorcycle-dark-grey.png',
     accentColor: '#c5a880',
     tag: 'Đẳng cấp doanh nhân thành đạt',
@@ -38,7 +40,8 @@ const VARIANTS = [
     number: '03',
     name: 'Trắng Ngọc Trai Thanh Lịch',
     subname: 'Phiên Bản Cao Cấp',
-    shapeSymbol: 'Khối Bát Giác • Thu Ngược Về Tâm',
+    editionTag: 'Premium Edition',
+    price: '150.990.000',
     image: './images/motorcycle-white.png',
     accentColor: '#cbd5e1',
     tag: 'Vẻ đẹp thanh lịch vượt thời gian',
@@ -51,10 +54,11 @@ const VARIANTS = [
     number: '04',
     name: 'Xanh Lục Bảo Tinh Hoa',
     subname: 'Phiên Bản Giới Hạn',
-    shapeSymbol: 'Khối Bát Giác • Tái Mở Từ Tâm',
+    editionTag: 'Exclusive Emerald',
+    price: '154.990.000',
     image: './images/motorcycle-green.png',
     accentColor: '#34d399',
-    tag: 'Độc bản quý phái',
+    tag: 'Độc bản quý phái kiêu hãnh',
     specs: { power: '21.5 kW', torque: '31.8 Nm', speed: '329.6 cc' },
     desc: 'Màu xanh lục bảo sâu thẳm hòa quyện cùng công nghệ sơn phủ tiên tiến từ Honda, tạo nên kiệt tác thẩm mỹ độc bản đầy kiêu hãnh.',
     floorGlow: 'rgba(52, 211, 153, 0.5)',
@@ -313,92 +317,109 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
       {/* ============================================================ */}
       {/* 2. MAIN STAGE CONTENT CONTAINER                              */}
       {/* ============================================================ */}
-      <div className="relative z-50 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 sm:pb-10 flex flex-col justify-between h-full">
+      <div className="relative z-50 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-[72px] sm:pt-20 lg:pt-24 pb-3 sm:pb-6 flex flex-col justify-between h-full">
         
         {/* Section Top Header Tag */}
-        <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
-          <div className="flex items-center gap-3">
-            <span className="w-6 h-[2px] bg-red-600" />
-            <span className="text-[10px] sm:text-xs font-semibold tracking-[0.25em] uppercase text-neutral-400 font-body">
-              BỘ SƯU TẬP PHIÊN BẢN MÀU SẮC • HONDA SH350i
+        <div className="flex items-center justify-between border-b border-white/[0.08] pb-2 sm:pb-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="w-5 sm:w-6 h-[2px] bg-red-600" />
+            <span className="text-[10px] sm:text-xs font-semibold tracking-[0.2em] sm:tracking-[0.25em] uppercase text-neutral-300 font-body">
+              BỘ SƯU TẬP PHIÊN BẢN MÀU SẮC • SH350i
             </span>
           </div>
-          <span className="font-mono text-xs text-neutral-400">
+          <span className="font-mono text-[11px] sm:text-xs text-neutral-400">
             {currentData.number} / 0{VARIANTS.length}
           </span>
         </div>
 
         {/* Center 2-Zone Layout: ZERO OVERLAP between text card & motorcycle image */}
-        <div className="relative w-full my-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
+        <div className="relative w-full my-auto grid grid-cols-1 lg:grid-cols-12 gap-2 sm:gap-6 lg:gap-10 items-center">
           
           {/* ZONE 1: Left Column (5 Cols) - Vehicle Name, Description, Telemetry */}
           <div className="lg:col-span-5 order-2 lg:order-1 z-30">
-            <div className="glass-panel p-5 sm:p-7 rounded-2xl border border-white/[0.09] backdrop-blur-xl shadow-2xl min-h-[410px] sm:min-h-[430px] flex flex-col justify-between">
+            <div className="glass-panel p-3.5 sm:p-5 lg:p-7 rounded-2xl border border-white/[0.1] backdrop-blur-xl shadow-2xl flex flex-col justify-between lg:min-h-[410px]">
               
               <div>
-                {/* Badge & Edition */}
-                <div className="flex items-center gap-2 mb-2 flex-wrap">
-                  <span 
-                    className="w-2.5 h-2.5 rounded-full shadow-sm"
-                    style={{ backgroundColor: currentData.accentColor }}
-                  />
-                  <span className="text-[10px] font-semibold tracking-wider uppercase px-2.5 py-0.5 rounded bg-white/[0.06] text-neutral-200 border border-white/[0.06] font-body">
-                    {currentData.subname}
+                {/* Badge & Edition Tag Row */}
+                <div className="flex items-center justify-between gap-2 mb-1.5 sm:mb-2">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <span 
+                      className="w-2.5 h-2.5 rounded-full shadow-sm ring-2 ring-white/20 shrink-0"
+                      style={{ backgroundColor: currentData.accentColor }}
+                    />
+                    <span className="text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded bg-white/[0.08] text-white border border-white/[0.1] font-body">
+                      {currentData.subname}
+                    </span>
+                    <span className="text-[10px] sm:text-[11px] font-medium text-neutral-400 font-body hidden xs:inline">
+                      {currentData.editionTag}
+                    </span>
+                  </div>
+                  <span className="text-[10px] sm:text-[11px] text-neutral-400 font-body hidden sm:inline">
+                    {currentData.tag}
                   </span>
-                  <span className="text-[10px] font-medium tracking-wide px-2 py-0.5 rounded bg-white/[0.04] text-neutral-300 border border-white/[0.06] font-body">
-                    {currentData.shapeSymbol}
-                  </span>
-                  <span className="text-[11px] text-neutral-400 font-body hidden sm:inline">| {currentData.tag}</span>
                 </div>
 
-                {/* Vehicle Name Headline - Locked min height */}
-                <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-tight min-h-[38px] sm:min-h-[46px] flex items-center">
+                {/* Vehicle Name Headline */}
+                <h2 className="font-display text-xl sm:text-2xl lg:text-3xl font-bold text-white tracking-tight leading-tight flex items-center">
                   {currentData.name}
                 </h2>
 
-                {/* Description - Locked min height to avoid ANY vertical layout shift */}
-                <p className="mt-3 text-xs sm:text-sm text-neutral-300 leading-relaxed font-body min-h-[64px] sm:min-h-[72px]">
+                {/* Description */}
+                <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-neutral-300 leading-relaxed font-body line-clamp-2 sm:line-clamp-3 lg:line-clamp-none">
                   {currentData.desc}
                 </p>
               </div>
 
               <div>
-                {/* Specs Telemetry Row */}
-                <div className="pt-4 border-t border-white/[0.08] grid grid-cols-3 gap-3">
-                  <div className="flex flex-col">
-                    <span className="text-[10px] text-neutral-400 flex items-center gap-1 font-body">
-                      <Gauge size={11} className="text-neutral-400" /> Dung tích
+                {/* Specs Telemetry Row - Designed as high-end automotive telemetry panel */}
+                <div className="my-2.5 sm:my-3 py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-xl bg-white/[0.03] border border-white/[0.08] grid grid-cols-3 divide-x divide-white/[0.08]">
+                  <div className="flex flex-col items-center text-center px-1">
+                    <span className="text-[9px] sm:text-[10px] text-neutral-400 flex items-center gap-1 font-body">
+                      <Gauge size={11} className="text-red-500 shrink-0" /> Dung tích
                     </span>
-                    <span className="text-xs sm:text-sm font-semibold text-white font-display mt-0.5">
+                    <span className="text-xs sm:text-sm font-bold text-white font-display mt-0.5 tracking-tight">
                       {currentData.specs.speed}
                     </span>
+                    <span className="text-[9px] text-neutral-500 font-mono hidden xs:block">eSP+ 4 van</span>
                   </div>
-                  <div className="flex flex-col">
-                    <span className="text-[10px] text-neutral-400 flex items-center gap-1 font-body">
-                      <Zap size={11} className="text-neutral-400" /> Công suất
+                  <div className="flex flex-col items-center text-center px-1">
+                    <span className="text-[9px] sm:text-[10px] text-neutral-400 flex items-center gap-1 font-body">
+                      <Zap size={11} className="text-amber-400 shrink-0" /> Công suất
                     </span>
-                    <span className="text-xs sm:text-sm font-semibold text-white font-display mt-0.5">
+                    <span className="text-xs sm:text-sm font-bold text-white font-display mt-0.5 tracking-tight">
                       {currentData.specs.power}
                     </span>
+                    <span className="text-[9px] text-neutral-500 font-mono hidden xs:block">@7.500 rpm</span>
                   </div>
-                  <div className="flex flex-col">
-                    <span className="text-[10px] text-neutral-400 flex items-center gap-1 font-body">
-                      <ShieldCheck size={11} className="text-neutral-400" /> Mô-men
+                  <div className="flex flex-col items-center text-center px-1">
+                    <span className="text-[9px] sm:text-[10px] text-neutral-400 flex items-center gap-1 font-body">
+                      <ShieldCheck size={11} className="text-emerald-400 shrink-0" /> Mô-men
                     </span>
-                    <span className="text-xs sm:text-sm font-semibold text-white font-display mt-0.5">
+                    <span className="text-xs sm:text-sm font-bold text-white font-display mt-0.5 tracking-tight">
                       {currentData.specs.torque}
                     </span>
+                    <span className="text-[9px] text-neutral-500 font-mono hidden xs:block">@5.250 rpm</span>
                   </div>
                 </div>
 
-                {/* Action Button inside card */}
-                <div className="mt-5 pt-4 border-t border-white/[0.08] flex items-center justify-between">
-                  <span className="text-[11px] text-neutral-400 font-body">Giá đề xuất đã có VAT:</span>
+                {/* Price & Action Button inside card */}
+                <div className="pt-2 sm:pt-3 border-t border-white/[0.08] flex items-center justify-between gap-3">
+                  <div className="flex flex-col">
+                    <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-neutral-400 font-body">
+                      Giá đề xuất (đã có VAT)
+                    </span>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-sm sm:text-base lg:text-lg font-bold text-white font-display tracking-tight">
+                        {currentData.price}
+                      </span>
+                      <span className="text-[10px] font-semibold text-red-500 font-mono">VNĐ</span>
+                    </div>
+                  </div>
                   <button
                     onClick={() => { soundFx.playRev(); onOpenTestRide(currentData.name); }}
-                    className="px-4 py-1.5 rounded-lg honda-red-btn text-xs font-semibold uppercase tracking-wider transition-transform hover:scale-105 active:scale-95 cursor-pointer font-display"
+                    className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl honda-red-btn text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all hover:scale-105 active:scale-95 cursor-pointer font-display shadow-lg shadow-red-900/30 flex items-center gap-1.5 shrink-0"
                   >
-                    Đăng Ký Bản Này
+                    <span>Đăng Ký Bản Này</span>
                   </button>
                 </div>
               </div>
@@ -407,7 +428,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
           </div>
 
           {/* ZONE 2: Right Column (7 Cols) - Dedicated Vehicle Stage */}
-          <div className="lg:col-span-7 order-1 lg:order-2 relative flex items-center justify-center h-[34vh] sm:h-[46vh] lg:h-[56vh] w-full z-20">
+          <div className="lg:col-span-7 order-1 lg:order-2 relative flex items-center justify-center h-[23vh] sm:h-[36vh] lg:h-[54vh] max-h-[195px] sm:max-h-[340px] lg:max-h-none w-full z-20">
             
             {/* Khung Xe: ĐỨNG IM TUYỆT ĐỐI TẠI TÂM (Cố định, không tilt chuột, không x, không blur) */}
             <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
@@ -417,13 +438,13 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                 <div 
                   key={`floor-${variant.id}`}
                   ref={(el) => (floorGlowRefs.current[idx] = el)}
-                  className="absolute bottom-2 sm:bottom-6 w-[78%] h-12 rounded-full blur-2xl pointer-events-none will-change-opacity"
+                  className="absolute bottom-1 sm:bottom-4 w-[78%] h-10 sm:h-12 rounded-full blur-2xl pointer-events-none will-change-opacity"
                   style={{
                     backgroundColor: variant.floorGlow,
                   }}
                 />
               ))}
-              <div className="absolute bottom-4 sm:bottom-8 w-[68%] h-5 bg-black/95 rounded-full blur-md pointer-events-none z-10" />
+              <div className="absolute bottom-2 sm:bottom-6 w-[68%] h-4 sm:h-5 bg-black/95 rounded-full blur-md pointer-events-none z-10" />
 
               {/* 4 Sản phẩm xe ĐỨNG IM TUYỆT ĐỐI (Locked coordinates, pure opacity dissolve) */}
               {VARIANTS.map((variant, idx) => (
@@ -442,9 +463,9 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
         </div>
 
         {/* Bottom Controls: Centered Swatches Dock & Centered Scroll Prompt */}
-        <div className="flex flex-col items-center justify-center gap-2.5 pt-2">
+        <div className="flex flex-col items-center justify-center gap-1 sm:gap-2 pt-1 sm:pt-2 shrink-0">
           {/* Swatches Dock */}
-          <div className="flex items-center gap-1.5 sm:gap-2 p-1.5 rounded-full glass-panel border border-white/[0.09] backdrop-blur-2xl shadow-xl">
+          <div className="flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-full glass-panel border border-white/[0.09] backdrop-blur-2xl shadow-xl">
             {VARIANTS.map((v, i) => {
               const isActive = activeVariant === i;
               return (
@@ -452,18 +473,18 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                   key={v.id}
                   onClick={() => jumpToVariant(i)}
                   onMouseEnter={() => soundFx.playHover()}
-                  className={`group relative flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  className={`group relative flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full transition-all duration-300 cursor-pointer ${
                     isActive 
                       ? 'bg-white/15 shadow-sm border border-white/20' 
                       : 'hover:bg-white/[0.04] opacity-70 hover:opacity-100'
                   }`}
                 >
                   <span 
-                    className="block w-3.5 h-3.5 rounded-full border border-white/25 shadow-inner"
+                    className="block w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-full border border-white/25 shadow-inner shrink-0"
                     style={{ backgroundColor: v.accentColor }}
                   />
-                  <span className={`text-[11px] font-medium tracking-wide font-body transition-colors ${
-                    isActive ? 'text-white' : 'text-neutral-400 group-hover:text-white'
+                  <span className={`text-[10px] sm:text-[11px] font-medium tracking-wide font-body transition-colors ${
+                    isActive ? 'text-white font-semibold' : 'text-neutral-400 group-hover:text-white'
                   }`}>
                     {v.name.split(' ')[0]}
                   </span>
@@ -478,10 +499,10 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
               const el = document.getElementById('design');
               if (el) el.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="flex items-center justify-center gap-1.5 text-xs text-neutral-400 font-body cursor-pointer hover:text-white transition-colors"
+            className="flex items-center justify-center gap-1 text-[10px] sm:text-xs text-neutral-400 font-body cursor-pointer hover:text-white transition-colors"
           >
-            <ArrowDown size={14} className="text-red-600 animate-bounce" />
-            <span className="tracking-wider text-xs font-medium text-neutral-300">Cuộn xuống</span>
+            <ArrowDown size={12} className="text-red-600 animate-bounce" />
+            <span className="tracking-wider text-[11px] sm:text-xs font-medium text-neutral-300">Cuộn xuống</span>
           </div>
         </div>
 
