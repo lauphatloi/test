@@ -104,9 +104,12 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
       });
 
       // 1. Initial setup: 
-      // SẢN PHẨM ĐỨNG IM TUYỆT ĐỐI (x: 0, y: 0, scale: 1, filter: none, không tilt, không xê dịch)
-      gsap.set(bikeRefs.current[0], { opacity: 1, x: 0, y: 0, scale: 1, filter: 'none', force3D: true });
-      gsap.set(bikeRefs.current.slice(1), { opacity: 0, x: 0, y: 0, scale: 1, filter: 'none', force3D: true });
+      // SẢN PHẨM ĐỨNG IM TUYỆT ĐỐI (x: 0, y: 0, filter: none, không tilt, không xê dịch)
+      // Tối ưu kích thước trên mobile: Phóng lớn hơn ~15% để nhìn rõ và cân đối với card
+      const isMobile = window.innerWidth < 640;
+      const bikeScale = isMobile ? 1.15 : 1;
+      gsap.set(bikeRefs.current[0], { opacity: 1, x: 0, y: 0, scale: bikeScale, filter: 'none', force3D: true });
+      gsap.set(bikeRefs.current.slice(1), { opacity: 0, x: 0, y: 0, scale: bikeScale, filter: 'none', force3D: true });
 
       // 2. KHỐI BÁT GIÁC HIỆU NĂNG CAO (Không lag, chuẩn GPU transform):
       // Bản 02: Bát Giác Đen Nhám (bleed1Ref) - Khởi điểm từ tâm (scale: 0, rotate: -8)
@@ -332,7 +335,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
       {/* ============================================================ */}
       {/* 2. MAIN STAGE CONTENT CONTAINER                              */}
       {/* ============================================================ */}
-      <div className="relative z-50 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-[72px] sm:pt-20 lg:pt-24 pb-3 sm:pb-6 flex flex-col justify-between h-full">
+      <div className="relative z-50 w-full max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-[68px] sm:pt-20 lg:pt-24 pb-2 sm:pb-6 flex flex-col justify-between h-full">
         
         {/* Section Top Header Tag */}
         <div className={`flex items-center justify-between border-b pb-2 sm:pb-3 shrink-0 transition-colors ${
@@ -493,7 +496,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
           </div>
 
           {/* ZONE 2: Right Column (7 Cols) - Dedicated Vehicle Stage */}
-          <div className="lg:col-span-7 order-1 lg:order-2 relative flex items-center justify-center h-[23vh] sm:h-[36vh] lg:h-[54vh] max-h-[195px] sm:max-h-[340px] lg:max-h-none w-full z-20">
+          <div className="lg:col-span-7 order-1 lg:order-2 relative flex items-center justify-center h-[28vh] sm:h-[38vh] lg:h-[54vh] max-h-[255px] sm:max-h-[360px] lg:max-h-none w-full z-20 my-1 sm:my-0">
             
             {/* Khung Xe: ĐỨNG IM TUYỆT ĐỐI TẠI TÂM (Cố định, không tilt chuột, không x, không blur) */}
             <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
@@ -503,13 +506,13 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                 <div 
                   key={`floor-${variant.id}`}
                   ref={(el) => (floorGlowRefs.current[idx] = el)}
-                  className="absolute bottom-1 sm:bottom-4 w-[78%] h-10 sm:h-12 rounded-full blur-2xl pointer-events-none will-change-opacity"
+                  className="absolute bottom-1 sm:bottom-4 w-[86%] sm:w-[78%] h-10 sm:h-12 rounded-full blur-2xl pointer-events-none will-change-opacity"
                   style={{
                     backgroundColor: variant.floorGlow,
                   }}
                 />
               ))}
-              <div className={`absolute bottom-2 sm:bottom-6 w-[68%] h-4 sm:h-5 rounded-full blur-md pointer-events-none z-10 ${
+              <div className={`absolute bottom-2 sm:bottom-6 w-[76%] sm:w-[68%] h-4 sm:h-5 rounded-full blur-md pointer-events-none z-10 ${
                 isDark ? 'bg-black/95' : 'bg-slate-950/45'
               }`} />
 
