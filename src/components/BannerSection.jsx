@@ -11,13 +11,33 @@ export default function BannerSection({ onOpenTestRide }) {
   const bgRef = useRef(null);
   const bannerContentRef = useRef(null);
   const portalLayerRef = useRef(null);
-  const portalRingRef = useRef(null);
+  const portalSvgRef = useRef(null);
+  const portalGlowRingRef = useRef(null);
+  const portalCoreRingRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Calculate max radius needed to clear all four corners of viewport from center
+      const getMaxRadius = () => (Math.hypot(window.innerWidth, window.innerHeight) / 2) * 1.15;
+
+      const updateAperture = (r) => {
+        const safeR = Math.max(0, Number(r) || 0);
+        if (portalGlowRingRef.current) portalGlowRingRef.current.setAttribute('r', safeR);
+        if (portalCoreRingRef.current) portalCoreRingRef.current.setAttribute('r', safeR);
+        if (portalLayerRef.current) {
+          const clip = `circle(${safeR}px at 50% 50%)`;
+          portalLayerRef.current.style.clipPath = clip;
+          portalLayerRef.current.style.webkitClipPath = clip;
+        }
+      };
+
+      // Set initial aperture state (0px radius, hidden)
+      updateAperture(0);
+      gsap.set(portalSvgRef.current, { opacity: 0 });
+
       // Pinned ScrollTrigger:
       // 1. Banner zooms while pinned (zoom ghim cứng)
-      // 2. A circle in the center opens up as user scrolls (vòng tròn ở trung tâm mở ra theo cuộn)
+      // 2. High-precision vector aperture circle in the center opens up smoothly (no pixelation or blur)
       // 3. Transitions smoothly into the vehicle versions section
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -27,10 +47,11 @@ export default function BannerSection({ onOpenTestRide }) {
           pin: true,
           scrub: 1,
           anticipatePin: 1,
+          invalidateOnRefresh: true,
         }
       });
 
-      // Stage 1: Banner Zoom while pinned (0.0 -> 0.6)
+      // Stage 1: Banner Zoom while pinned (0.0 -> 1.5)
       tl.to(bgRef.current, {
         scale: 1.3,
         y: '5%',
@@ -49,40 +70,34 @@ export default function BannerSection({ onOpenTestRide }) {
         pointerEvents: 'none',
       }, 0.05);
 
-      // Stage 2: Central white border ring (vòng tròn viền trắng ở trung tâm)
-      tl.fromTo(portalRingRef.current, {
-        scale: 0,
+      // Stage 2: Central white vector ring appears cleanly at center
+      tl.fromTo(portalSvgRef.current, {
         opacity: 0,
       }, {
-        scale: 1,
         opacity: 1,
-        duration: 0.25,
+        duration: 0.2,
         ease: 'power1.out',
       }, 0.35);
 
-      // Mở rộng kích thước đồng bộ cùng hành trình 1.4s (từ 0.4 đến 1.8)
-      tl.to(portalRingRef.current, {
-        scale: 18,
-        ease: 'power2.inOut',
+      // Stage 3: Smooth synchronized vector aperture expansion (0.4 to 1.8)
+      // Pure mathematical vector radius - completely eliminates blurriness, stretching and raster pixelation
+      const apertureState = { radius: 0 };
+      tl.to(apertureState, {
+        radius: () => getMaxRadius(),
         duration: 1.4,
+        ease: 'power2.inOut',
+        onUpdate: () => {
+          updateAperture(apertureState.radius);
+        },
       }, 0.4);
 
-      // Khi đi được 3/10 hành trình (0.4 + 1.4 * 0.3 = 0.82) thì bắt đầu mờ dần,
-      // tới 7/10 hành trình (0.4 + 1.4 * 0.7 = 1.38) bắt buộc phải mất hoàn toàn (opacity: 0)
-      tl.to(portalRingRef.current, {
+      // Stage 4: As the white ring expands past the screen edges, gently dissolve its stroke
+      // so it cleanly clears the viewport (1.45 to 1.8)
+      tl.to(portalSvgRef.current, {
         opacity: 0,
         ease: 'power1.in',
-        duration: 0.56,
-      }, 0.82);
-
-      // Stage 3: Circle at the center opens up according to scroll (clipPath: 0% -> 150%)
-      tl.fromTo(portalLayerRef.current, {
-        clipPath: 'circle(0% at 50% 50%)',
-      }, {
-        clipPath: 'circle(140% at 50% 50%)',
-        duration: 1.4,
-        ease: 'power2.inOut',
-      }, 0.4);
+        duration: 0.35,
+      }, 1.45);
 
     }, bannerRef);
 
@@ -207,12 +222,47 @@ export default function BannerSection({ onOpenTestRide }) {
       </div>
 
       {/* ============================================================ */}
-      {/* 2. CIRCULAR PORTAL RING AT CENTER (Opens up as you scroll)  */}
+      {/* 2. VECTOR APERTURE RING AT CENTER (Razor-sharp, non-scaling) */}
       {/* ============================================================ */}
-      <div 
-        ref={portalRingRef}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full border border-white/90 shadow-[0_0_25px_rgba(255,255,255,0.5)] pointer-events-none z-30 opacity-0 will-change-transform"
-      />
+      <svg
+        ref={portalSvgRef}
+        className="absolute inset-0 w-full h-full pointer-events-none z-30 overflow-visible opacity-0"
+        aria-hidden="true"
+      >
+        <defs>
+          <filter id="portal-ring-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* Luminous aura halo ring */}
+        <circle
+          ref={portalGlowRingRef}
+          cx="50%"
+          cy="50%"
+          r="0"
+          fill="none"
+          stroke="rgba(255, 255, 255, 0.45)"
+          strokeWidth="3.5"
+          filter="url(#portal-ring-glow)"
+        />
+
+        {/* Razor-sharp core precision line */}
+        <circle
+          ref={portalCoreRingRef}
+          cx="50%"
+          cy="50%"
+          r="0"
+          fill="none"
+          stroke="#ffffff"
+          strokeWidth="1.75"
+          strokeOpacity="0.95"
+        />
+      </svg>
 
       {/* ============================================================ */}
       {/* 3. PORTAL LAYER REVEALED BY THE CIRCULAR MASK               */}
@@ -222,7 +272,8 @@ export default function BannerSection({ onOpenTestRide }) {
         ref={portalLayerRef}
         className="absolute inset-0 w-full h-full z-20 overflow-hidden bg-[#07090e] pointer-events-none flex items-center justify-center will-change-[clip-path]"
         style={{
-          clipPath: 'circle(0% at 50% 50%)',
+          clipPath: 'circle(0px at 50% 50%)',
+          WebkitClipPath: 'circle(0px at 50% 50%)',
         }}
       >
         {/* Studio Lighting inside the portal */}
