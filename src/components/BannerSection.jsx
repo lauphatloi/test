@@ -147,9 +147,9 @@ export default function BannerSection({ onOpenTestRide }) {
         <div className={`absolute inset-0 transition-opacity duration-500 ${
           isDark 
             ? 'bg-gradient-to-t from-[#08090d] from-20% via-black/40 to-black/75 sm:via-black/35 sm:to-black/70' 
-            : 'bg-gradient-to-t from-white from-15% via-white/20 to-black/25'
+            : 'bg-gradient-to-t from-slate-950/80 from-15% via-black/30 to-black/45'
         }`} />
-        <div className={`absolute inset-0 bg-radial-vignette transition-opacity duration-500 ${isDark ? 'opacity-85 sm:opacity-80' : 'opacity-40'}`} />
+        <div className={`absolute inset-0 bg-radial-vignette transition-opacity duration-500 ${isDark ? 'opacity-85 sm:opacity-80' : 'opacity-0'}`} />
         <div className="absolute inset-0 bg-tech-grid opacity-15" />
       </div>
 
@@ -161,51 +161,37 @@ export default function BannerSection({ onOpenTestRide }) {
         {/* Top Tagline */}
         <div className="flex items-center gap-2.5 sm:gap-3">
           <span className="w-5 sm:w-6 h-[2px] bg-red-600 shrink-0" />
-          <span className={`text-[9px] sm:text-[11px] font-semibold tracking-[0.16em] sm:tracking-[0.3em] uppercase font-body truncate ${
-            isDark ? 'text-neutral-300' : 'text-slate-800'
-          }`}>
+          <span className="text-[9px] sm:text-[11px] font-semibold tracking-[0.16em] sm:tracking-[0.3em] uppercase font-body truncate text-slate-200 drop-shadow-sm">
             HONDA MOTOR VIỆT NAM • THỦ LĨNH XE GA CAO CẤP
           </span>
         </div>
 
         {/* Center/Bottom Banner Messaging - Anchored comfortably below the motorcycle on mobile */}
         <div className="max-w-3xl sm:my-auto mt-auto mb-1 py-1 sm:py-6">
-          <div className={`inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-2.5 sm:mb-4 backdrop-blur-md font-body ${
-            isDark ? 'bg-white/[0.08] border border-white/10 text-neutral-200' : 'bg-white/85 border border-slate-200 text-slate-800 shadow-sm'
-          }`}>
-            <Award size={13} className={isDark ? "text-white shrink-0" : "text-red-600 shrink-0"} />
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-2.5 sm:mb-4 backdrop-blur-md font-body bg-white/10 border border-white/20 text-white shadow-sm">
+            <Award size={13} className="text-red-500 shrink-0" />
             <span>ĐẲNG CẤP CHÂU ÂU • VẺ ĐẸP SANG TRỌNG</span>
           </div>
 
-          <h1 className={`font-display font-extrabold text-3xl sm:text-6xl lg:text-7xl tracking-tight leading-tight uppercase ${
-            isDark ? 'text-white' : 'text-slate-900'
-          }`}>
-            HONDA <span className="text-gradient-platinum">SH350i</span>
+          <h1 className="font-display font-extrabold text-3xl sm:text-6xl lg:text-7xl tracking-tight leading-tight uppercase text-white drop-shadow-md">
+            HONDA <span className="text-white drop-shadow-md">SH350</span><span className="text-red-500 drop-shadow-md">i</span>
           </h1>
 
-          <p className={`mt-2.5 sm:mt-4 text-xs sm:text-base font-body leading-relaxed max-w-2xl line-clamp-3 sm:line-clamp-none ${
-            isDark ? 'text-neutral-300' : 'text-slate-700'
-          }`}>
+          <p className="mt-2.5 sm:mt-4 text-xs sm:text-base font-body leading-relaxed max-w-2xl line-clamp-3 sm:line-clamp-none text-slate-200 drop-shadow-sm font-normal">
             Tuyệt tác kết hợp hài hòa giữa ngôn ngữ thiết kế điêu khắc thượng lưu nước Ý và sức mạnh động cơ eSP+ 330cc thế hệ mới. Khẳng định vị thế dẫn đầu và phong thái đĩnh đạc của chủ nhân trên mọi hành trình.
           </p>
 
           {/* Quick Specifications Pills */}
           <div className="mt-3.5 sm:mt-6 flex flex-wrap gap-2 sm:gap-3 text-[11px] sm:text-xs font-body">
-            <div className={`px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg backdrop-blur-md flex items-center gap-1.5 sm:gap-2 ${
-              isDark ? 'bg-white/[0.06] border border-white/[0.08] text-neutral-300' : 'bg-white/90 border border-slate-200 text-slate-800 shadow-sm'
-            }`}>
+            <div className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg backdrop-blur-md flex items-center gap-1.5 sm:gap-2 bg-black/45 border border-white/20 text-white shadow-sm">
               <Gauge size={13} className="text-red-500 shrink-0" />
               <span>Động cơ <strong>329.6cc eSP+</strong></span>
             </div>
-            <div className={`px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg backdrop-blur-md flex items-center gap-1.5 sm:gap-2 ${
-              isDark ? 'bg-white/[0.06] border border-white/[0.08] text-neutral-300' : 'bg-white/90 border border-slate-200 text-slate-800 shadow-sm'
-            }`}>
+            <div className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg backdrop-blur-md flex items-center gap-1.5 sm:gap-2 bg-black/45 border border-white/20 text-white shadow-sm">
               <ShieldCheck size={13} className="text-red-500 shrink-0" />
               <span>Phanh <strong>ABS 2 Kênh & HSTC</strong></span>
             </div>
-            <div className={`px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg backdrop-blur-md flex items-center gap-1.5 sm:gap-2 ${
-              isDark ? 'bg-white/[0.06] border border-white/[0.08] text-neutral-300' : 'bg-white/90 border border-slate-200 text-slate-800 shadow-sm'
-            }`}>
+            <div className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg backdrop-blur-md flex items-center gap-1.5 sm:gap-2 bg-black/45 border border-white/20 text-white shadow-sm">
               <Zap size={13} className="text-red-500 shrink-0" />
               <span>Chuẩn khí thải <strong>Euro 5</strong></span>
             </div>
@@ -223,11 +209,7 @@ export default function BannerSection({ onOpenTestRide }) {
 
             <button
               onClick={() => { soundFx.playRev(); onOpenTestRide(); }}
-              className={`w-full sm:w-auto px-5 sm:px-6 py-2.5 sm:py-3.5 rounded-full text-xs font-medium tracking-wide transition-all cursor-pointer font-body text-center ${
-                isDark 
-                  ? 'bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-white' 
-                  : 'bg-slate-900 hover:bg-black text-white shadow-md'
-              }`}
+              className="w-full sm:w-auto px-5 sm:px-6 py-2.5 sm:py-3.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer font-body text-center bg-white/15 hover:bg-white/25 border border-white/30 text-white backdrop-blur-md shadow-md"
             >
               Đăng Ký Lái Thử
             </button>
@@ -237,9 +219,7 @@ export default function BannerSection({ onOpenTestRide }) {
         {/* Bottom Scroll Cue */}
         <div 
           onClick={scrollToVariants}
-          className={`w-full flex items-center justify-center gap-2 text-xs font-body cursor-pointer transition-colors pt-2 ${
-            isDark ? 'text-neutral-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'
-          }`}
+          className="w-full flex items-center justify-center gap-2 text-xs font-body cursor-pointer transition-colors pt-2 text-slate-300 hover:text-white"
         >
           <ArrowDown size={14} className="text-red-600 animate-bounce" />
           <span className="tracking-wider text-xs font-medium">Cuộn xuống</span>
@@ -296,7 +276,7 @@ export default function BannerSection({ onOpenTestRide }) {
       <div 
         ref={portalLayerRef}
         className={`absolute inset-0 w-full h-full z-20 overflow-hidden pointer-events-none flex items-center justify-center will-change-[clip-path] transition-colors duration-500 ${
-          isDark ? 'bg-[#07090e]' : 'bg-[#f8fafc]'
+          isDark ? 'bg-[#07090e]' : 'bg-[#edf0f4]'
         }`}
         style={{
           clipPath: 'circle(0px at 50% 50%)',
@@ -306,7 +286,7 @@ export default function BannerSection({ onOpenTestRide }) {
         {/* Studio Lighting inside the portal */}
         <div className="absolute inset-0 pointer-events-none">
           <div className={`absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full blur-[140px] ${
-            isDark ? 'bg-slate-700/20' : 'bg-red-500/10'
+            isDark ? 'bg-slate-700/20' : 'bg-slate-400/15'
           }`} />
           <div className="absolute inset-0 bg-tech-grid opacity-15" />
         </div>
@@ -314,20 +294,20 @@ export default function BannerSection({ onOpenTestRide }) {
         {/* Center Portal Content: Revealing the Vehicle Versions Preview */}
         <div className="relative z-10 max-w-5xl mx-auto px-4 text-center flex flex-col items-center justify-center">
           <div className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-3 backdrop-blur-md font-body ${
-            isDark ? 'bg-white/[0.08] border border-white/15 text-neutral-200' : 'bg-white/85 border border-slate-200 text-slate-800 shadow-sm'
+            isDark ? 'bg-white/[0.08] border border-white/15 text-neutral-200' : 'bg-white border border-slate-300 text-slate-900 shadow-sm'
           }`}>
             <Sparkles size={13} className="text-red-500" />
             <span>KHÔNG GIAN TRƯNG BÀY XE SANG</span>
           </div>
 
           <h2 className={`font-display font-extrabold text-3xl sm:text-5xl tracking-tight uppercase ${
-            isDark ? 'text-white' : 'text-slate-900'
+            isDark ? 'text-white' : 'text-slate-950'
           }`}>
             BỘ SƯU TẬP PHIÊN BẢN SH350i
           </h2>
           
           <p className={`mt-2 text-xs sm:text-sm font-body max-w-lg mx-auto ${
-            isDark ? 'text-neutral-400' : 'text-slate-600'
+            isDark ? 'text-neutral-400' : 'text-slate-700 font-medium'
           }`}>
             Khám phá 4 phong thái màu sắc đương đại được chế tác tỉ mỉ cho từng đẳng cấp phong cách.
           </p>

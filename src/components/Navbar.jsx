@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Volume2, VolumeX, Sliders, Calendar, ArrowUpRight, Menu, X } from 'lucide-react';
 import { soundFx } from '../utils/audio';
 import { useTheme } from '../context/ThemeContext';
-import ThemeToggle from './ThemeToggle';
 import gsap from 'gsap';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
@@ -125,9 +124,6 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
 
           {/* Header Action Buttons */}
           <div className="hidden sm:flex items-center gap-2.5">
-            {/* Day / Night Theme Toggle */}
-            <ThemeToggle />
-
             {/* Sound Toggle */}
             <button
               onClick={handleSoundToggle}
@@ -138,8 +134,8 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
                       ? 'border-white/20 bg-white/10 text-white' 
                       : 'border-white/[0.08] bg-white/[0.02] text-neutral-400 hover:text-white hover:border-white/15')
                   : (soundActive 
-                      ? 'border-red-200 bg-red-50 text-red-600 shadow-sm' 
-                      : 'border-slate-200 bg-slate-50 text-slate-700 hover:text-slate-900 hover:border-slate-300 hover:bg-white shadow-sm')
+                      ? 'border-red-300 bg-red-50 text-red-600 shadow-sm' 
+                      : 'border-slate-300 bg-white text-slate-800 hover:text-slate-950 hover:border-slate-400 shadow-sm font-semibold')
               }`}
             >
               {soundActive ? <Volume2 size={15} /> : <VolumeX size={15} />}
@@ -151,13 +147,13 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
             {/* Quick Specs Trigger */}
             <button
               onClick={() => { soundFx.playClick(); onOpenSpecs(); }}
-              className={`px-3.5 py-2 rounded-full border text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer font-body ${
+              className={`px-3.5 py-2 rounded-full border text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer font-body ${
                 isDark 
                   ? 'border-white/[0.08] bg-white/[0.02] text-neutral-300 hover:text-white hover:border-white/20' 
-                  : 'border-slate-200 bg-slate-50 text-slate-700 hover:text-slate-900 hover:border-slate-300 hover:bg-white shadow-sm'
+                  : 'border-slate-300 bg-white text-slate-800 hover:text-slate-950 hover:border-slate-400 shadow-sm'
               }`}
             >
-              <Sliders size={13} className={isDark ? "text-neutral-400" : "text-slate-500"} />
+              <Sliders size={13} className={isDark ? "text-neutral-400" : "text-slate-600"} />
               <span>Thông Số</span>
             </button>
 
@@ -174,16 +170,14 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
             </button>
           </div>
 
-          {/* Mobile Right Controls: Compact Theme Toggle + Mobile Menu Trigger */}
+          {/* Mobile Right Controls: Mobile Menu Trigger */}
           <div className="flex items-center gap-2 lg:hidden">
-            <ThemeToggle compact />
-
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className={`p-2.5 rounded-xl border transition-all ${
                 isDark 
                   ? 'text-neutral-300 hover:text-white bg-white/[0.05] border-white/10' 
-                  : 'text-slate-700 hover:text-slate-900 bg-slate-100 border-slate-200 shadow-sm'
+                  : 'text-slate-800 hover:text-slate-950 bg-slate-100 border-slate-300 shadow-sm'
               }`}
               aria-label="Menu"
             >
@@ -202,28 +196,22 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
                 <button
                   key={link.id}
                   onClick={() => scrollToSection(link.id)}
-                  className={`px-4 py-3 text-left text-sm font-medium rounded-xl transition-all ${
+                  className={`px-4 py-3 text-left text-sm font-semibold rounded-xl transition-all ${
                     isDark 
                       ? 'text-neutral-200 hover:text-red-400 hover:bg-white/5' 
-                      : 'text-slate-700 hover:text-red-600 hover:bg-slate-100'
+                      : 'text-slate-800 hover:text-red-600 hover:bg-slate-100'
                   }`}
                 >
                   {link.label}
                 </button>
               ))}
               <div className={`pt-3 mt-2 border-t flex flex-col gap-2.5 ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
-                {/* Mobile Theme Toggle Row */}
-                <div className="flex items-center justify-between px-2 py-1">
-                  <span className={`text-xs ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Chế độ hiển thị</span>
-                  <ThemeToggle />
-                </div>
-
                 <div className="flex items-center justify-between px-2">
-                  <span className={`text-xs ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Âm thanh động cơ</span>
+                  <span className={`text-xs font-medium ${isDark ? 'text-neutral-400' : 'text-slate-700'}`}>Âm thanh động cơ</span>
                   <button
                     onClick={handleSoundToggle}
-                    className={`p-2 rounded-lg border text-xs flex items-center gap-2 ${
-                      isDark ? 'border-white/10 bg-white/5' : 'border-slate-200 bg-slate-100'
+                    className={`p-2 rounded-lg border text-xs font-semibold flex items-center gap-2 ${
+                      isDark ? 'border-white/10 bg-white/5' : 'border-slate-300 bg-slate-50 text-slate-800'
                     }`}
                   >
                     {soundActive ? <Volume2 size={16} className="text-red-500" /> : <VolumeX size={16} />}

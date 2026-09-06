@@ -226,7 +226,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
       id="colors" 
       ref={containerRef} 
       className={`relative w-full h-screen overflow-hidden select-none flex flex-col justify-between transition-colors duration-500 ${
-        isDark ? 'bg-[#07090e]' : 'bg-[#f8fafc]'
+        isDark ? 'bg-[#07090e]' : 'bg-[#edf0f4]'
       }`}
     >
       {/* ============================================================ */}
@@ -243,7 +243,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
           style={{
             background: isDark 
               ? 'radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 45%, #07090e 85%)'
-              : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #f1f5f9 45%, #e2e8f0 85%)',
+              : 'radial-gradient(circle at 50% 50%, #edf2f7 0%, #e2e8f0 35%, #cbd5e1 65%, #94a3b8 95%)',
           }}
         />
 
@@ -266,7 +266,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                 clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                 background: isDark 
                   ? 'radial-gradient(circle at 50% 50%, #ffffff 0%, #e2e8f0 18%, #93c5fd 40%, #1e3a8a 68%, #0f172a 85%, #07090e 95%)'
-                  : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #e0f2fe 22%, #bae6fd 45%, #e2e8f0 70%, #f8fafc 92%)',
+                  : 'radial-gradient(circle at 50% 50%, #e5ebf2 0%, #ccd7e2 35%, #a6b7c7 65%, #6a7e93 95%)',
               }}
             />
           </div>
@@ -291,7 +291,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                 clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                 background: isDark
                   ? 'radial-gradient(circle at 50% 50%, #f59e0b 0%, #d97706 18%, #b45309 35%, #78350f 55%, #1f1206 75%, #07090e 92%)'
-                  : 'radial-gradient(circle at 50% 50%, #fef3c7 0%, #fde68a 22%, #f59e0b 48%, #e2e8f0 75%, #f8fafc 92%)',
+                  : 'radial-gradient(circle at 50% 50%, #eae3d5 0%, #d8ccb8 35%, #baaa91 65%, #8a785f 95%)',
               }}
             />
           </div>
@@ -316,7 +316,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                 clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                 background: isDark
                   ? 'radial-gradient(circle at 50% 50%, #34d399 0%, #10b981 18%, #059669 38%, #047857 58%, #032d22 78%, #07090e 92%)'
-                  : 'radial-gradient(circle at 50% 50%, #d1fae5 0%, #a7f3d0 22%, #34d399 48%, #e2e8f0 75%, #f8fafc 92%)',
+                  : 'radial-gradient(circle at 50% 50%, #e3ede7 0%, #c4d7cc 35%, #95b3a4 65%, #597b6c 95%)',
               }}
             />
           </div>
@@ -333,18 +333,18 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
         
         {/* Section Top Header Tag */}
         <div className={`flex items-center justify-between border-b pb-2 sm:pb-3 shrink-0 transition-colors ${
-          isDark ? 'border-white/[0.08]' : 'border-slate-200'
+          isDark ? 'border-white/[0.08]' : 'border-slate-300'
         }`}>
           <div className="flex items-center gap-2 sm:gap-3">
             <span className="w-5 sm:w-6 h-[2px] bg-red-600" />
-            <span className={`text-[10px] sm:text-xs font-semibold tracking-[0.2em] sm:tracking-[0.25em] uppercase font-body ${
-              isDark ? 'text-neutral-300' : 'text-slate-700'
+            <span className={`text-[10px] sm:text-xs font-bold tracking-[0.2em] sm:tracking-[0.25em] uppercase font-body ${
+              isDark ? 'text-neutral-300' : 'text-slate-900'
             }`}>
               BỘ SƯU TẬP PHIÊN BẢN MÀU SẮC • SH350i
             </span>
           </div>
-          <span className={`font-mono text-[11px] sm:text-xs ${
-            isDark ? 'text-neutral-400' : 'text-slate-500'
+          <span className={`font-mono text-[11px] sm:text-xs font-semibold ${
+            isDark ? 'text-neutral-400' : 'text-slate-700'
           }`}>
             {currentData.number} / 0{VARIANTS.length}
           </span>
@@ -358,7 +358,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
             <div className={`p-3.5 sm:p-5 lg:p-7 rounded-2xl backdrop-blur-xl transition-all duration-300 flex flex-col justify-between lg:min-h-[410px] ${
               isDark 
                 ? 'glass-panel border border-white/[0.1] shadow-2xl text-white' 
-                : 'bg-white/95 border border-slate-200/90 shadow-xl shadow-slate-200/60 text-slate-900'
+                : 'bg-white/98 border border-slate-300 shadow-xl shadow-slate-300/40 text-slate-900'
             }`}>
               
               <div>
@@ -369,28 +369,28 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                       className="w-2.5 h-2.5 rounded-full shadow-sm ring-2 ring-white/20 shrink-0"
                       style={{ backgroundColor: currentData.accentColor }}
                     />
-                    <span className={`text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded font-body ${
+                    <span className={`text-[10px] sm:text-[11px] font-bold tracking-wider uppercase px-2 py-0.5 rounded font-body ${
                       isDark 
                         ? 'bg-white/[0.08] text-white border border-white/[0.1]' 
-                        : 'bg-slate-100 text-slate-800 border border-slate-200'
+                        : 'bg-slate-100 text-slate-900 border border-slate-300'
                     }`}>
                       {currentData.subname}
                     </span>
-                    <span className={`text-[10px] sm:text-[11px] font-medium font-body hidden xs:inline ${
-                      isDark ? 'text-neutral-400' : 'text-slate-500'
+                    <span className={`text-[10px] sm:text-[11px] font-semibold font-body hidden xs:inline ${
+                      isDark ? 'text-neutral-400' : 'text-slate-700'
                     }`}>
                       {currentData.editionTag}
                     </span>
                   </div>
-                  <span className={`text-[10px] sm:text-[11px] font-body hidden sm:inline ${
-                    isDark ? 'text-neutral-400' : 'text-slate-500'
+                  <span className={`text-[10px] sm:text-[11px] font-medium font-body hidden sm:inline ${
+                    isDark ? 'text-neutral-400' : 'text-slate-700'
                   }`}>
                     {currentData.tag}
                   </span>
                 </div>
 
                 {/* Vehicle Name Headline */}
-                <h2 className={`font-display text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight leading-tight flex items-center ${
+                <h2 className={`font-display text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight leading-tight flex items-center ${
                   isDark ? 'text-white' : 'text-slate-950'
                 }`}>
                   {currentData.name}
@@ -398,7 +398,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
 
                 {/* Description */}
                 <p className={`mt-1 sm:mt-2 text-xs sm:text-sm leading-relaxed font-body line-clamp-2 sm:line-clamp-3 lg:line-clamp-none ${
-                  isDark ? 'text-neutral-300' : 'text-slate-600'
+                  isDark ? 'text-neutral-300' : 'text-slate-800 font-medium'
                 }`}>
                   {currentData.desc}
                 </p>
@@ -409,72 +409,72 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                 <div className={`my-2.5 sm:my-3 py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-xl border grid grid-cols-3 divide-x transition-colors ${
                   isDark 
                     ? 'bg-white/[0.03] border-white/[0.08] divide-white/[0.08]' 
-                    : 'bg-slate-50 border-slate-200 divide-slate-200'
+                    : 'bg-slate-100 border-slate-300 divide-slate-300'
                 }`}>
                   <div className="flex flex-col items-center text-center px-1">
-                    <span className={`text-[9px] sm:text-[10px] flex items-center gap-1 font-body ${
-                      isDark ? 'text-neutral-400' : 'text-slate-500'
+                    <span className={`text-[9px] sm:text-[10px] flex items-center gap-1 font-body font-semibold ${
+                      isDark ? 'text-neutral-400' : 'text-slate-800'
                     }`}>
                       <Gauge size={11} className="text-red-500 shrink-0" /> Dung tích
                     </span>
-                    <span className={`text-xs sm:text-sm font-bold font-display mt-0.5 tracking-tight ${
-                      isDark ? 'text-white' : 'text-slate-900'
+                    <span className={`text-xs sm:text-sm font-black font-display mt-0.5 tracking-tight ${
+                      isDark ? 'text-white' : 'text-slate-950'
                     }`}>
                       {currentData.specs.speed}
                     </span>
-                    <span className={`text-[9px] font-mono hidden xs:block ${
-                      isDark ? 'text-neutral-500' : 'text-slate-400'
+                    <span className={`text-[9px] font-mono hidden xs:block font-medium ${
+                      isDark ? 'text-neutral-500' : 'text-slate-600'
                     }`}>eSP+ 4 van</span>
                   </div>
                   <div className="flex flex-col items-center text-center px-1">
-                    <span className={`text-[9px] sm:text-[10px] flex items-center gap-1 font-body ${
-                      isDark ? 'text-neutral-400' : 'text-slate-500'
+                    <span className={`text-[9px] sm:text-[10px] flex items-center gap-1 font-body font-semibold ${
+                      isDark ? 'text-neutral-400' : 'text-slate-800'
                     }`}>
                       <Zap size={11} className="text-amber-500 shrink-0" /> Công suất
                     </span>
-                    <span className={`text-xs sm:text-sm font-bold font-display mt-0.5 tracking-tight ${
-                      isDark ? 'text-white' : 'text-slate-900'
+                    <span className={`text-xs sm:text-sm font-black font-display mt-0.5 tracking-tight ${
+                      isDark ? 'text-white' : 'text-slate-950'
                     }`}>
                       {currentData.specs.power}
                     </span>
-                    <span className={`text-[9px] font-mono hidden xs:block ${
-                      isDark ? 'text-neutral-500' : 'text-slate-400'
+                    <span className={`text-[9px] font-mono hidden xs:block font-medium ${
+                      isDark ? 'text-neutral-500' : 'text-slate-600'
                     }`}>@7.500 rpm</span>
                   </div>
                   <div className="flex flex-col items-center text-center px-1">
-                    <span className={`text-[9px] sm:text-[10px] flex items-center gap-1 font-body ${
-                      isDark ? 'text-neutral-400' : 'text-slate-500'
+                    <span className={`text-[9px] sm:text-[10px] flex items-center gap-1 font-body font-semibold ${
+                      isDark ? 'text-neutral-400' : 'text-slate-800'
                     }`}>
                       <ShieldCheck size={11} className="text-emerald-500 shrink-0" /> Mô-men
                     </span>
-                    <span className={`text-xs sm:text-sm font-bold font-display mt-0.5 tracking-tight ${
-                      isDark ? 'text-white' : 'text-slate-900'
+                    <span className={`text-xs sm:text-sm font-black font-display mt-0.5 tracking-tight ${
+                      isDark ? 'text-white' : 'text-slate-950'
                     }`}>
                       {currentData.specs.torque}
                     </span>
-                    <span className={`text-[9px] font-mono hidden xs:block ${
-                      isDark ? 'text-neutral-500' : 'text-slate-400'
+                    <span className={`text-[9px] font-mono hidden xs:block font-medium ${
+                      isDark ? 'text-neutral-500' : 'text-slate-600'
                     }`}>@5.250 rpm</span>
                   </div>
                 </div>
 
                 {/* Price & Action Button inside card */}
                 <div className={`pt-2 sm:pt-3 border-t flex items-center justify-between gap-3 transition-colors ${
-                  isDark ? 'border-white/[0.08]' : 'border-slate-200'
+                  isDark ? 'border-white/[0.08]' : 'border-slate-300'
                 }`}>
                   <div className="flex flex-col">
-                    <span className={`text-[9px] sm:text-[10px] uppercase tracking-wider font-body ${
-                      isDark ? 'text-neutral-400' : 'text-slate-500'
+                    <span className={`text-[9px] sm:text-[10px] uppercase tracking-wider font-body font-bold ${
+                      isDark ? 'text-neutral-400' : 'text-slate-700'
                     }`}>
                       Giá đề xuất (đã có VAT)
                     </span>
                     <div className="flex items-baseline gap-1">
-                      <span className={`text-sm sm:text-base lg:text-lg font-bold font-display tracking-tight ${
+                      <span className={`text-sm sm:text-base lg:text-lg font-black font-display tracking-tight ${
                         isDark ? 'text-white' : 'text-slate-950'
                       }`}>
                         {currentData.price}
                       </span>
-                      <span className="text-[10px] font-semibold text-red-600 font-mono">VNĐ</span>
+                      <span className="text-[10px] font-bold text-red-600 font-mono">VNĐ</span>
                     </div>
                   </div>
                   <button
@@ -536,7 +536,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
           <div className={`flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-full backdrop-blur-2xl transition-all duration-300 ${
             isDark 
               ? 'glass-panel border border-white/[0.09] shadow-xl' 
-              : 'bg-white/95 border border-slate-200 shadow-lg shadow-slate-200/50'
+              : 'bg-white/98 border border-slate-300 shadow-lg shadow-slate-300/40'
           }`}>
             {VARIANTS.map((v, i) => {
               const isActive = activeVariant === i;
@@ -547,18 +547,18 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                   onMouseEnter={() => soundFx.playHover()}
                   className={`group relative flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full transition-all duration-300 cursor-pointer ${
                     isActive 
-                      ? (isDark ? 'bg-white/15 shadow-sm border border-white/20' : 'bg-slate-100 shadow-sm border border-slate-300 text-slate-950')
-                      : (isDark ? 'hover:bg-white/[0.04] opacity-70 hover:opacity-100' : 'hover:bg-slate-50 opacity-80 hover:opacity-100')
+                      ? (isDark ? 'bg-white/15 shadow-sm border border-white/20' : 'bg-slate-200 shadow-sm border border-slate-400 text-slate-950')
+                      : (isDark ? 'hover:bg-white/[0.04] opacity-70 hover:opacity-100' : 'hover:bg-slate-100 opacity-80 hover:opacity-100')
                   }`}
                 >
                   <span 
                     className="block w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-full border border-white/25 shadow-inner shrink-0"
                     style={{ backgroundColor: v.accentColor }}
                   />
-                  <span className={`text-[10px] sm:text-[11px] font-medium tracking-wide font-body transition-colors ${
+                  <span className={`text-[10px] sm:text-[11px] tracking-wide font-body transition-colors ${
                     isActive 
-                      ? (isDark ? 'text-white font-semibold' : 'text-slate-900 font-bold') 
-                      : (isDark ? 'text-neutral-400 group-hover:text-white' : 'text-slate-600 group-hover:text-slate-900')
+                      ? (isDark ? 'text-white font-semibold' : 'text-slate-950 font-black') 
+                      : (isDark ? 'text-neutral-400 group-hover:text-white' : 'text-slate-700 group-hover:text-slate-950 font-semibold')
                   }`}>
                     {v.name.split(' ')[0]}
                   </span>
@@ -574,12 +574,12 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
               if (el) el.scrollIntoView({ behavior: 'smooth' });
             }}
             className={`flex items-center justify-center gap-1 text-[10px] sm:text-xs font-body cursor-pointer transition-colors ${
-              isDark ? 'text-neutral-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'
+              isDark ? 'text-neutral-400 hover:text-white' : 'text-slate-700 hover:text-slate-950 font-semibold'
             }`}
           >
             <ArrowDown size={12} className="text-red-600 animate-bounce" />
-            <span className={`tracking-wider text-[11px] sm:text-xs font-medium ${
-              isDark ? 'text-neutral-300' : 'text-slate-700'
+            <span className={`tracking-wider text-[11px] sm:text-xs font-semibold ${
+              isDark ? 'text-neutral-300' : 'text-slate-800'
             }`}>Cuộn xuống</span>
           </div>
         </div>

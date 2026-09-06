@@ -3,47 +3,28 @@ import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { soundFx } from '../utils/audio';
 
-export default function ThemeToggle({ compact = false, className = '' }) {
-  const { theme, toggleTheme, isDark } = useTheme();
+export default function ThemeToggle({ className = '' }) {
+  const { toggleTheme, isDark } = useTheme();
 
   return (
     <button
-      onClick={toggleTheme}
+      onClick={() => {
+        soundFx.playClick();
+        toggleTheme();
+      }}
       onMouseEnter={() => soundFx.playHover()}
-      title={isDark ? "Chuyển sang Chế độ Ban ngày (Phong cách Honda Việt Nam)" : "Chuyển sang Chế độ Ban đêm (Showroom Huyền Bí)"}
+      title={isDark ? "Chuyển sang Chế độ Ban ngày" : "Chuyển sang Chế độ Ban đêm"}
       aria-label="Chuyển chế độ ngày/đêm"
-      className={`group relative flex items-center justify-between rounded-full transition-all duration-300 cursor-pointer select-none ${
-        compact 
-          ? 'p-2 border' 
-          : 'px-3 py-1.5 border gap-2'
-      } ${
+      className={`fixed bottom-5 left-5 z-50 w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer select-none shadow-xl hover:scale-110 active:scale-95 ${
         isDark 
-          ? 'bg-white/[0.05] border-white/15 text-neutral-300 hover:text-white hover:border-white/30 hover:bg-white/[0.08]' 
-          : 'bg-slate-100 border-slate-300 text-slate-700 hover:text-slate-900 hover:border-slate-400 hover:bg-white shadow-sm'
+          ? 'bg-[#0f131a]/90 hover:bg-[#18202d] border border-white/20 text-sky-400 hover:text-sky-300 shadow-black/60 backdrop-blur-xl' 
+          : 'bg-white/95 hover:bg-white border border-slate-300/90 text-amber-500 hover:text-amber-600 shadow-slate-900/15 backdrop-blur-xl'
       } ${className}`}
     >
-      <div className="flex items-center gap-1.5">
-        {isDark ? (
-          <Moon size={compact ? 16 : 14} className="text-sky-400 transition-transform group-hover:-rotate-12 duration-300" />
-        ) : (
-          <Sun size={compact ? 16 : 14} className="text-amber-500 transition-transform group-hover:rotate-45 duration-300" />
-        )}
-
-        {!compact && (
-          <span className="text-[11px] font-semibold tracking-wider uppercase font-body">
-            {isDark ? 'Ban Đêm' : 'Ban Ngày'}
-          </span>
-        )}
-      </div>
-
-      {!compact && (
-        <div 
-          className={`w-4 h-4 rounded-full flex items-center justify-center transition-all ${
-            isDark ? 'bg-sky-500/20 text-sky-400' : 'bg-amber-500/20 text-amber-600'
-          }`}
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
-        </div>
+      {isDark ? (
+        <Moon size={20} className="transition-transform duration-300 group-hover:-rotate-12" />
+      ) : (
+        <Sun size={20} className="transition-transform duration-300 group-hover:rotate-45" />
       )}
     </button>
   );

@@ -160,8 +160,8 @@ export default function DesignSection() {
       {/* Floating Section Header Tag */}
       <div className="absolute top-8 sm:top-12 left-6 sm:left-12 lg:left-16 z-30 flex items-center gap-3">
         <span className="w-6 h-[2px] bg-red-600" />
-        <span className={`text-[10px] sm:text-[11px] font-semibold tracking-[0.25em] uppercase font-body ${
-          isDark ? 'text-neutral-400' : 'text-slate-600'
+        <span className={`text-[10px] sm:text-[11px] font-bold tracking-[0.25em] uppercase font-body ${
+          isDark ? 'text-neutral-400' : 'text-slate-800'
         }`}>
           NGÔN NGỮ THIẾT KẾ CHÂU ÂU • KHÍ CHẤT THỦ LĨNH
         </span>
@@ -177,7 +177,7 @@ export default function DesignSection() {
         >
           {/* Decorative Framing Ring */}
           <div className={`absolute inset-0 border rounded-3xl pointer-events-none -m-2 sm:-m-4 transition-colors ${
-            isDark ? 'border-white/[0.07]' : 'border-slate-200'
+            isDark ? 'border-white/[0.07]' : 'border-slate-300'
           }`} />
 
           {/* Cards Stack */}
@@ -188,7 +188,7 @@ export default function DesignSection() {
               className={`absolute inset-0 w-full h-full rounded-2xl overflow-hidden flex items-center justify-center p-3 sm:p-6 transition-all duration-300 ${
                 isDark 
                   ? 'glass-panel border border-white/[0.08] shadow-2xl' 
-                  : 'bg-white border border-slate-200/90 shadow-xl shadow-slate-200/50'
+                  : 'bg-white border border-slate-300 shadow-xl shadow-slate-300/40'
               }`}
             >
               {card.isPng ? (
@@ -245,35 +245,35 @@ export default function DesignSection() {
                 title={`Xem ${item.category}`}
               />
             ))}
-            <span className={`ml-3 font-mono text-xs ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>
+            <span className={`ml-3 font-mono text-xs font-bold ${isDark ? 'text-neutral-400' : 'text-slate-700'}`}>
               0{activeStep + 1} / 0{DESIGN_CARDS.length}
             </span>
           </div>
 
           {/* Badge & Category */}
           <div className="flex items-center gap-2 mb-3">
-            <span className={`px-2.5 py-0.5 rounded text-[11px] font-semibold tracking-wider uppercase font-body border ${
+            <span className={`px-2.5 py-0.5 rounded text-[11px] font-bold tracking-wider uppercase font-body border ${
               isDark 
                 ? 'bg-white/[0.06] border-white/[0.08] text-neutral-200' 
-                : 'bg-slate-100 border-slate-200 text-slate-800'
+                : 'bg-slate-100 border-slate-300 text-slate-900'
             }`}>
               {current.category}
             </span>
-            <span className={`text-xs font-body ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>
+            <span className={`text-xs font-semibold font-body ${isDark ? 'text-neutral-400' : 'text-slate-700'}`}>
               {current.subtitle}
             </span>
           </div>
 
           {/* Main Headline */}
-          <h3 className={`font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight leading-tight transition-all duration-300 ${
-            isDark ? 'text-white' : 'text-slate-900'
+          <h3 className={`font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight transition-all duration-300 ${
+            isDark ? 'text-white' : 'text-slate-950'
           }`}>
             {current.title}
           </h3>
 
           {/* Description */}
           <p className={`mt-4 text-xs sm:text-sm leading-relaxed font-body ${
-            isDark ? 'text-neutral-300' : 'text-slate-600'
+            isDark ? 'text-neutral-300' : 'text-slate-800 font-medium'
           }`}>
             {current.description}
           </p>
@@ -282,7 +282,7 @@ export default function DesignSection() {
           <div className={`mt-6 p-4 rounded-xl backdrop-blur-md flex items-start gap-3.5 border transition-colors ${
             isDark 
               ? 'bg-white/[0.03] border-white/[0.08]' 
-              : 'bg-slate-50 border-slate-200 shadow-sm'
+              : 'bg-slate-100 border-slate-300 shadow-sm'
           }`}>
             <div className={`p-2 rounded-lg shrink-0 mt-0.5 ${
               isDark ? 'bg-white/[0.05] text-white' : 'bg-red-50 text-red-600'
@@ -290,13 +290,13 @@ export default function DesignSection() {
               <Compass size={16} />
             </div>
             <div>
-              <span className={`block text-[10px] uppercase tracking-wider font-semibold font-body ${
-                isDark ? 'text-neutral-400' : 'text-slate-500'
+              <span className={`block text-[10px] uppercase tracking-wider font-bold font-body ${
+                isDark ? 'text-neutral-400' : 'text-slate-700'
               }`}>
                 Chi Tiết Hoàn Thiện
               </span>
-              <p className={`text-xs sm:text-sm mt-1 font-medium leading-normal font-body ${
-                isDark ? 'text-neutral-200' : 'text-slate-800'
+              <p className={`text-xs sm:text-sm mt-1 font-semibold leading-normal font-body ${
+                isDark ? 'text-neutral-200' : 'text-slate-900'
               }`}>
                 {current.highlight}
               </p>
@@ -309,10 +309,10 @@ export default function DesignSection() {
               <button
                 key={card.id}
                 onClick={() => selectStep(idx)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer font-body ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer font-body ${
                   activeStep === idx
                     ? (isDark ? 'bg-white/15 text-white font-semibold border border-white/20 shadow-sm' : 'bg-slate-900 text-white font-semibold border border-slate-900 shadow-sm')
-                    : (isDark ? 'bg-white/[0.03] text-neutral-400 hover:text-white hover:bg-white/[0.06] border border-transparent' : 'bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200 border border-transparent')
+                    : (isDark ? 'bg-white/[0.03] text-neutral-400 hover:text-white hover:bg-white/[0.06] border border-transparent' : 'bg-slate-200 text-slate-800 hover:text-slate-950 hover:bg-slate-300 border border-transparent')
                 }`}
               >
                 {card.number}. {card.category.split('&')[0]}

@@ -144,14 +144,14 @@ export default function TechFeaturesSection() {
       <div className="absolute top-8 sm:top-12 left-6 sm:left-12 lg:left-16 z-20">
         <div className="flex items-center gap-3">
           <span className="w-6 h-[2px] bg-red-600" />
-          <span className={`text-[10px] sm:text-[11px] font-semibold tracking-[0.25em] uppercase font-body ${
-            isDark ? 'text-neutral-400' : 'text-slate-600'
+          <span className={`text-[10px] sm:text-[11px] font-bold tracking-[0.25em] uppercase font-body ${
+            isDark ? 'text-neutral-400' : 'text-slate-800'
           }`}>
             CÔNG NGHỆ THÔNG MINH & AN TOÀN CHỦ ĐỘNG
           </span>
         </div>
-        <h2 className={`font-display text-2xl sm:text-4xl font-bold tracking-tight mt-2 ${
-          isDark ? 'text-white' : 'text-slate-900'
+        <h2 className={`font-display text-2xl sm:text-4xl font-extrabold tracking-tight mt-2 ${
+          isDark ? 'text-white' : 'text-slate-950'
         }`}>
           GIẢI PHÁP TIÊN PHONG <span className="text-gradient-platinum">TỪ HONDA</span>
         </h2>
@@ -166,37 +166,37 @@ export default function TechFeaturesSection() {
         <div className={`w-[300px] sm:w-[360px] shrink-0 p-8 rounded-3xl flex flex-col justify-between transition-all duration-300 ${
           isDark 
             ? 'glass-panel border border-white/[0.08]' 
-            : 'bg-white border border-slate-200/90 shadow-xl shadow-slate-200/50'
+            : 'bg-white border border-slate-300 shadow-xl shadow-slate-300/40'
         }`}>
           <div>
-            <span className={`px-2.5 py-0.5 rounded text-[11px] font-semibold uppercase tracking-wider font-body border ${
+            <span className={`px-2.5 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider font-body border ${
               isDark 
                 ? 'bg-white/[0.06] border-white/[0.08] text-neutral-200' 
-                : 'bg-slate-100 border-slate-200 text-slate-800'
+                : 'bg-slate-100 border-slate-300 text-slate-900'
             }`}>
               An Toàn & Tiện Ích
             </span>
-            <h3 className={`font-display text-2xl sm:text-3xl font-bold mt-4 leading-snug ${
-              isDark ? 'text-white' : 'text-slate-900'
+            <h3 className={`font-display text-2xl sm:text-3xl font-extrabold mt-4 leading-snug ${
+              isDark ? 'text-white' : 'text-slate-950'
             }`}>
               Trải Nghiệm Tiện Nghi Đỉnh Cao
             </h3>
             <p className={`mt-3 text-xs sm:text-sm leading-relaxed font-body ${
-              isDark ? 'text-neutral-300' : 'text-slate-600'
+              isDark ? 'text-neutral-300' : 'text-slate-800 font-medium'
             }`}>
               Mỗi tính năng trên Honda SH350i được chế tác nhằm nâng cao sự an tâm, bảo đảm kiểm soát tối đa trong mọi hành trình di chuyển đô thị hiện đại.
             </p>
           </div>
 
           <div className={`mt-8 pt-6 border-t flex items-center justify-between text-xs font-body ${
-            isDark ? 'border-white/[0.08] text-neutral-400' : 'border-slate-200 text-slate-500'
+            isDark ? 'border-white/[0.08] text-neutral-400' : 'border-slate-300 text-slate-700'
           }`}>
-            <span className={`flex items-center gap-1.5 font-medium ${
-              isDark ? 'text-neutral-300' : 'text-slate-700'
+            <span className={`flex items-center gap-1.5 font-semibold ${
+              isDark ? 'text-neutral-300' : 'text-slate-800'
             }`}>
               Cuộn ngang để xem chi tiết
             </span>
-            <ChevronRight size={16} className={isDark ? 'text-neutral-400' : 'text-slate-500'} />
+            <ChevronRight size={16} className={isDark ? 'text-neutral-400' : 'text-slate-700'} />
           </div>
         </div>
 
@@ -210,7 +210,7 @@ export default function TechFeaturesSection() {
               className={`w-[320px] sm:w-[420px] lg:w-[450px] shrink-0 rounded-3xl overflow-hidden group transition-all duration-500 ${
                 isDark 
                   ? 'glass-panel border border-white/[0.08] hover:border-white/20 shadow-2xl' 
-                  : 'bg-white border border-slate-200/90 hover:border-slate-300 shadow-xl shadow-slate-200/50'
+                  : 'bg-white border border-slate-300 hover:border-slate-400 shadow-xl shadow-slate-300/40'
               }`}
             >
               {/* Image Frame */}
@@ -235,27 +235,27 @@ export default function TechFeaturesSection() {
 
               {/* Content Body */}
               <div className="p-6 sm:p-7">
-                <span className={`text-xs font-medium font-body ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>{item.sub}</span>
-                <h4 className={`font-display text-xl sm:text-2xl font-bold mt-1 transition-colors ${
-                  isDark ? 'text-white group-hover:text-neutral-100' : 'text-slate-900 group-hover:text-red-600'
+                <span className={`text-xs font-semibold font-body ${isDark ? 'text-neutral-400' : 'text-slate-700'}`}>{item.sub}</span>
+                <h4 className={`font-display text-xl sm:text-2xl font-extrabold mt-1 transition-colors ${
+                  isDark ? 'text-white group-hover:text-neutral-100' : 'text-slate-950 group-hover:text-red-600'
                 }`}>
                   {item.title}
                 </h4>
                 <p className={`mt-2.5 text-xs sm:text-sm leading-relaxed line-clamp-3 font-body ${
-                  isDark ? 'text-neutral-300' : 'text-slate-600'
+                  isDark ? 'text-neutral-300' : 'text-slate-800 font-medium'
                 }`}>
                   {item.desc}
                 </p>
 
                 {/* Metrics Breakdown */}
                 <div className={`mt-5 pt-4 border-t grid grid-cols-3 gap-2 ${
-                  isDark ? 'border-white/[0.08]' : 'border-slate-100'
+                  isDark ? 'border-white/[0.08]' : 'border-slate-200'
                 }`}>
                   {item.metrics.map((m, i) => (
                     <div key={i} className="flex flex-col">
-                      <span className={`text-[10px] truncate font-body ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>{m.label}</span>
-                      <span className={`text-xs font-semibold mt-0.5 truncate font-display ${
-                        isDark ? 'text-white' : 'text-slate-900'
+                      <span className={`text-[10px] truncate font-body font-medium ${isDark ? 'text-neutral-400' : 'text-slate-700'}`}>{m.label}</span>
+                      <span className={`text-xs font-bold mt-0.5 truncate font-display ${
+                        isDark ? 'text-white' : 'text-slate-950'
                       }`}>
                         {m.val}
                       </span>
