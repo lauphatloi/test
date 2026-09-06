@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { soundFx } from '../utils/audio';
 import { Check, DollarSign, Calculator, Sparkles, ArrowRight, ShieldCheck, HelpCircle } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -81,6 +82,7 @@ export default function PricingSection({ onOpenTestRide }) {
   const [downPercent, setDownPercent] = useState(30);
   const [loanMonths, setLoanMonths] = useState(12);
   const [selectedPackage, setSelectedPackage] = useState(0);
+  const { isDark } = useTheme();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -144,25 +146,37 @@ export default function PricingSection({ onOpenTestRide }) {
     <section 
       id="pricing" 
       ref={containerRef} 
-      className="relative w-full min-h-screen bg-[#030509] py-24 sm:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className={`relative w-full min-h-screen py-24 sm:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden transition-colors duration-500 ${
+        isDark ? 'bg-[#030509] text-white' : 'bg-white text-slate-900'
+      }`}
     >
       {/* Background Lighting - Subtle executive ambience */}
-      <div className="absolute inset-0 bg-tech-grid opacity-10 pointer-events-none" />
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-slate-700/10 rounded-full blur-[180px] pointer-events-none" />
+      <div className={`absolute inset-0 bg-tech-grid pointer-events-none ${isDark ? 'opacity-10' : 'opacity-[0.03]'}`} />
+      <div className={`absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full blur-[180px] pointer-events-none ${
+        isDark ? 'bg-slate-700/10' : 'bg-red-500/5'
+      }`} />
 
       <div className="relative max-w-7xl mx-auto z-10">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-neutral-300 text-[11px] font-semibold tracking-[0.2em] uppercase mb-4 font-body">
-            <DollarSign size={13} className="text-neutral-400" />
+          <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-semibold tracking-[0.2em] uppercase mb-4 font-body border transition-colors ${
+            isDark 
+              ? 'bg-white/[0.04] border-white/[0.08] text-neutral-300' 
+              : 'bg-slate-100 border-slate-200 text-slate-700'
+          }`}>
+            <DollarSign size={13} className={isDark ? 'text-neutral-400' : 'text-slate-500'} />
             HONDA FINANCIAL SERVICES • CHÍNH SÁCH BÁN HÀNG
           </div>
 
-          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight uppercase">
+          <h2 className={`font-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight uppercase ${
+            isDark ? 'text-white' : 'text-slate-950'
+          }`}>
             BẢNG GIÁ & <span className="text-gradient-platinum">DỰ TOÁN TRẢ GÓP</span>
           </h2>
-          <p className="mt-3 text-xs sm:text-sm text-neutral-400 leading-relaxed font-body">
+          <p className={`mt-3 text-xs sm:text-sm leading-relaxed font-body ${
+            isDark ? 'text-neutral-400' : 'text-slate-600'
+          }`}>
             Sở hữu Honda SH350i với các giải pháp tài chính linh hoạt, thủ tục tinh gọn và minh bạch từ hệ thống Honda HEAD trên toàn quốc.
           </p>
         </div>
@@ -178,13 +192,15 @@ export default function PricingSection({ onOpenTestRide }) {
                 onClick={() => { soundFx.playClick(); setSelectedEdition(idx); }}
                 className={`relative rounded-3xl transition-all duration-500 cursor-pointer flex flex-col justify-between p-6 sm:p-8 backdrop-blur-xl border ${
                   edition.popular 
-                    ? 'glass-panel-glow border-white/20 shadow-xl md:-translate-y-2' 
-                    : 'glass-panel border-white/[0.08] hover:border-white/20 hover:-translate-y-1'
-                } ${isSelected ? 'ring-1 ring-white/40' : ''}`}
+                    ? (isDark ? 'glass-panel-glow border-white/20 shadow-xl md:-translate-y-2' : 'bg-white border-red-500 shadow-2xl shadow-red-100 ring-2 ring-red-500 md:-translate-y-2')
+                    : (isDark ? 'glass-panel border-white/[0.08] hover:border-white/20 hover:-translate-y-1' : 'bg-slate-50 border-slate-200 hover:border-slate-300 hover:shadow-lg hover:-translate-y-1')
+                } ${isSelected ? (isDark ? 'ring-1 ring-white/40' : 'ring-2 ring-slate-900/20') : ''}`}
               >
                 {/* Popular Highlight Badge */}
                 {edition.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3.5 py-0.5 rounded-full bg-white text-black text-[10px] font-bold uppercase tracking-wider shadow-md flex items-center gap-1.5 font-body">
+                  <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-md flex items-center gap-1.5 font-body ${
+                    isDark ? 'bg-white text-black' : 'bg-red-600 text-white'
+                  }`}>
                     <Sparkles size={11} /> {edition.badge}
                   </div>
                 )}
@@ -192,7 +208,9 @@ export default function PricingSection({ onOpenTestRide }) {
                 <div>
                   {/* Top Category */}
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-400 font-body">
+                    <span className={`text-[11px] font-semibold uppercase tracking-wider font-body ${
+                      isDark ? 'text-neutral-400' : 'text-slate-500'
+                    }`}>
                       {edition.sub}
                     </span>
                     <span 
@@ -202,38 +220,60 @@ export default function PricingSection({ onOpenTestRide }) {
                   </div>
 
                   {/* Edition Name */}
-                  <h3 className="font-display text-2xl font-bold text-white mt-2">
+                  <h3 className={`font-display text-2xl font-bold mt-2 ${
+                    isDark ? 'text-white' : 'text-slate-950'
+                  }`}>
                     {edition.name}
                   </h3>
 
                   {/* Color Options Available */}
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {edition.colors.map((c, i) => (
-                      <span key={i} className="text-[11px] px-2.5 py-0.5 rounded bg-white/[0.04] text-neutral-300 border border-white/[0.06] font-body">
+                      <span key={i} className={`text-[11px] px-2.5 py-0.5 rounded font-body border ${
+                        isDark 
+                          ? 'bg-white/[0.04] text-neutral-300 border-white/[0.06]' 
+                          : 'bg-white text-slate-700 border-slate-200 shadow-xs'
+                      }`}>
                         {c}
                       </span>
                     ))}
                   </div>
 
                   {/* Price Tag */}
-                  <div className="mt-6 pt-6 border-t border-white/[0.08]">
-                    <span className="text-[10px] text-neutral-400 uppercase font-semibold font-body">Giá Bán Lẻ Đề Xuất</span>
+                  <div className={`mt-6 pt-6 border-t ${
+                    isDark ? 'border-white/[0.08]' : 'border-slate-200'
+                  }`}>
+                    <span className={`text-[10px] uppercase font-semibold font-body ${
+                      isDark ? 'text-neutral-400' : 'text-slate-500'
+                    }`}>Giá Bán Lẻ Đề Xuất</span>
                     <div className="flex items-baseline gap-1 mt-1">
-                      <span className="font-display text-3xl sm:text-4xl font-bold text-white tracking-tight">
+                      <span className={`font-display text-3xl sm:text-4xl font-bold tracking-tight ${
+                        isDark ? 'text-white' : 'text-slate-950'
+                      }`}>
                         {edition.priceFormatted}
                       </span>
-                      <span className="text-xs font-semibold text-neutral-400 font-body">VNĐ</span>
+                      <span className={`text-xs font-semibold font-body ${
+                        isDark ? 'text-neutral-400' : 'text-slate-500'
+                      }`}>VNĐ</span>
                     </div>
-                    <span className="block text-[11px] text-neutral-400 mt-0.5 font-body">
+                    <span className={`block text-[11px] mt-0.5 font-body ${
+                      isDark ? 'text-neutral-400' : 'text-slate-500'
+                    }`}>
                       Đã bao gồm VAT 10%
                     </span>
                   </div>
 
                   {/* Feature Checklist */}
-                  <div className="mt-6 space-y-2.5 pt-4 border-t border-white/[0.08]">
+                  <div className={`mt-6 space-y-2.5 pt-4 border-t ${
+                    isDark ? 'border-white/[0.08]' : 'border-slate-200'
+                  }`}>
                     {edition.features.map((feat, i) => (
-                      <div key={i} className="flex items-start gap-2.5 text-xs text-neutral-300 font-body">
-                        <Check size={13} className="text-white/80 shrink-0 mt-0.5" />
+                      <div key={i} className={`flex items-start gap-2.5 text-xs font-body ${
+                        isDark ? 'text-neutral-300' : 'text-slate-700'
+                      }`}>
+                        <Check size={13} className={`shrink-0 mt-0.5 ${
+                          isDark ? 'text-white/80' : 'text-red-600'
+                        }`} />
                         <span>{feat}</span>
                       </div>
                     ))}
@@ -251,7 +291,9 @@ export default function PricingSection({ onOpenTestRide }) {
                     className={`w-full py-3 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer font-display ${
                       edition.popular
                         ? 'honda-red-btn'
-                        : 'bg-white/[0.06] text-white hover:bg-white/[0.1] border border-white/10'
+                        : (isDark 
+                            ? 'bg-white/[0.06] text-white hover:bg-white/[0.1] border border-white/10' 
+                            : 'bg-slate-900 text-white hover:bg-slate-800 border border-slate-900')
                     }`}
                   >
                     <span>Đăng Ký Đặt Xe</span>
@@ -267,22 +309,32 @@ export default function PricingSection({ onOpenTestRide }) {
         {/* Real-time Interactive Installment Calculator Box */}
         <div 
           ref={calcRef}
-          className="glass-panel rounded-3xl border border-white/15 p-6 sm:p-10 backdrop-blur-2xl shadow-2xl"
+          className={`rounded-3xl p-6 sm:p-10 backdrop-blur-2xl transition-all duration-300 ${
+            isDark 
+              ? 'glass-panel border border-white/15 shadow-2xl' 
+              : 'bg-slate-50 border border-slate-200 shadow-xl'
+          }`}
         >
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
+          <div className={`flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b ${
+            isDark ? 'border-white/10' : 'border-slate-200'
+          }`}>
             <div>
-              <div className="flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-red-400 mb-1">
+              <div className="flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-red-500 mb-1">
                 <Calculator size={16} /> BỘ CÔNG CỤ TÍNH TRẢ GÓP TỰ ĐỘNG
               </div>
-              <h3 className="font-display text-2xl sm:text-3xl font-bold text-white">
+              <h3 className={`font-display text-2xl sm:text-3xl font-bold ${
+                isDark ? 'text-white' : 'text-slate-950'
+              }`}>
                 Dự Toán Chi Phí Hàng Tháng
               </h3>
             </div>
 
             {/* Selected Bike Pill */}
-            <div className="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-2xl border border-white/10">
-              <span className="text-xs text-neutral-400">Đang chọn:</span>
-              <span className="text-xs font-bold text-white font-display">
+            <div className={`flex items-center gap-3 px-4 py-2 rounded-2xl border ${
+              isDark ? 'bg-white/5 border-white/10' : 'bg-white border-slate-200 shadow-sm'
+            }`}>
+              <span className={`text-xs ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>Đang chọn:</span>
+              <span className={`text-xs font-bold font-display ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 {EDITIONS[selectedEdition].name}
               </span>
             </div>
@@ -296,10 +348,10 @@ export default function PricingSection({ onOpenTestRide }) {
               {/* Down Payment Slider */}
               <div>
                 <div className="flex items-center justify-between mb-2 text-xs">
-                  <span className="font-semibold text-neutral-300">Tỷ Lệ Trả Trước:</span>
+                  <span className={`font-semibold ${isDark ? 'text-neutral-300' : 'text-slate-700'}`}>Tỷ Lệ Trả Trước:</span>
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-amber-400 font-mono text-sm">{downPercent}%</span>
-                    <span className="text-neutral-400">({formatVND(downPayment)})</span>
+                    <span className="font-bold text-amber-500 font-mono text-sm">{downPercent}%</span>
+                    <span className={isDark ? 'text-neutral-400' : 'text-slate-500'}>({formatVND(downPayment)})</span>
                   </div>
                 </div>
                 <input
@@ -309,9 +361,13 @@ export default function PricingSection({ onOpenTestRide }) {
                   step="5"
                   value={downPercent}
                   onChange={(e) => setDownPercent(Number(e.target.value))}
-                  className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-red-500"
+                  className={`w-full h-2 rounded-lg appearance-none cursor-pointer accent-red-600 ${
+                    isDark ? 'bg-white/10' : 'bg-slate-200'
+                  }`}
                 />
-                <div className="flex justify-between text-[10px] text-neutral-400 mt-1 font-mono">
+                <div className={`flex justify-between text-[10px] mt-1 font-mono ${
+                  isDark ? 'text-neutral-400' : 'text-slate-500'
+                }`}>
                   <span>20% (Tối thiểu)</span>
                   <span>40%</span>
                   <span>60%</span>
@@ -321,7 +377,9 @@ export default function PricingSection({ onOpenTestRide }) {
 
               {/* Loan Term Selector */}
               <div>
-                <span className="block text-xs font-semibold text-neutral-300 mb-2">
+                <span className={`block text-xs font-semibold mb-2 ${
+                  isDark ? 'text-neutral-300' : 'text-slate-700'
+                }`}>
                   Thời Gian Vay:
                 </span>
                 <div className="grid grid-cols-5 gap-2">
@@ -332,7 +390,7 @@ export default function PricingSection({ onOpenTestRide }) {
                       className={`py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                         loanMonths === months
                           ? 'bg-red-600 text-white shadow-lg shadow-red-600/40'
-                          : 'bg-white/5 text-neutral-300 hover:bg-white/10'
+                          : (isDark ? 'bg-white/5 text-neutral-300 hover:bg-white/10' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100')
                       }`}
                     >
                       {months} tháng
@@ -343,7 +401,9 @@ export default function PricingSection({ onOpenTestRide }) {
 
               {/* Finance Partner Option */}
               <div>
-                <span className="block text-xs font-semibold text-neutral-300 mb-2">
+                <span className={`block text-xs font-semibold mb-2 ${
+                  isDark ? 'text-neutral-300' : 'text-slate-700'
+                }`}>
                   Chương Trình Lãi Suất Ưu Đãi:
                 </span>
                 <div className="space-y-2">
@@ -353,16 +413,22 @@ export default function PricingSection({ onOpenTestRide }) {
                       onClick={() => { soundFx.playClick(); setSelectedPackage(idx); }}
                       className={`p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${
                         selectedPackage === idx
-                          ? 'border-red-500 bg-red-500/10'
-                          : 'border-white/10 bg-white/[0.02] hover:border-white/20'
+                          ? (isDark ? 'border-red-500 bg-red-500/10' : 'border-red-500 bg-red-50')
+                          : (isDark ? 'border-white/10 bg-white/[0.02] hover:border-white/20' : 'border-slate-200 bg-white hover:border-slate-300')
                       }`}
                     >
                       <div>
-                        <span className="text-xs font-bold text-white block">{pkg.name}</span>
-                        <span className="text-[11px] text-neutral-400">{pkg.desc}</span>
+                        <span className={`text-xs font-bold block ${
+                          isDark ? 'text-white' : 'text-slate-900'
+                        }`}>{pkg.name}</span>
+                        <span className={`text-[11px] ${
+                          isDark ? 'text-neutral-400' : 'text-slate-500'
+                        }`}>{pkg.desc}</span>
                       </div>
                       <span className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                        selectedPackage === idx ? 'border-red-500 bg-red-500' : 'border-white/30'
+                        selectedPackage === idx 
+                          ? 'border-red-500 bg-red-500' 
+                          : (isDark ? 'border-white/30' : 'border-slate-300')
                       }`}>
                         {selectedPackage === idx && <Check size={10} className="text-white" />}
                       </span>
@@ -374,46 +440,58 @@ export default function PricingSection({ onOpenTestRide }) {
             </div>
 
             {/* Right Summary Table (5 Cols) */}
-            <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-black/50 border border-white/10">
+            <div className={`lg:col-span-5 flex flex-col justify-between p-6 sm:p-8 rounded-2xl border ${
+              isDark ? 'bg-black/50 border-white/10' : 'bg-white border-slate-200 shadow-md'
+            }`}>
               <div className="space-y-4">
-                <span className="text-xs font-bold uppercase tracking-wider text-neutral-400 block pb-2 border-b border-white/10">
+                <span className={`text-xs font-bold uppercase tracking-wider block pb-2 border-b ${
+                  isDark ? 'border-white/10 text-neutral-400' : 'border-slate-200 text-slate-500'
+                }`}>
                   Chi Tiết Khoản Thanh Toán
                 </span>
 
                 <div className="flex justify-between text-xs">
-                  <span className="text-neutral-400">Giá trị xe niêm yết:</span>
-                  <span className="font-semibold text-white">{formatVND(basePrice)}</span>
+                  <span className={isDark ? 'text-neutral-400' : 'text-slate-600'}>Giá trị xe niêm yết:</span>
+                  <span className={`font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>{formatVND(basePrice)}</span>
                 </div>
 
                 <div className="flex justify-between text-xs">
-                  <span className="text-neutral-400">Số tiền trả trước ({downPercent}%):</span>
-                  <span className="font-semibold text-amber-400">{formatVND(downPayment)}</span>
+                  <span className={isDark ? 'text-neutral-400' : 'text-slate-600'}>Số tiền trả trước ({downPercent}%):</span>
+                  <span className="font-semibold text-amber-500">{formatVND(downPayment)}</span>
                 </div>
 
                 <div className="flex justify-between text-xs">
-                  <span className="text-neutral-400">Số tiền vay còn lại:</span>
-                  <span className="font-semibold text-white">{formatVND(loanAmount)}</span>
+                  <span className={isDark ? 'text-neutral-400' : 'text-slate-600'}>Số tiền vay còn lại:</span>
+                  <span className={`font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>{formatVND(loanAmount)}</span>
                 </div>
 
                 <div className="flex justify-between text-xs">
-                  <span className="text-neutral-400">Tiền gốc hàng tháng:</span>
-                  <span className="font-semibold text-white">{formatVND(monthlyPrincipal)}</span>
+                  <span className={isDark ? 'text-neutral-400' : 'text-slate-600'}>Tiền gốc hàng tháng:</span>
+                  <span className={`font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>{formatVND(monthlyPrincipal)}</span>
                 </div>
 
                 <div className="flex justify-between text-xs">
-                  <span className="text-neutral-400">Tiền lãi ước tính hàng tháng:</span>
-                  <span className="font-semibold text-white">{formatVND(monthlyInterest)}</span>
+                  <span className={isDark ? 'text-neutral-400' : 'text-slate-600'}>Tiền lãi ước tính hàng tháng:</span>
+                  <span className={`font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>{formatVND(monthlyInterest)}</span>
                 </div>
               </div>
 
               {/* Total Monthly Payment Big Box */}
-              <div className="mt-6 pt-6 border-t border-white/[0.08]">
-                <span className="text-[10px] uppercase font-semibold text-neutral-400 block font-body">
+              <div className={`mt-6 pt-6 border-t ${
+                isDark ? 'border-white/[0.08]' : 'border-slate-200'
+              }`}>
+                <span className={`text-[10px] uppercase font-semibold block font-body ${
+                  isDark ? 'text-neutral-400' : 'text-slate-500'
+                }`}>
                   Tổng Trả Góp Ước Tính Hàng Tháng
                 </span>
-                <div className="font-display text-3xl sm:text-4xl font-bold text-gradient-platinum mt-1">
+                <div className={`font-display text-3xl sm:text-4xl font-bold mt-1 ${
+                  isDark ? 'text-gradient-platinum' : 'text-slate-950'
+                }`}>
                   {formatVND(totalMonthly)}
-                  <span className="text-xs font-normal text-neutral-400 ml-1 font-body">/tháng</span>
+                  <span className={`text-xs font-normal ml-1 font-body ${
+                    isDark ? 'text-neutral-400' : 'text-slate-500'
+                  }`}>/tháng</span>
                 </div>
 
                 <button

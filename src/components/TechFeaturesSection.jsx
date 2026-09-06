@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { soundFx } from '../utils/audio';
 import { ShieldCheck, Key, Box, BatteryCharging, ChevronLeft, ChevronRight, Check, Sparkles } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -69,6 +70,7 @@ export default function TechFeaturesSection() {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
   const cardRefs = useRef([]);
+  const { isDark } = useTheme();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -123,24 +125,34 @@ export default function TechFeaturesSection() {
     <section 
       id="technology" 
       ref={sectionRef}
-      className="relative w-full h-screen bg-[#05070c] overflow-hidden select-none flex flex-col justify-center"
+      className={`relative w-full h-screen overflow-hidden select-none flex flex-col justify-center transition-colors duration-500 ${
+        isDark ? 'bg-[#05070c]' : 'bg-[#f1f5f9]'
+      }`}
     >
       {/* Ambient background glows - Refined calm slate */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-slate-700/10 rounded-full blur-[160px]" />
-        <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-slate-600/10 rounded-full blur-[160px]" />
-        <div className="absolute inset-0 bg-tech-grid opacity-10" />
+        <div className={`absolute top-1/3 left-1/4 w-96 h-96 rounded-full blur-[160px] ${
+          isDark ? 'bg-slate-700/10' : 'bg-red-500/5'
+        }`} />
+        <div className={`absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full blur-[160px] ${
+          isDark ? 'bg-slate-600/10' : 'bg-slate-300/30'
+        }`} />
+        <div className={`absolute inset-0 bg-tech-grid ${isDark ? 'opacity-10' : 'opacity-[0.03]'}`} />
       </div>
 
       {/* Top Header Tag */}
       <div className="absolute top-8 sm:top-12 left-6 sm:left-12 lg:left-16 z-20">
         <div className="flex items-center gap-3">
           <span className="w-6 h-[2px] bg-red-600" />
-          <span className="text-[10px] sm:text-[11px] font-semibold tracking-[0.25em] uppercase text-neutral-400 font-body">
+          <span className={`text-[10px] sm:text-[11px] font-semibold tracking-[0.25em] uppercase font-body ${
+            isDark ? 'text-neutral-400' : 'text-slate-600'
+          }`}>
             CÔNG NGHỆ THÔNG MINH & AN TOÀN CHỦ ĐỘNG
           </span>
         </div>
-        <h2 className="font-display text-2xl sm:text-4xl font-bold text-white tracking-tight mt-2">
+        <h2 className={`font-display text-2xl sm:text-4xl font-bold tracking-tight mt-2 ${
+          isDark ? 'text-white' : 'text-slate-900'
+        }`}>
           GIẢI PHÁP TIÊN PHONG <span className="text-gradient-platinum">TỪ HONDA</span>
         </h2>
       </div>
@@ -151,24 +163,40 @@ export default function TechFeaturesSection() {
         className="flex items-center gap-6 sm:gap-8 px-6 sm:px-12 lg:px-16 w-max pt-20 pb-8 will-change-transform"
       >
         {/* First Introductory Teaser Column */}
-        <div className="w-[300px] sm:w-[360px] shrink-0 glass-panel p-8 rounded-3xl border border-white/[0.08] flex flex-col justify-between">
+        <div className={`w-[300px] sm:w-[360px] shrink-0 p-8 rounded-3xl flex flex-col justify-between transition-all duration-300 ${
+          isDark 
+            ? 'glass-panel border border-white/[0.08]' 
+            : 'bg-white border border-slate-200/90 shadow-xl shadow-slate-200/50'
+        }`}>
           <div>
-            <span className="px-2.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-neutral-200 text-[11px] font-semibold uppercase tracking-wider font-body">
+            <span className={`px-2.5 py-0.5 rounded text-[11px] font-semibold uppercase tracking-wider font-body border ${
+              isDark 
+                ? 'bg-white/[0.06] border-white/[0.08] text-neutral-200' 
+                : 'bg-slate-100 border-slate-200 text-slate-800'
+            }`}>
               An Toàn & Tiện Ích
             </span>
-            <h3 className="font-display text-2xl sm:text-3xl font-bold text-white mt-4 leading-snug">
+            <h3 className={`font-display text-2xl sm:text-3xl font-bold mt-4 leading-snug ${
+              isDark ? 'text-white' : 'text-slate-900'
+            }`}>
               Trải Nghiệm Tiện Nghi Đỉnh Cao
             </h3>
-            <p className="mt-3 text-xs sm:text-sm text-neutral-300 leading-relaxed font-body">
+            <p className={`mt-3 text-xs sm:text-sm leading-relaxed font-body ${
+              isDark ? 'text-neutral-300' : 'text-slate-600'
+            }`}>
               Mỗi tính năng trên Honda SH350i được chế tác nhằm nâng cao sự an tâm, bảo đảm kiểm soát tối đa trong mọi hành trình di chuyển đô thị hiện đại.
             </p>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-white/[0.08] flex items-center justify-between text-xs text-neutral-400 font-body">
-            <span className="flex items-center gap-1.5 text-neutral-300 font-medium">
+          <div className={`mt-8 pt-6 border-t flex items-center justify-between text-xs font-body ${
+            isDark ? 'border-white/[0.08] text-neutral-400' : 'border-slate-200 text-slate-500'
+          }`}>
+            <span className={`flex items-center gap-1.5 font-medium ${
+              isDark ? 'text-neutral-300' : 'text-slate-700'
+            }`}>
               Cuộn ngang để xem chi tiết
             </span>
-            <ChevronRight size={16} className="text-neutral-400" />
+            <ChevronRight size={16} className={isDark ? 'text-neutral-400' : 'text-slate-500'} />
           </div>
         </div>
 
@@ -179,7 +207,11 @@ export default function TechFeaturesSection() {
             <div
               key={item.id}
               ref={(el) => (cardRefs.current[idx] = el)}
-              className="w-[320px] sm:w-[420px] lg:w-[450px] shrink-0 glass-panel rounded-3xl border border-white/[0.08] overflow-hidden shadow-2xl group hover:border-white/20 transition-all duration-500"
+              className={`w-[320px] sm:w-[420px] lg:w-[450px] shrink-0 rounded-3xl overflow-hidden group transition-all duration-500 ${
+                isDark 
+                  ? 'glass-panel border border-white/[0.08] hover:border-white/20 shadow-2xl' 
+                  : 'bg-white border border-slate-200/90 hover:border-slate-300 shadow-xl shadow-slate-200/50'
+              }`}
             >
               {/* Image Frame */}
               <div className="relative w-full h-[220px] sm:h-[260px] overflow-hidden">
@@ -188,35 +220,43 @@ export default function TechFeaturesSection() {
                   alt={item.title}
                   className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0f131a] via-transparent to-black/40" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/30" />
 
                 {/* Tag Badge */}
-                <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/[0.08] text-[10px] font-semibold text-neutral-200 font-body">
+                <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/[0.1] text-[10px] font-semibold text-neutral-200 font-body">
                   <IconComp size={13} className="text-white" />
                   <span>{item.tag}</span>
                 </div>
 
-                <div className="absolute top-4 right-4 text-[11px] font-mono text-neutral-400 bg-black/60 px-2.5 py-0.5 rounded border border-white/[0.08]">
+                <div className="absolute top-4 right-4 text-[11px] font-mono text-neutral-300 bg-black/60 px-2.5 py-0.5 rounded border border-white/[0.1]">
                   0{idx + 1}
                 </div>
               </div>
 
               {/* Content Body */}
               <div className="p-6 sm:p-7">
-                <span className="text-xs text-neutral-400 font-medium font-body">{item.sub}</span>
-                <h4 className="font-display text-xl sm:text-2xl font-bold text-white mt-1 group-hover:text-neutral-100 transition-colors">
+                <span className={`text-xs font-medium font-body ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>{item.sub}</span>
+                <h4 className={`font-display text-xl sm:text-2xl font-bold mt-1 transition-colors ${
+                  isDark ? 'text-white group-hover:text-neutral-100' : 'text-slate-900 group-hover:text-red-600'
+                }`}>
                   {item.title}
                 </h4>
-                <p className="mt-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed line-clamp-3 font-body">
+                <p className={`mt-2.5 text-xs sm:text-sm leading-relaxed line-clamp-3 font-body ${
+                  isDark ? 'text-neutral-300' : 'text-slate-600'
+                }`}>
                   {item.desc}
                 </p>
 
                 {/* Metrics Breakdown */}
-                <div className="mt-5 pt-4 border-t border-white/[0.08] grid grid-cols-3 gap-2">
+                <div className={`mt-5 pt-4 border-t grid grid-cols-3 gap-2 ${
+                  isDark ? 'border-white/[0.08]' : 'border-slate-100'
+                }`}>
                   {item.metrics.map((m, i) => (
                     <div key={i} className="flex flex-col">
-                      <span className="text-[10px] text-neutral-400 truncate font-body">{m.label}</span>
-                      <span className="text-xs font-semibold text-white mt-0.5 truncate font-display">
+                      <span className={`text-[10px] truncate font-body ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>{m.label}</span>
+                      <span className={`text-xs font-semibold mt-0.5 truncate font-display ${
+                        isDark ? 'text-white' : 'text-slate-900'
+                      }`}>
                         {m.val}
                       </span>
                     </div>
@@ -228,14 +268,20 @@ export default function TechFeaturesSection() {
         })}
 
         {/* End Runway Banner */}
-        <div className="w-[280px] sm:w-[300px] shrink-0 glass-panel p-8 rounded-3xl border border-white/[0.08] flex flex-col items-center justify-center text-center">
-          <div className="w-10 h-10 rounded-full bg-white/[0.05] text-white flex items-center justify-center mb-4 border border-white/10">
+        <div className={`w-[280px] sm:w-[300px] shrink-0 p-8 rounded-3xl flex flex-col items-center justify-center text-center transition-all ${
+          isDark 
+            ? 'glass-panel border border-white/[0.08]' 
+            : 'bg-white border border-slate-200/90 shadow-xl'
+        }`}>
+          <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-4 border ${
+            isDark ? 'bg-white/[0.05] text-white border-white/10' : 'bg-red-50 text-red-600 border-red-100'
+          }`}>
             <Sparkles size={18} />
           </div>
-          <h4 className="font-display text-xl font-bold text-white">
+          <h4 className={`font-display text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
             Chuẩn Mực Toàn Diện
           </h4>
-          <p className="mt-2 text-xs text-neutral-400 font-body">
+          <p className={`mt-2 text-xs font-body ${isDark ? 'text-neutral-400' : 'text-slate-600'}`}>
             Thiết kế vì người lái, khẳng định vị thế dẫn đầu phân khúc xe ga cao cấp.
           </p>
         </div>

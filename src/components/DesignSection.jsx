@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { soundFx } from '../utils/audio';
 import { Sparkles, Eye, Compass, Shield, ChevronRight, Layers } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -58,6 +59,7 @@ export default function DesignSection() {
   const visualContainerRef = useRef(null);
   const cardsRef = useRef([]);
   const [activeStep, setActiveStep] = useState(0);
+  const { isDark } = useTheme();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -140,19 +142,27 @@ export default function DesignSection() {
     <section 
       id="design" 
       ref={sectionRef} 
-      className="relative w-full h-screen bg-[#07090e] overflow-hidden select-none"
+      className={`relative w-full h-screen overflow-hidden select-none transition-colors duration-500 ${
+        isDark ? 'bg-[#07090e]' : 'bg-[#f8fafc]'
+      }`}
     >
       {/* Background ambient lighting - Soft executive tones */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 -left-48 w-96 h-96 bg-slate-700/10 rounded-full blur-[140px]" />
-        <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-slate-600/10 rounded-full blur-[140px]" />
-        <div className="absolute inset-0 bg-tech-grid opacity-10" />
+        <div className={`absolute top-1/4 -left-48 w-96 h-96 rounded-full blur-[140px] ${
+          isDark ? 'bg-slate-700/10' : 'bg-red-500/5'
+        }`} />
+        <div className={`absolute bottom-1/4 -right-48 w-96 h-96 rounded-full blur-[140px] ${
+          isDark ? 'bg-slate-600/10' : 'bg-slate-300/30'
+        }`} />
+        <div className={`absolute inset-0 bg-tech-grid ${isDark ? 'opacity-10' : 'opacity-[0.03]'}`} />
       </div>
 
       {/* Floating Section Header Tag */}
       <div className="absolute top-8 sm:top-12 left-6 sm:left-12 lg:left-16 z-30 flex items-center gap-3">
         <span className="w-6 h-[2px] bg-red-600" />
-        <span className="text-[10px] sm:text-[11px] font-semibold tracking-[0.25em] uppercase text-neutral-400 font-body">
+        <span className={`text-[10px] sm:text-[11px] font-semibold tracking-[0.25em] uppercase font-body ${
+          isDark ? 'text-neutral-400' : 'text-slate-600'
+        }`}>
           NGÔN NGỮ THIẾT KẾ CHÂU ÂU • KHÍ CHẤT THỦ LĨNH
         </span>
       </div>
@@ -166,23 +176,33 @@ export default function DesignSection() {
           className="relative w-full lg:w-[54%] h-[46vh] sm:h-[54vh] lg:h-[72vh] flex items-center justify-center"
         >
           {/* Decorative Framing Ring */}
-          <div className="absolute inset-0 border border-white/[0.07] rounded-3xl pointer-events-none -m-2 sm:-m-4" />
+          <div className={`absolute inset-0 border rounded-3xl pointer-events-none -m-2 sm:-m-4 transition-colors ${
+            isDark ? 'border-white/[0.07]' : 'border-slate-200'
+          }`} />
 
           {/* Cards Stack */}
           {DESIGN_CARDS.map((card, idx) => (
             <div
               key={card.id}
               ref={(el) => (cardsRef.current[idx] = el)}
-              className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden glass-panel border border-white/[0.08] shadow-2xl flex items-center justify-center p-3 sm:p-6"
+              className={`absolute inset-0 w-full h-full rounded-2xl overflow-hidden flex items-center justify-center p-3 sm:p-6 transition-all duration-300 ${
+                isDark 
+                  ? 'glass-panel border border-white/[0.08] shadow-2xl' 
+                  : 'bg-white border border-slate-200/90 shadow-xl shadow-slate-200/50'
+              }`}
             >
               {card.isPng ? (
                 // Transparent PNG Showcase
                 <div className="relative w-full h-full flex items-center justify-center">
-                  <div className="absolute w-[80%] h-12 bottom-6 bg-slate-500/10 rounded-full blur-3xl" />
+                  <div className={`absolute w-[80%] h-12 bottom-6 rounded-full blur-3xl ${
+                    isDark ? 'bg-slate-500/10' : 'bg-slate-300/30'
+                  }`} />
                   <img
                     src={card.image}
                     alt={card.title}
-                    className="max-w-full max-h-full object-contain filter drop-shadow-[0_20px_30px_rgba(0,0,0,0.85)] animate-float-subtle"
+                    className={`max-w-full max-h-full object-contain filter animate-float-subtle ${
+                      isDark ? 'drop-shadow-[0_20px_30px_rgba(0,0,0,0.85)]' : 'drop-shadow-[0_16px_25px_rgba(15,23,42,0.25)]'
+                    }`}
                   />
                 </div>
               ) : (
@@ -195,10 +215,10 @@ export default function DesignSection() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-neutral-300">
-                    <span className="font-mono text-[10px] text-neutral-400 bg-black/60 px-3 py-1 rounded border border-white/[0.08] backdrop-blur-md">
+                    <span className="font-mono text-[10px] text-neutral-300 bg-black/60 px-3 py-1 rounded border border-white/[0.1] backdrop-blur-md">
                       HONDA DESIGN • {card.category.toUpperCase()}
                     </span>
-                    <span className="text-white/80 font-medium text-xs flex items-center gap-1 font-body">
+                    <span className="text-white/90 font-medium text-xs flex items-center gap-1 font-body">
                       SH350i
                     </span>
                   </div>
@@ -219,47 +239,65 @@ export default function DesignSection() {
                 onMouseEnter={() => soundFx.playHover()}
                 className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
                   activeStep === idx 
-                    ? 'w-8 bg-white' 
-                    : 'w-2 bg-white/20 hover:bg-white/40'
+                    ? (isDark ? 'w-8 bg-white' : 'w-8 bg-red-600') 
+                    : (isDark ? 'w-2 bg-white/20 hover:bg-white/40' : 'w-2 bg-slate-300 hover:bg-slate-400')
                 }`}
                 title={`Xem ${item.category}`}
               />
             ))}
-            <span className="ml-3 font-mono text-xs text-neutral-400">
+            <span className={`ml-3 font-mono text-xs ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>
               0{activeStep + 1} / 0{DESIGN_CARDS.length}
             </span>
           </div>
 
           {/* Badge & Category */}
           <div className="flex items-center gap-2 mb-3">
-            <span className="px-2.5 py-0.5 rounded bg-white/[0.06] border border-white/[0.08] text-neutral-200 text-[11px] font-semibold tracking-wider uppercase font-body">
+            <span className={`px-2.5 py-0.5 rounded text-[11px] font-semibold tracking-wider uppercase font-body border ${
+              isDark 
+                ? 'bg-white/[0.06] border-white/[0.08] text-neutral-200' 
+                : 'bg-slate-100 border-slate-200 text-slate-800'
+            }`}>
               {current.category}
             </span>
-            <span className="text-xs text-neutral-400 font-body">
+            <span className={`text-xs font-body ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>
               {current.subtitle}
             </span>
           </div>
 
           {/* Main Headline */}
-          <h3 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-tight transition-all duration-300">
+          <h3 className={`font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight leading-tight transition-all duration-300 ${
+            isDark ? 'text-white' : 'text-slate-900'
+          }`}>
             {current.title}
           </h3>
 
           {/* Description */}
-          <p className="mt-4 text-xs sm:text-sm text-neutral-300 leading-relaxed font-body">
+          <p className={`mt-4 text-xs sm:text-sm leading-relaxed font-body ${
+            isDark ? 'text-neutral-300' : 'text-slate-600'
+          }`}>
             {current.description}
           </p>
 
           {/* Key Engineering Highlight Box */}
-          <div className="mt-6 p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-md flex items-start gap-3.5">
-            <div className="p-2 rounded-lg bg-white/[0.05] text-white shrink-0 mt-0.5">
+          <div className={`mt-6 p-4 rounded-xl backdrop-blur-md flex items-start gap-3.5 border transition-colors ${
+            isDark 
+              ? 'bg-white/[0.03] border-white/[0.08]' 
+              : 'bg-slate-50 border-slate-200 shadow-sm'
+          }`}>
+            <div className={`p-2 rounded-lg shrink-0 mt-0.5 ${
+              isDark ? 'bg-white/[0.05] text-white' : 'bg-red-50 text-red-600'
+            }`}>
               <Compass size={16} />
             </div>
             <div>
-              <span className="block text-[10px] uppercase tracking-wider text-neutral-400 font-semibold font-body">
+              <span className={`block text-[10px] uppercase tracking-wider font-semibold font-body ${
+                isDark ? 'text-neutral-400' : 'text-slate-500'
+              }`}>
                 Chi Tiết Hoàn Thiện
               </span>
-              <p className="text-xs sm:text-sm text-neutral-200 mt-1 font-medium leading-normal font-body">
+              <p className={`text-xs sm:text-sm mt-1 font-medium leading-normal font-body ${
+                isDark ? 'text-neutral-200' : 'text-slate-800'
+              }`}>
                 {current.highlight}
               </p>
             </div>
@@ -273,8 +311,8 @@ export default function DesignSection() {
                 onClick={() => selectStep(idx)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer font-body ${
                   activeStep === idx
-                    ? 'bg-white/15 text-white font-semibold border border-white/20 shadow-sm'
-                    : 'bg-white/[0.03] text-neutral-400 hover:text-white hover:bg-white/[0.06] border border-transparent'
+                    ? (isDark ? 'bg-white/15 text-white font-semibold border border-white/20 shadow-sm' : 'bg-slate-900 text-white font-semibold border border-slate-900 shadow-sm')
+                    : (isDark ? 'bg-white/[0.03] text-neutral-400 hover:text-white hover:bg-white/[0.06] border border-transparent' : 'bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200 border border-transparent')
                 }`}
               >
                 {card.number}. {card.category.split('&')[0]}

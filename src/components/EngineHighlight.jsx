@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { soundFx } from '../utils/audio';
 import { Zap, Flame, Gauge, Shield, Cpu, Activity, Play, CheckCircle2 } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -49,6 +50,7 @@ export default function EngineHighlight() {
   const [rpmVal, setRpmVal] = useState(1200);
   const [isRevving, setIsRevving] = useState(false);
   const [counters, setCounters] = useState([0, 0, 0, 0]);
+  const { isDark } = useTheme();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -166,31 +168,45 @@ export default function EngineHighlight() {
     <section 
       id="engine" 
       ref={containerRef} 
-      className="relative w-full min-h-screen bg-black py-24 sm:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className={`relative w-full min-h-screen py-24 sm:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden transition-colors duration-500 ${
+        isDark ? 'bg-black text-white' : 'bg-white text-slate-900'
+      }`}
     >
       {/* Dynamic Background Grid & Subtle Ambient Glow */}
-      <div className="absolute inset-0 bg-tech-grid opacity-15 pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-slate-700/10 rounded-full blur-[160px] pointer-events-none" />
+      <div className={`absolute inset-0 bg-tech-grid pointer-events-none ${isDark ? 'opacity-15' : 'opacity-[0.03]'}`} />
+      <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full blur-[160px] pointer-events-none ${
+        isDark ? 'bg-slate-700/10' : 'bg-red-500/5'
+      }`} />
       
       {/* Shockwave expanding ring (Clean mechanical pulse on scroll) */}
       <div 
         ref={shockwaveRef}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-white/20 pointer-events-none blur-[1px]"
+        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border pointer-events-none blur-[1px] transition-colors ${
+          isDark ? 'border-white/20' : 'border-slate-300/40'
+        }`}
       />
 
       <div className="relative max-w-7xl mx-auto z-10">
         
         {/* Section Professional Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-neutral-300 text-[11px] font-semibold tracking-[0.2em] uppercase mb-4 font-body">
-            <Cpu size={13} className="text-neutral-400" />
+          <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-semibold tracking-[0.2em] uppercase mb-4 font-body border transition-colors ${
+            isDark 
+              ? 'bg-white/[0.04] border-white/[0.08] text-neutral-300' 
+              : 'bg-slate-100 border-slate-200 text-slate-700'
+          }`}>
+            <Cpu size={13} className={isDark ? 'text-neutral-400' : 'text-slate-500'} />
             CƠ KHÍ CHÍNH XÁC • HONDA ADVANCED POWERTRAIN
           </div>
 
-          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight uppercase">
+          <h2 className={`font-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight uppercase ${
+            isDark ? 'text-white' : 'text-slate-950'
+          }`}>
             ĐỘNG CƠ <span className="text-gradient-platinum">eSP+ 330CC</span> THẾ HỆ MỚI
           </h2>
-          <p className="mt-3 text-xs sm:text-sm text-neutral-400 leading-relaxed max-w-2xl mx-auto font-body">
+          <p className={`mt-3 text-xs sm:text-sm leading-relaxed max-w-2xl mx-auto font-body ${
+            isDark ? 'text-neutral-400' : 'text-slate-600'
+          }`}>
             Sức mạnh bền bỉ, phản hồi ga êm ái và hiệu suất đốt cháy nhiên liệu tối ưu dựa trên triết lý kỹ thuật cơ khí chính xác hàng đầu của Honda.
           </p>
         </div>
@@ -204,16 +220,22 @@ export default function EngineHighlight() {
             {/* Rotating Tech Precision Circle */}
             <div 
               ref={hudCircleRef}
-              className="absolute w-[360px] sm:w-[480px] lg:w-[540px] h-[360px] sm:h-[480px] lg:h-[540px] rounded-full border border-dashed border-white/10 pointer-events-none"
+              className={`absolute w-[360px] sm:w-[480px] lg:w-[540px] h-[360px] sm:h-[480px] lg:h-[540px] rounded-full border border-dashed pointer-events-none transition-colors ${
+                isDark ? 'border-white/10' : 'border-slate-300'
+              }`}
             >
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-white/60 rounded-full" />
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-neutral-400 rounded-full" />
+              <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full ${isDark ? 'bg-white/60' : 'bg-red-500'}`} />
+              <div className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${isDark ? 'bg-neutral-400' : 'bg-slate-400'}`} />
             </div>
 
             {/* The Engine Photograph Container */}
             <div 
               ref={imageFrameRef}
-              className="relative w-full aspect-[16/10] max-h-[480px] rounded-3xl overflow-hidden glass-panel border border-white/[0.1] shadow-2xl group"
+              className={`relative w-full aspect-[16/10] max-h-[480px] rounded-3xl overflow-hidden group transition-all duration-300 ${
+                isDark 
+                  ? 'glass-panel border border-white/[0.1] shadow-2xl' 
+                  : 'bg-white border border-slate-200 shadow-xl shadow-slate-200/50'
+              }`}
             >
               <img 
                 src="./images/dong-co.jpg" 
@@ -260,15 +282,19 @@ export default function EngineHighlight() {
           <div className="lg:col-span-5 flex flex-col justify-center">
             
             {/* Mode Switch Tabs */}
-            <div className="flex items-center gap-1.5 p-1 rounded-xl bg-white/[0.03] border border-white/[0.07] backdrop-blur-md mb-6">
+            <div className={`flex items-center gap-1.5 p-1 rounded-xl backdrop-blur-md mb-6 border transition-colors ${
+              isDark 
+                ? 'bg-white/[0.03] border-white/[0.07]' 
+                : 'bg-slate-100 border-slate-200'
+            }`}>
               {ENGINE_MODES.map((mode, idx) => (
                 <button
                   key={mode.id}
                   onClick={() => { soundFx.playClick(); setActiveMode(idx); }}
                   className={`flex-1 py-2 px-2 rounded-lg text-xs font-medium tracking-wide transition-all cursor-pointer text-center font-body ${
                     activeMode === idx
-                      ? 'bg-white/15 text-white shadow-sm border border-white/10 font-semibold'
-                      : 'text-neutral-400 hover:text-white hover:bg-white/[0.04]'
+                      ? (isDark ? 'bg-white/15 text-white shadow-sm border border-white/10 font-semibold' : 'bg-white text-slate-950 shadow border border-slate-200 font-semibold')
+                      : (isDark ? 'text-neutral-400 hover:text-white hover:bg-white/[0.04]' : 'text-slate-600 hover:text-slate-950 hover:bg-slate-200/60')
                   }`}
                 >
                   {mode.name.split(' ')[0]} {mode.name.split(' ')[1]}
@@ -277,27 +303,41 @@ export default function EngineHighlight() {
             </div>
 
             {/* Active Mode Details Card */}
-            <div className="glass-panel p-6 sm:p-7 rounded-2xl border border-white/[0.08] backdrop-blur-xl shadow-xl animate-in fade-in duration-300">
+            <div className={`p-6 sm:p-7 rounded-2xl backdrop-blur-xl animate-in fade-in duration-300 border transition-all ${
+              isDark 
+                ? 'glass-panel border-white/[0.08] shadow-xl' 
+                : 'bg-slate-50 border-slate-200 shadow-md shadow-slate-200/50'
+            }`}>
               <div className="flex items-center gap-2 mb-2">
-                <span className="w-2 h-2 rounded-full bg-neutral-300" />
-                <span className="text-[11px] font-semibold tracking-wider uppercase text-neutral-300 font-body">
+                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: currentMode.color }} />
+                <span className={`text-[11px] font-semibold tracking-wider uppercase font-body ${
+                  isDark ? 'text-neutral-300' : 'text-slate-700'
+                }`}>
                   {currentMode.name}
                 </span>
               </div>
 
-              <h3 className="font-display text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug">
+              <h3 className={`font-display text-xl sm:text-2xl font-bold tracking-tight leading-snug ${
+                isDark ? 'text-white' : 'text-slate-950'
+              }`}>
                 {currentMode.title}
               </h3>
 
-              <p className="mt-2.5 text-xs sm:text-sm text-neutral-300 leading-relaxed font-body">
+              <p className={`mt-2.5 text-xs sm:text-sm leading-relaxed font-body ${
+                isDark ? 'text-neutral-300' : 'text-slate-600'
+              }`}>
                 {currentMode.desc}
               </p>
 
               {/* Feature Bullet Points */}
-              <div className="mt-5 space-y-2 pt-4 border-t border-white/[0.08]">
+              <div className={`mt-5 space-y-2 pt-4 border-t ${
+                isDark ? 'border-white/[0.08]' : 'border-slate-200'
+              }`}>
                 {currentMode.features.map((feat, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs text-neutral-300 font-body">
-                    <CheckCircle2 size={13} className="text-neutral-400 shrink-0" />
+                  <div key={i} className={`flex items-center gap-2 text-xs font-body ${
+                    isDark ? 'text-neutral-300' : 'text-slate-700'
+                  }`}>
+                    <CheckCircle2 size={13} className={`shrink-0 ${isDark ? 'text-neutral-400' : 'text-red-500'}`} />
                     <span>{feat}</span>
                   </div>
                 ))}
@@ -313,17 +353,31 @@ export default function EngineHighlight() {
           {ENGINE_SPECS.map((spec, idx) => (
             <div 
               key={idx}
-              className="glass-panel p-5 sm:p-6 rounded-2xl border border-white/[0.08] backdrop-blur-md hover:border-white/20 transition-all duration-300 group"
+              className={`p-5 sm:p-6 rounded-2xl backdrop-blur-md transition-all duration-300 group border ${
+                isDark 
+                  ? 'glass-panel border-white/[0.08] hover:border-white/20' 
+                  : 'bg-slate-50 border-slate-200 hover:border-slate-300 shadow-sm'
+              }`}
             >
-              <div className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400 flex items-center justify-between mb-2 font-body">
+              <div className={`text-[10px] font-semibold uppercase tracking-wider flex items-center justify-between mb-2 font-body ${
+                isDark ? 'text-neutral-400' : 'text-slate-500'
+              }`}>
                 <span>{spec.label}</span>
-                <Activity size={12} className="text-neutral-500 group-hover:text-white transition-colors" />
+                <Activity size={12} className={`transition-colors ${
+                  isDark ? 'text-neutral-500 group-hover:text-white' : 'text-slate-400 group-hover:text-slate-800'
+                }`} />
               </div>
-              <div className="flex items-baseline gap-1.5 font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
+              <div className={`flex items-baseline gap-1.5 font-display text-3xl sm:text-4xl lg:text-5xl font-bold ${
+                isDark ? 'text-white' : 'text-slate-950'
+              }`}>
                 <span>{counters[idx] || spec.value}</span>
-                <span className="text-sm sm:text-base font-medium text-neutral-400 font-body">{spec.unit}</span>
+                <span className={`text-sm sm:text-base font-medium font-body ${
+                  isDark ? 'text-neutral-400' : 'text-slate-500'
+                }`}>{spec.unit}</span>
               </div>
-              <p className="mt-2 text-[11px] sm:text-xs text-neutral-400 line-clamp-1 font-body">
+              <p className={`mt-2 text-[11px] sm:text-xs line-clamp-1 font-body ${
+                isDark ? 'text-neutral-400' : 'text-slate-500'
+              }`}>
                 {spec.desc}
               </p>
             </div>

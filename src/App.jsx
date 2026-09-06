@@ -14,9 +14,12 @@ import Footer from './components/Footer';
 import TestRideModal from './components/TestRideModal';
 import SpecsModal from './components/SpecsModal';
 
+import { ThemeProvider, useTheme } from './context/ThemeContext';
+
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-export default function App() {
+function MainApp() {
+  const { isDark } = useTheme();
   const [testRideOpen, setTestRideOpen] = useState(false);
   const [specsOpen, setSpecsOpen] = useState(false);
   const [preselectedEdition, setPreselectedEdition] = useState('');
@@ -44,7 +47,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#08090d] text-white selection:bg-red-600 selection:text-white font-sans">
+    <div className={`min-h-screen font-sans transition-colors duration-500 ${
+      isDark ? 'dark bg-[#08090d] text-white' : 'light bg-white text-slate-900'
+    } selection:bg-red-600 selection:text-white`}>
       {/* Floating Glass Navigation */}
       <Navbar 
         onOpenTestRide={() => handleOpenTestRide()} 
@@ -86,5 +91,13 @@ export default function App() {
         onClose={() => setSpecsOpen(false)}
       />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <MainApp />
+    </ThemeProvider>
   );
 }

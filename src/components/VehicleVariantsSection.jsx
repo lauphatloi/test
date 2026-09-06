@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { soundFx } from '../utils/audio';
 import { Gauge, Zap, ShieldCheck, ArrowDown } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -73,6 +74,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
   const bleed3Ref = useRef(null);
   const floorGlowRefs = useRef([]);
   const [activeVariant, setActiveVariant] = useState(0);
+  const { isDark } = useTheme();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -223,7 +225,9 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
     <section 
       id="colors" 
       ref={containerRef} 
-      className="relative w-full h-screen overflow-hidden bg-[#07090e] select-none flex flex-col justify-between"
+      className={`relative w-full h-screen overflow-hidden select-none flex flex-col justify-between transition-colors duration-500 ${
+        isDark ? 'bg-[#07090e]' : 'bg-[#f8fafc]'
+      }`}
     >
       {/* ============================================================ */}
       {/* 1. KHỐI BÁT GIÁC ĐỒNG BỘ HIỆU NĂNG CAO (GPU OPTIMIZED)        */}
@@ -235,9 +239,11 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
       >
         {/* Lớp 01: Nền khởi đầu - Bản Xám Đương Đại (z-0) */}
         <div 
-          className="absolute inset-0 z-0"
+          className="absolute inset-0 z-0 transition-opacity duration-500"
           style={{
-            background: 'radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 45%, #07090e 85%)',
+            background: isDark 
+              ? 'radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 45%, #07090e 85%)'
+              : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #f1f5f9 45%, #e2e8f0 85%)',
           }}
         />
 
@@ -258,7 +264,9 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
               className="w-full h-full"
               style={{
                 clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-                background: 'radial-gradient(circle at 50% 50%, #ffffff 0%, #e2e8f0 18%, #93c5fd 40%, #1e3a8a 68%, #0f172a 85%, #07090e 95%)',
+                background: isDark 
+                  ? 'radial-gradient(circle at 50% 50%, #ffffff 0%, #e2e8f0 18%, #93c5fd 40%, #1e3a8a 68%, #0f172a 85%, #07090e 95%)'
+                  : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #e0f2fe 22%, #bae6fd 45%, #e2e8f0 70%, #f8fafc 92%)',
               }}
             />
           </div>
@@ -281,7 +289,9 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
               className="w-full h-full"
               style={{
                 clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-                background: 'radial-gradient(circle at 50% 50%, #f59e0b 0%, #d97706 18%, #b45309 35%, #78350f 55%, #1f1206 75%, #07090e 92%)',
+                background: isDark
+                  ? 'radial-gradient(circle at 50% 50%, #f59e0b 0%, #d97706 18%, #b45309 35%, #78350f 55%, #1f1206 75%, #07090e 92%)'
+                  : 'radial-gradient(circle at 50% 50%, #fef3c7 0%, #fde68a 22%, #f59e0b 48%, #e2e8f0 75%, #f8fafc 92%)',
               }}
             />
           </div>
@@ -304,14 +314,16 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
               className="w-full h-full"
               style={{
                 clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-                background: 'radial-gradient(circle at 50% 50%, #34d399 0%, #10b981 18%, #059669 38%, #047857 58%, #032d22 78%, #07090e 92%)',
+                background: isDark
+                  ? 'radial-gradient(circle at 50% 50%, #34d399 0%, #10b981 18%, #059669 38%, #047857 58%, #032d22 78%, #07090e 92%)'
+                  : 'radial-gradient(circle at 50% 50%, #d1fae5 0%, #a7f3d0 22%, #34d399 48%, #e2e8f0 75%, #f8fafc 92%)',
               }}
             />
           </div>
         </div>
 
         {/* Tech Grid Texture Overlay */}
-        <div className="absolute inset-0 bg-tech-grid opacity-10 z-40 pointer-events-none" />
+        <div className={`absolute inset-0 bg-tech-grid z-40 pointer-events-none ${isDark ? 'opacity-10' : 'opacity-[0.04]'}`} />
       </div>
 
       {/* ============================================================ */}
@@ -320,14 +332,20 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
       <div className="relative z-50 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-[72px] sm:pt-20 lg:pt-24 pb-3 sm:pb-6 flex flex-col justify-between h-full">
         
         {/* Section Top Header Tag */}
-        <div className="flex items-center justify-between border-b border-white/[0.08] pb-2 sm:pb-3 shrink-0">
+        <div className={`flex items-center justify-between border-b pb-2 sm:pb-3 shrink-0 transition-colors ${
+          isDark ? 'border-white/[0.08]' : 'border-slate-200'
+        }`}>
           <div className="flex items-center gap-2 sm:gap-3">
             <span className="w-5 sm:w-6 h-[2px] bg-red-600" />
-            <span className="text-[10px] sm:text-xs font-semibold tracking-[0.2em] sm:tracking-[0.25em] uppercase text-neutral-300 font-body">
+            <span className={`text-[10px] sm:text-xs font-semibold tracking-[0.2em] sm:tracking-[0.25em] uppercase font-body ${
+              isDark ? 'text-neutral-300' : 'text-slate-700'
+            }`}>
               BỘ SƯU TẬP PHIÊN BẢN MÀU SẮC • SH350i
             </span>
           </div>
-          <span className="font-mono text-[11px] sm:text-xs text-neutral-400">
+          <span className={`font-mono text-[11px] sm:text-xs ${
+            isDark ? 'text-neutral-400' : 'text-slate-500'
+          }`}>
             {currentData.number} / 0{VARIANTS.length}
           </span>
         </div>
@@ -337,7 +355,11 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
           
           {/* ZONE 1: Left Column (5 Cols) - Vehicle Name, Description, Telemetry */}
           <div className="lg:col-span-5 order-2 lg:order-1 z-30">
-            <div className="glass-panel p-3.5 sm:p-5 lg:p-7 rounded-2xl border border-white/[0.1] backdrop-blur-xl shadow-2xl flex flex-col justify-between lg:min-h-[410px]">
+            <div className={`p-3.5 sm:p-5 lg:p-7 rounded-2xl backdrop-blur-xl transition-all duration-300 flex flex-col justify-between lg:min-h-[410px] ${
+              isDark 
+                ? 'glass-panel border border-white/[0.1] shadow-2xl text-white' 
+                : 'bg-white/95 border border-slate-200/90 shadow-xl shadow-slate-200/60 text-slate-900'
+            }`}>
               
               <div>
                 {/* Badge & Edition Tag Row */}
@@ -347,72 +369,112 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                       className="w-2.5 h-2.5 rounded-full shadow-sm ring-2 ring-white/20 shrink-0"
                       style={{ backgroundColor: currentData.accentColor }}
                     />
-                    <span className="text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded bg-white/[0.08] text-white border border-white/[0.1] font-body">
+                    <span className={`text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded font-body ${
+                      isDark 
+                        ? 'bg-white/[0.08] text-white border border-white/[0.1]' 
+                        : 'bg-slate-100 text-slate-800 border border-slate-200'
+                    }`}>
                       {currentData.subname}
                     </span>
-                    <span className="text-[10px] sm:text-[11px] font-medium text-neutral-400 font-body hidden xs:inline">
+                    <span className={`text-[10px] sm:text-[11px] font-medium font-body hidden xs:inline ${
+                      isDark ? 'text-neutral-400' : 'text-slate-500'
+                    }`}>
                       {currentData.editionTag}
                     </span>
                   </div>
-                  <span className="text-[10px] sm:text-[11px] text-neutral-400 font-body hidden sm:inline">
+                  <span className={`text-[10px] sm:text-[11px] font-body hidden sm:inline ${
+                    isDark ? 'text-neutral-400' : 'text-slate-500'
+                  }`}>
                     {currentData.tag}
                   </span>
                 </div>
 
                 {/* Vehicle Name Headline */}
-                <h2 className="font-display text-xl sm:text-2xl lg:text-3xl font-bold text-white tracking-tight leading-tight flex items-center">
+                <h2 className={`font-display text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight leading-tight flex items-center ${
+                  isDark ? 'text-white' : 'text-slate-950'
+                }`}>
                   {currentData.name}
                 </h2>
 
                 {/* Description */}
-                <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-neutral-300 leading-relaxed font-body line-clamp-2 sm:line-clamp-3 lg:line-clamp-none">
+                <p className={`mt-1 sm:mt-2 text-xs sm:text-sm leading-relaxed font-body line-clamp-2 sm:line-clamp-3 lg:line-clamp-none ${
+                  isDark ? 'text-neutral-300' : 'text-slate-600'
+                }`}>
                   {currentData.desc}
                 </p>
               </div>
 
               <div>
                 {/* Specs Telemetry Row - Designed as high-end automotive telemetry panel */}
-                <div className="my-2.5 sm:my-3 py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-xl bg-white/[0.03] border border-white/[0.08] grid grid-cols-3 divide-x divide-white/[0.08]">
+                <div className={`my-2.5 sm:my-3 py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-xl border grid grid-cols-3 divide-x transition-colors ${
+                  isDark 
+                    ? 'bg-white/[0.03] border-white/[0.08] divide-white/[0.08]' 
+                    : 'bg-slate-50 border-slate-200 divide-slate-200'
+                }`}>
                   <div className="flex flex-col items-center text-center px-1">
-                    <span className="text-[9px] sm:text-[10px] text-neutral-400 flex items-center gap-1 font-body">
+                    <span className={`text-[9px] sm:text-[10px] flex items-center gap-1 font-body ${
+                      isDark ? 'text-neutral-400' : 'text-slate-500'
+                    }`}>
                       <Gauge size={11} className="text-red-500 shrink-0" /> Dung tích
                     </span>
-                    <span className="text-xs sm:text-sm font-bold text-white font-display mt-0.5 tracking-tight">
+                    <span className={`text-xs sm:text-sm font-bold font-display mt-0.5 tracking-tight ${
+                      isDark ? 'text-white' : 'text-slate-900'
+                    }`}>
                       {currentData.specs.speed}
                     </span>
-                    <span className="text-[9px] text-neutral-500 font-mono hidden xs:block">eSP+ 4 van</span>
+                    <span className={`text-[9px] font-mono hidden xs:block ${
+                      isDark ? 'text-neutral-500' : 'text-slate-400'
+                    }`}>eSP+ 4 van</span>
                   </div>
                   <div className="flex flex-col items-center text-center px-1">
-                    <span className="text-[9px] sm:text-[10px] text-neutral-400 flex items-center gap-1 font-body">
-                      <Zap size={11} className="text-amber-400 shrink-0" /> Công suất
+                    <span className={`text-[9px] sm:text-[10px] flex items-center gap-1 font-body ${
+                      isDark ? 'text-neutral-400' : 'text-slate-500'
+                    }`}>
+                      <Zap size={11} className="text-amber-500 shrink-0" /> Công suất
                     </span>
-                    <span className="text-xs sm:text-sm font-bold text-white font-display mt-0.5 tracking-tight">
+                    <span className={`text-xs sm:text-sm font-bold font-display mt-0.5 tracking-tight ${
+                      isDark ? 'text-white' : 'text-slate-900'
+                    }`}>
                       {currentData.specs.power}
                     </span>
-                    <span className="text-[9px] text-neutral-500 font-mono hidden xs:block">@7.500 rpm</span>
+                    <span className={`text-[9px] font-mono hidden xs:block ${
+                      isDark ? 'text-neutral-500' : 'text-slate-400'
+                    }`}>@7.500 rpm</span>
                   </div>
                   <div className="flex flex-col items-center text-center px-1">
-                    <span className="text-[9px] sm:text-[10px] text-neutral-400 flex items-center gap-1 font-body">
-                      <ShieldCheck size={11} className="text-emerald-400 shrink-0" /> Mô-men
+                    <span className={`text-[9px] sm:text-[10px] flex items-center gap-1 font-body ${
+                      isDark ? 'text-neutral-400' : 'text-slate-500'
+                    }`}>
+                      <ShieldCheck size={11} className="text-emerald-500 shrink-0" /> Mô-men
                     </span>
-                    <span className="text-xs sm:text-sm font-bold text-white font-display mt-0.5 tracking-tight">
+                    <span className={`text-xs sm:text-sm font-bold font-display mt-0.5 tracking-tight ${
+                      isDark ? 'text-white' : 'text-slate-900'
+                    }`}>
                       {currentData.specs.torque}
                     </span>
-                    <span className="text-[9px] text-neutral-500 font-mono hidden xs:block">@5.250 rpm</span>
+                    <span className={`text-[9px] font-mono hidden xs:block ${
+                      isDark ? 'text-neutral-500' : 'text-slate-400'
+                    }`}>@5.250 rpm</span>
                   </div>
                 </div>
 
                 {/* Price & Action Button inside card */}
-                <div className="pt-2 sm:pt-3 border-t border-white/[0.08] flex items-center justify-between gap-3">
+                <div className={`pt-2 sm:pt-3 border-t flex items-center justify-between gap-3 transition-colors ${
+                  isDark ? 'border-white/[0.08]' : 'border-slate-200'
+                }`}>
                   <div className="flex flex-col">
-                    <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-neutral-400 font-body">
+                    <span className={`text-[9px] sm:text-[10px] uppercase tracking-wider font-body ${
+                      isDark ? 'text-neutral-400' : 'text-slate-500'
+                    }`}>
                       Giá đề xuất (đã có VAT)
                     </span>
                     <div className="flex items-baseline gap-1">
-                      <span className="text-sm sm:text-base lg:text-lg font-bold text-white font-display tracking-tight">
+                      <span className={`text-sm sm:text-base lg:text-lg font-bold font-display tracking-tight ${
+                        isDark ? 'text-white' : 'text-slate-950'
+                      }`}>
                         {currentData.price}
                       </span>
-                      <span className="text-[10px] font-semibold text-red-500 font-mono">VNĐ</span>
+                      <span className="text-[10px] font-semibold text-red-600 font-mono">VNĐ</span>
                     </div>
                   </div>
                   <button
@@ -444,7 +506,9 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                   }}
                 />
               ))}
-              <div className="absolute bottom-2 sm:bottom-6 w-[68%] h-4 sm:h-5 bg-black/95 rounded-full blur-md pointer-events-none z-10" />
+              <div className={`absolute bottom-2 sm:bottom-6 w-[68%] h-4 sm:h-5 rounded-full blur-md pointer-events-none z-10 ${
+                isDark ? 'bg-black/95' : 'bg-slate-900/25'
+              }`} />
 
               {/* 4 Sản phẩm xe ĐỨNG IM TUYỆT ĐỐI (Locked coordinates, pure opacity dissolve) */}
               {VARIANTS.map((variant, idx) => (
@@ -453,7 +517,11 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                   ref={(el) => (bikeRefs.current[idx] = el)}
                   src={variant.image}
                   alt={`Honda SH350i ${variant.name}`}
-                  className="absolute inset-0 m-auto max-w-full max-h-full object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)] will-change-opacity select-none pointer-events-none z-20"
+                  className={`absolute inset-0 m-auto max-w-full max-h-full object-contain will-change-opacity select-none pointer-events-none z-20 ${
+                    isDark 
+                      ? 'drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)]' 
+                      : 'drop-shadow-[0_18px_30px_rgba(15,23,42,0.3)]'
+                  }`}
                 />
               ))}
             </div>
@@ -465,7 +533,11 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
         {/* Bottom Controls: Centered Swatches Dock & Centered Scroll Prompt */}
         <div className="flex flex-col items-center justify-center gap-1 sm:gap-2 pt-1 sm:pt-2 shrink-0">
           {/* Swatches Dock */}
-          <div className="flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-full glass-panel border border-white/[0.09] backdrop-blur-2xl shadow-xl">
+          <div className={`flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-full backdrop-blur-2xl transition-all duration-300 ${
+            isDark 
+              ? 'glass-panel border border-white/[0.09] shadow-xl' 
+              : 'bg-white/95 border border-slate-200 shadow-lg shadow-slate-200/50'
+          }`}>
             {VARIANTS.map((v, i) => {
               const isActive = activeVariant === i;
               return (
@@ -475,8 +547,8 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                   onMouseEnter={() => soundFx.playHover()}
                   className={`group relative flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full transition-all duration-300 cursor-pointer ${
                     isActive 
-                      ? 'bg-white/15 shadow-sm border border-white/20' 
-                      : 'hover:bg-white/[0.04] opacity-70 hover:opacity-100'
+                      ? (isDark ? 'bg-white/15 shadow-sm border border-white/20' : 'bg-slate-100 shadow-sm border border-slate-300 text-slate-950')
+                      : (isDark ? 'hover:bg-white/[0.04] opacity-70 hover:opacity-100' : 'hover:bg-slate-50 opacity-80 hover:opacity-100')
                   }`}
                 >
                   <span 
@@ -484,7 +556,9 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                     style={{ backgroundColor: v.accentColor }}
                   />
                   <span className={`text-[10px] sm:text-[11px] font-medium tracking-wide font-body transition-colors ${
-                    isActive ? 'text-white font-semibold' : 'text-neutral-400 group-hover:text-white'
+                    isActive 
+                      ? (isDark ? 'text-white font-semibold' : 'text-slate-900 font-bold') 
+                      : (isDark ? 'text-neutral-400 group-hover:text-white' : 'text-slate-600 group-hover:text-slate-900')
                   }`}>
                     {v.name.split(' ')[0]}
                   </span>
@@ -499,10 +573,14 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
               const el = document.getElementById('design');
               if (el) el.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="flex items-center justify-center gap-1 text-[10px] sm:text-xs text-neutral-400 font-body cursor-pointer hover:text-white transition-colors"
+            className={`flex items-center justify-center gap-1 text-[10px] sm:text-xs font-body cursor-pointer transition-colors ${
+              isDark ? 'text-neutral-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'
+            }`}
           >
             <ArrowDown size={12} className="text-red-600 animate-bounce" />
-            <span className="tracking-wider text-[11px] sm:text-xs font-medium text-neutral-300">Cuộn xuống</span>
+            <span className={`tracking-wider text-[11px] sm:text-xs font-medium ${
+              isDark ? 'text-neutral-300' : 'text-slate-700'
+            }`}>Cuộn xuống</span>
           </div>
         </div>
 
