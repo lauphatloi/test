@@ -3,13 +3,21 @@ import { soundFx } from '../utils/audio';
 
 const ThemeContext = createContext();
 
+const STORAGE_KEY = 'honda_sh350i_theme_v2';
+
 export function ThemeProvider({ children }) {
   // Default to 'light' (Day mode - Honda Việt Nam style) as requested
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('honda_sh350i_theme');
-      if (saved === 'dark' || saved === 'light') {
-        return saved;
+      try {
+        // Clean up legacy key if present so it doesn't force dark mode
+        localStorage.removeItem('honda_sh350i_theme');
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved === 'dark' || saved === 'light') {
+          return saved;
+        }
+      } catch (e) {
+        // Ignore localStorage access errors
       }
     }
     return 'light'; // Default Day Mode
@@ -25,7 +33,11 @@ export function ThemeProvider({ children }) {
       root.classList.add('light');
       root.classList.remove('dark');
     }
-    localStorage.setItem('honda_sh350i_theme', theme);
+    try {
+      localStorage.setItem(STORAGE_KEY, theme);
+    } catch (e) {
+      // Ignore
+    }
   }, [theme]);
 
   const toggleTheme = () => {
