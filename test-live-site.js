@@ -141,26 +141,44 @@ async function main() {
           classList: Array.from(document.documentElement.classList),
           hasFixedToggle: !!document.querySelector('.fixed.bottom-5.left-5'),
           toggleHTML: document.querySelector('.fixed.bottom-5.left-5')?.outerHTML,
-          localStorageTheme: localStorage.getItem('honda_sh350i_theme'),
-          localStorageThemeV2: localStorage.getItem('honda_sh350i_theme_v2')
+          hasBikeInPortal: !!document.querySelector('#banner div[style*="circle"] img[src*="motorcycle"]'),
+          portalHeading: document.querySelector('#banner h2')?.textContent,
+          colorsMarginTop: document.querySelector('#colors')?.style.marginTop,
         })
       `
     });
     console.log('Live site evaluation:', info?.result?.value);
 
+    // Capture initial screenshot
     const res = await send('Page.captureScreenshot', { format: 'png' });
     if (res?.data) {
-      const outPaths = [
-        './screenshot-live-gh-pages.png',
-        '/home/ubuntu24_04/.gemini/antigravity-cli/brain/1ba844ee-0fad-4e61-b3fc-5b5bd9450534/screenshot-live-gh-pages.png',
-        '/home/ubuntu24_04/.gemini/antigravity-cli/brain/3fc39924-8cbf-4c14-9e4b-aff26b7234c6/screenshot-live-gh-pages.png'
-      ];
-      for (const p of outPaths) {
-        try {
-          fs.writeFileSync(p, Buffer.from(res.data, 'base64'));
-          console.log(`Saved screenshot: ${p}`);
-        } catch {}
-      }
+      fs.writeFileSync('/home/ubuntu24_04/.gemini/antigravity-cli/brain/3fc39924-8cbf-4c14-9e4b-aff26b7234c6/screenshot-live-gh-pages.png', Buffer.from(res.data, 'base64'));
+    }
+
+    // Scroll to showroom portal
+    console.log('Scrolling to live showroom portal...');
+    await send('Runtime.evaluate', {
+      expression: `window.scrollTo({ top: 1400, behavior: 'instant' });`
+    });
+    await new Promise(r => setTimeout(r, 800));
+
+    const snapShowroom = await send('Page.captureScreenshot', { format: 'png' });
+    if (snapShowroom?.data) {
+      fs.writeFileSync('/home/ubuntu24_04/.gemini/antigravity-cli/brain/3fc39924-8cbf-4c14-9e4b-aff26b7234c6/screenshot-live-showroom.png', Buffer.from(snapShowroom.data, 'base64'));
+      console.log('Saved screenshot-live-showroom.png');
+    }
+
+    // Scroll to layer overlap
+    console.log('Scrolling to live layer overlap...');
+    await send('Runtime.evaluate', {
+      expression: `window.scrollTo({ top: 2050, behavior: 'instant' });`
+    });
+    await new Promise(r => setTimeout(r, 800));
+
+    const snapOverlap = await send('Page.captureScreenshot', { format: 'png' });
+    if (snapOverlap?.data) {
+      fs.writeFileSync('/home/ubuntu24_04/.gemini/antigravity-cli/brain/3fc39924-8cbf-4c14-9e4b-aff26b7234c6/screenshot-live-overlap.png', Buffer.from(snapOverlap.data, 'base64'));
+      console.log('Saved screenshot-live-overlap.png');
     }
   } catch (err) {
     console.error('[test-live-site] Lỗi trong quá trình thực thi:', err.message || err);
