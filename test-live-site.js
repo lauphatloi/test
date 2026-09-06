@@ -180,6 +180,24 @@ async function main() {
       fs.writeFileSync('/home/ubuntu24_04/.gemini/antigravity-cli/brain/3fc39924-8cbf-4c14-9e4b-aff26b7234c6/screenshot-live-overlap.png', Buffer.from(snapOverlap.data, 'base64'));
       console.log('Saved screenshot-live-overlap.png');
     }
+
+    // Scroll to live Design Section
+    console.log('Scrolling to live Design Section...');
+    await send('Runtime.evaluate', {
+      expression: `
+        (() => {
+          const sec = document.querySelector('#design');
+          if (sec) sec.scrollIntoView({ behavior: 'instant', block: 'start' });
+        })()
+      `
+    });
+    await new Promise(r => setTimeout(r, 1500));
+
+    const snapDesign = await send('Page.captureScreenshot', { format: 'png' });
+    if (snapDesign?.data) {
+      fs.writeFileSync('/home/ubuntu24_04/.gemini/antigravity-cli/brain/3fc39924-8cbf-4c14-9e4b-aff26b7234c6/screenshot-live-design.png', Buffer.from(snapDesign.data, 'base64'));
+      console.log('Saved screenshot-live-design.png');
+    }
   } catch (err) {
     console.error('[test-live-site] Lỗi trong quá trình thực thi:', err.message || err);
     process.exitCode = 1;
