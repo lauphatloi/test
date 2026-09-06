@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { soundFx } from '../utils/audio';
-import { Sparkles, Eye, Compass, ShieldCheck, ChevronRight, Layers, Cpu, Zap, Lightbulb } from 'lucide-react';
+import { ShieldCheck, ChevronRight, ChevronLeft, Cpu, Lightbulb } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -75,89 +75,43 @@ export default function DesignSection() {
   const [activeStep, setActiveStep] = useState(0);
   const { isDark } = useTheme();
 
+  // Touch gesture handling for Mobile
+  const [touchStartX, setTouchStartX] = useState(null);
+  const [touchDeltaX, setTouchDeltaX] = useState(0);
+
+  const handleTouchStart = (e) => {
+    setTouchStartX(e.touches[0].clientX);
+    setTouchDeltaX(0);
+  };
+
+  const handleTouchMove = (e) => {
+    if (touchStartX !== null) {
+      setTouchDeltaX(e.touches[0].clientX - touchStartX);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX !== null) {
+      if (touchDeltaX < -40) {
+        // Swipe left -> Next card
+        soundFx.playClick();
+        setActiveStep((prev) => (prev + 1) % DESIGN_COMPONENTS.length);
+      } else if (touchDeltaX > 40) {
+        // Swipe right -> Previous card
+        soundFx.playClick();
+        setActiveStep((prev) => (prev - 1 + DESIGN_COMPONENTS.length) % DESIGN_COMPONENTS.length);
+      }
+      setTouchStartX(null);
+      setTouchDeltaX(0);
+    }
+  };
+
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const isMobile = window.innerWidth < 1024;
+    const mm = gsap.matchMedia();
 
-      // Responsive transform poses (optimized for high FPS on mobile)
+    // DESKTOP ONLY: 3D Pinned Scrollytelling (zero mobile overhead / zero lag)
+    mm.add('(min-width: 1024px)', () => {
       const getPose = (slot) => {
-        // slot: -2 (far left), -1 (left), 0 (center active), 1 (right), 2 (far right)
-        if (isMobile) {
-          // ULTRA-SMOOTH MOBILE POSES:
-          // Zero CSS filter blur (blur on mobile GPU is the primary cause of scroll lag)
-          // Simplified 2.5D hardware-composited transforms
-          if (slot === 0) {
-            return {
-              xPercent: 0,
-              y: 0,
-              z: 0,
-              rotateY: 0,
-              rotateX: 0,
-              rotateZ: 0,
-              scale: 1,
-              opacity: 1,
-              filter: 'none',
-              zIndex: 30,
-            };
-          }
-          if (slot === 1) {
-            return {
-              xPercent: 50,
-              y: 6,
-              z: 0,
-              rotateY: -12,
-              rotateX: 0,
-              rotateZ: 0,
-              scale: 0.88,
-              opacity: 0.35,
-              filter: 'none',
-              zIndex: 20,
-            };
-          }
-          if (slot === -1) {
-            return {
-              xPercent: -50,
-              y: -6,
-              z: 0,
-              rotateY: 12,
-              rotateX: 0,
-              rotateZ: 0,
-              scale: 0.88,
-              opacity: 0.35,
-              filter: 'none',
-              zIndex: 20,
-            };
-          }
-          if (slot > 1) {
-            return {
-              xPercent: 95,
-              y: 10,
-              z: 0,
-              rotateY: -16,
-              rotateX: 0,
-              rotateZ: 0,
-              scale: 0.78,
-              opacity: 0,
-              filter: 'none',
-              zIndex: 10,
-            };
-          }
-          // slot < -1
-          return {
-            xPercent: -95,
-            y: -10,
-            z: 0,
-            rotateY: 16,
-            rotateX: 0,
-            rotateZ: 0,
-            scale: 0.78,
-            opacity: 0,
-            filter: 'none',
-            zIndex: 10,
-          };
-        }
-
-        // DESKTOP: FULL ARTISTIC 3D PERSPECTIVE & DEPTH OF FIELD
         if (slot === 0) {
           return {
             xPercent: 0,
@@ -234,19 +188,18 @@ export default function DesignSection() {
       gsap.set(cardRefs.current[1], getPose(1));
       gsap.set(cardRefs.current[2], getPose(2));
 
-      // Set text positions (zero blur on mobile):
-      gsap.set(textRefs.current[0], { opacity: 1, y: 0, filter: isMobile ? 'none' : 'blur(0px)', pointerEvents: 'auto' });
-      gsap.set(textRefs.current[1], { opacity: 0, y: isMobile ? 12 : 25, filter: isMobile ? 'none' : 'blur(8px)', pointerEvents: 'none' });
-      gsap.set(textRefs.current[2], { opacity: 0, y: isMobile ? 12 : 25, filter: isMobile ? 'none' : 'blur(8px)', pointerEvents: 'none' });
+      gsap.set(textRefs.current[0], { opacity: 1, y: 0, filter: 'blur(0px)', pointerEvents: 'auto' });
+      gsap.set(textRefs.current[1], { opacity: 0, y: 25, filter: 'blur(8px)', pointerEvents: 'none' });
+      gsap.set(textRefs.current[2], { opacity: 0, y: 25, filter: 'blur(8px)', pointerEvents: 'none' });
 
-      // Pinned Scrollytelling Timeline
+      // Pinned Desktop Scrollytelling Timeline
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
           end: '+=260%',
           pin: true,
-          scrub: isMobile ? 0.6 : 0.9,
+          scrub: 0.9,
           anticipatePin: 1,
           onUpdate: (self) => {
             const p = self.progress;
@@ -259,18 +212,15 @@ export default function DesignSection() {
         },
       });
 
-      // -------------------------------------------------------------
       // Giai đoạn 1: Card 1 -> Slot -1, Card 2 -> Slot 0, Card 3 -> Slot 1
-      // -------------------------------------------------------------
       tl.to(cardRefs.current[0], { ...getPose(-1), duration: 1.0, ease: 'power1.inOut' }, 0.3);
       tl.to(cardRefs.current[1], { ...getPose(0), duration: 1.0, ease: 'power1.inOut' }, 0.3);
       tl.to(cardRefs.current[2], { ...getPose(1), duration: 1.0, ease: 'power1.inOut' }, 0.3);
 
-      // Text 0 fades out, Text 1 reveals
       tl.to(textRefs.current[0], {
         opacity: 0,
-        y: isMobile ? -10 : -25,
-        ...(isMobile ? {} : { filter: 'blur(6px)' }),
+        y: -25,
+        filter: 'blur(6px)',
         duration: 0.55,
         ease: 'power1.inOut',
         pointerEvents: 'none',
@@ -278,24 +228,21 @@ export default function DesignSection() {
       tl.to(textRefs.current[1], {
         opacity: 1,
         y: 0,
-        ...(isMobile ? {} : { filter: 'blur(0px)' }),
+        filter: 'blur(0px)',
         duration: 0.65,
         ease: 'power2.out',
         pointerEvents: 'auto',
       }, 0.65);
 
-      // -------------------------------------------------------------
       // Giai đoạn 2: Card 1 -> Slot -2, Card 2 -> Slot -1, Card 3 -> Slot 0
-      // -------------------------------------------------------------
       tl.to(cardRefs.current[0], { ...getPose(-2), duration: 1.0, ease: 'power1.inOut' }, 1.6);
       tl.to(cardRefs.current[1], { ...getPose(-1), duration: 1.0, ease: 'power1.inOut' }, 1.6);
       tl.to(cardRefs.current[2], { ...getPose(0), duration: 1.0, ease: 'power1.inOut' }, 1.6);
 
-      // Text 1 fades out, Text 2 reveals
       tl.to(textRefs.current[1], {
         opacity: 0,
-        y: isMobile ? -10 : -25,
-        ...(isMobile ? {} : { filter: 'blur(6px)' }),
+        y: -25,
+        filter: 'blur(6px)',
         duration: 0.55,
         ease: 'power1.inOut',
         pointerEvents: 'none',
@@ -303,15 +250,14 @@ export default function DesignSection() {
       tl.to(textRefs.current[2], {
         opacity: 1,
         y: 0,
-        ...(isMobile ? {} : { filter: 'blur(0px)' }),
+        filter: 'blur(0px)',
         duration: 0.65,
         ease: 'power2.out',
         pointerEvents: 'auto',
       }, 1.95);
+    });
 
-    }, sectionRef);
-
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
   const selectStep = (index) => {
@@ -333,11 +279,11 @@ export default function DesignSection() {
     <section 
       id="design" 
       ref={sectionRef} 
-      className={`relative w-full h-screen overflow-hidden select-none transition-colors duration-500 flex flex-col justify-between ${
+      className={`relative w-full overflow-hidden select-none transition-colors duration-500 flex flex-col justify-between ${
         isDark ? 'bg-[#07090e]' : 'bg-[#eef2f6]'
-      }`}
+      } min-h-0 py-6 sm:py-8 lg:py-0 lg:h-screen`}
     >
-      {/* Background ambient lighting - Soft executive showroom glow */}
+      {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className={`absolute top-1/4 -left-40 w-[600px] h-[600px] rounded-full blur-[160px] ${
           isDark ? 'bg-red-950/15' : 'bg-red-500/5'
@@ -348,241 +294,405 @@ export default function DesignSection() {
         <div className={`absolute inset-0 bg-tech-grid ${isDark ? 'opacity-15' : 'opacity-[0.04]'}`} />
       </div>
 
-      {/* Floating Section Header Tag */}
-      <div className="relative z-30 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 sm:pt-7 flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-2.5 sm:gap-3">
-          <span className="w-5 sm:w-6 h-[2px] bg-red-600" />
-          <span className={`text-[10px] sm:text-xs font-black tracking-[0.2em] uppercase font-body ${
-            isDark ? 'text-neutral-300' : 'text-slate-950'
-          }`}>
-            KIẾN TRÚC THIẾT KẾ • 3 ĐIỂM NHẤN HOÀN THIỆN
-          </span>
+      {/* ============================================================ */}
+      {/* 1. MOBILE VIEW (lg:hidden) - 100% NATIVE SMOOTH SCROLL (NO PIN)*/}
+      {/* ============================================================ */}
+      <div className="lg:hidden relative z-20 w-full max-w-md mx-auto px-4 flex flex-col gap-3.5 my-auto">
+        {/* Header Bar */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="w-5 h-[2px] bg-red-600" />
+            <span className={`text-[10px] font-black tracking-[0.18em] uppercase font-body ${
+              isDark ? 'text-neutral-300' : 'text-slate-950'
+            }`}>
+              KIẾN TRÚC THIẾT KẾ
+            </span>
+          </div>
+          <div className="flex items-center gap-1 font-mono text-[11px] font-bold">
+            <span className="text-red-500">0{activeStep + 1}</span>
+            <span className={isDark ? 'text-neutral-500' : 'text-slate-400'}>/</span>
+            <span className={isDark ? 'text-neutral-400' : 'text-slate-800'}>03</span>
+          </div>
         </div>
-        <div className="flex items-center gap-2 font-mono text-[11px] sm:text-xs font-bold">
-          <span className="text-red-500">0{activeStep + 1}</span>
-          <span className={isDark ? 'text-neutral-500' : 'text-slate-400'}>/</span>
-          <span className={isDark ? 'text-neutral-400' : 'text-slate-800'}>03</span>
+
+        {/* Swipeable Card Stage */}
+        <div 
+          className="relative w-full touch-pan-y"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <div className="w-full overflow-hidden rounded-2xl">
+            <div 
+              className="flex transition-transform duration-300 ease-out will-change-transform"
+              style={{ transform: `translateX(-${activeStep * 100}%)` }}
+            >
+              {DESIGN_COMPONENTS.map((comp, idx) => {
+                const Icon = comp.icon;
+                return (
+                  <div 
+                    key={`mob-item-${comp.id}`} 
+                    className="w-full shrink-0"
+                  >
+                    <div className={`w-full rounded-2xl p-3 border shadow-md ${
+                      isDark 
+                        ? 'bg-slate-900/95 border-white/15 text-white' 
+                        : 'bg-white border-slate-300 text-slate-900 shadow-slate-900/10'
+                    }`}>
+                      {/* Tech Card Box with 4 Corner Brackets */}
+                      <div className="relative w-full">
+                        <span className="absolute top-1 left-1 w-2 h-2 border-t-2 border-l-2 border-red-500/90 rounded-tl-xs pointer-events-none" />
+                        <span className="absolute top-1 right-1 w-2 h-2 border-t-2 border-r-2 border-red-500/90 rounded-tr-xs pointer-events-none" />
+                        <span className="absolute bottom-1 left-1 w-2 h-2 border-b-2 border-l-2 border-red-500/90 rounded-bl-xs pointer-events-none" />
+                        <span className="absolute bottom-1 right-1 w-2 h-2 border-b-2 border-r-2 border-red-500/90 rounded-br-xs pointer-events-none" />
+
+                        {/* Top Code Bar */}
+                        <div className="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-white/10 dark:border-white/10 text-[9px] font-mono tracking-wider">
+                          <div className="flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                            <span className="font-bold">{comp.code}</span>
+                          </div>
+                          <span className={isDark ? 'text-neutral-400' : 'text-slate-600'}>
+                            SH350i • 2026
+                          </span>
+                        </div>
+
+                        {/* Image */}
+                        <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden bg-black">
+                          <img
+                            src={comp.image}
+                            alt={comp.title}
+                            className="w-full h-full object-cover object-center"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
+                          <div className="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between">
+                            <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase backdrop-blur-md bg-black/60 text-white border border-white/20">
+                              {comp.tag}
+                            </span>
+                            <span className="text-[11px] font-black text-white font-display">
+                              0{idx + 1}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Content Readout Below Image */}
+                      <div className="mt-3 px-0.5">
+                        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider mb-1 bg-red-600/10 border border-red-600/25 text-red-600 dark:text-red-400">
+                          <Icon size={11} className="text-red-500 shrink-0" />
+                          <span>{comp.category}</span>
+                        </div>
+
+                        <h3 className="font-display text-base font-black tracking-tight uppercase leading-snug">
+                          {comp.shortTitle}
+                        </h3>
+
+                        <p className={`mt-1 text-xs leading-relaxed font-body ${
+                          isDark ? 'text-neutral-300' : 'text-slate-700'
+                        }`}>
+                          {comp.shortSummary}
+                        </p>
+
+                        <div className="mt-2.5 flex items-center gap-1.5 font-body">
+                          {comp.mobileTags.map((tag, tIdx) => (
+                            <span
+                              key={tIdx}
+                              className={`px-2 py-0.5 rounded-md text-[10px] font-bold border flex items-center gap-1 ${
+                                isDark
+                                  ? 'bg-white/[0.05] border-white/15 text-neutral-200'
+                                  : 'bg-slate-100 border-slate-300 text-slate-800'
+                              }`}
+                            >
+                              <span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Control Navigation Bar */}
+        <div className="flex items-center justify-between gap-1.5 pt-0.5">
+          <div className="flex items-center gap-1.5 flex-1">
+            {DESIGN_COMPONENTS.map((comp, idx) => {
+              const isActive = activeStep === idx;
+              return (
+                <button
+                  key={`mob-nav-${comp.id}`}
+                  onClick={() => {
+                    soundFx.playClick();
+                    setActiveStep(idx);
+                  }}
+                  className={`flex-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-center cursor-pointer font-body flex items-center justify-center gap-1 ${
+                    isActive
+                      ? (isDark 
+                          ? 'bg-white text-black shadow-md' 
+                          : 'bg-slate-900 text-white shadow-md')
+                      : (isDark 
+                          ? 'bg-white/[0.06] text-neutral-400 border border-white/10' 
+                          : 'bg-slate-200/90 text-slate-700 border border-slate-300')
+                  }`}
+                >
+                  <span>0{idx + 1}</span>
+                  <span className="truncate">
+                    {idx === 0 ? 'Mặt Nạ' : idx === 1 ? 'Đồng Hồ' : 'Đèn Hậu'}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => {
+                soundFx.playClick();
+                setActiveStep((prev) => (prev - 1 + DESIGN_COMPONENTS.length) % DESIGN_COMPONENTS.length);
+              }}
+              aria-label="Xem chi tiết trước"
+              className={`w-8 h-8 rounded-xl flex items-center justify-center border transition-colors cursor-pointer ${
+                isDark 
+                  ? 'border-white/15 bg-white/[0.05] text-neutral-300 active:bg-white/20' 
+                  : 'border-slate-300 bg-white text-slate-700 shadow-xs active:bg-slate-100'
+              }`}
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <button
+              onClick={() => {
+                soundFx.playClick();
+                setActiveStep((prev) => (prev + 1) % DESIGN_COMPONENTS.length);
+              }}
+              aria-label="Xem chi tiết tiếp theo"
+              className={`w-8 h-8 rounded-xl flex items-center justify-center border transition-colors cursor-pointer ${
+                isDark 
+                  ? 'border-white/15 bg-white/[0.05] text-neutral-300 active:bg-white/20' 
+                  : 'border-slate-300 bg-white text-slate-700 shadow-xs active:bg-slate-100'
+              }`}
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Swipe Hint */}
+        <div className="flex items-center justify-center gap-2 text-[10px] font-body text-slate-400">
+          <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
+          <span className={isDark ? 'text-neutral-400' : 'text-slate-600'}>
+            Chạm số hoặc vuốt ngang để đổi chi tiết
+          </span>
         </div>
       </div>
 
-      {/* Main 3D Space Stage */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 my-auto grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-6 lg:gap-10 items-center">
-        
-        {/* ============================================================ */}
-        {/* ZONE 1: 3D FLOATING CARDS STAGE (Perspective Viewport)        */}
-        {/* ============================================================ */}
-        <div 
-          ref={stageRef}
-          className="lg:col-span-7 relative flex items-center justify-center w-full h-[32vh] sm:h-[40vh] lg:h-[62vh] max-h-[300px] sm:max-h-[380px] lg:max-h-none pointer-events-none"
-          style={{
-            perspective: '1400px',
-            perspectiveOrigin: '50% 50%',
-          }}
-        >
-          {/* Subtle Ambient Floor Reflection Ring */}
-          <div className={`absolute bottom-0 w-[80%] h-12 rounded-full blur-3xl ${
-            isDark ? 'bg-red-600/10' : 'bg-slate-400/25'
-          }`} />
-
-          {/* 3 Floating 3D Cards */}
-          {DESIGN_COMPONENTS.map((comp, idx) => {
-            const isActive = activeStep === idx;
-            return (
-              <div
-                key={comp.id}
-                ref={(el) => (cardRefs.current[idx] = el)}
-                onClick={() => selectStep(idx)}
-                className={`absolute w-[86vw] sm:w-[70vw] lg:w-[480px] max-w-[500px] rounded-2xl sm:rounded-3xl p-2 sm:p-3 transition-shadow duration-500 will-change-transform cursor-pointer pointer-events-auto ${
-                  isDark 
-                    ? 'bg-slate-900/95 lg:bg-slate-900/80 border border-white/20 shadow-2xl lg:backdrop-blur-xl' 
-                    : 'bg-white border border-slate-300 shadow-xl shadow-slate-900/10 lg:backdrop-blur-xl'
-                }`}
-                style={{
-                  transformStyle: 'preserve-3d',
-                  backfaceVisibility: 'hidden',
-                  WebkitBackfaceVisibility: 'hidden',
-                }}
-              >
-                {/* Tech Bracket Accents on 4 Corners */}
-                <span className="absolute top-2 left-2 w-2.5 h-2.5 border-t-2 border-l-2 border-red-500/80 rounded-tl-sm pointer-events-none" />
-                <span className="absolute top-2 right-2 w-2.5 h-2.5 border-t-2 border-r-2 border-red-500/80 rounded-tr-sm pointer-events-none" />
-                <span className="absolute bottom-2 left-2 w-2.5 h-2.5 border-b-2 border-l-2 border-red-500/80 rounded-bl-sm pointer-events-none" />
-                <span className="absolute bottom-2 right-2 w-2.5 h-2.5 border-b-2 border-r-2 border-red-500/80 rounded-br-sm pointer-events-none" />
-
-                {/* Top HUD Metadata Header Bar */}
-                <div className="flex items-center justify-between px-2.5 py-1.5 mb-1.5 border-b border-white/10 dark:border-white/10 light:border-slate-200 text-[9px] sm:text-[10px] font-mono tracking-wider">
-                  <div className="flex items-center gap-1.5">
-                    <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-red-500 animate-pulse' : 'bg-slate-400'}`} />
-                    <span className={isDark ? 'text-neutral-300 font-bold' : 'text-slate-800 font-bold'}>
-                      {comp.code}
-                    </span>
-                  </div>
-                  <span className={`font-semibold uppercase tracking-widest ${isDark ? 'text-neutral-400' : 'text-slate-600'}`}>
-                    SH350i • 2026
-                  </span>
-                </div>
-
-                {/* High-Res Image Container with Glass Sheen */}
-                <div className="relative w-full aspect-[16/10] sm:aspect-[16/9.5] rounded-xl sm:rounded-2xl overflow-hidden group">
-                  <img
-                    src={comp.image}
-                    alt={comp.title}
-                    className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
-                  />
-                  {/* Subtle Gradient Overlays */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent pointer-events-none" />
-                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.08] to-transparent pointer-events-none" />
-
-                  {/* On-Image Bottom Badge */}
-                  <div className="absolute bottom-2 sm:bottom-3 left-2.5 sm:left-3.5 right-2.5 sm:right-3.5 flex items-center justify-between">
-                    <span className="px-2 sm:px-2.5 py-0.5 rounded text-[9px] sm:text-[10px] font-bold font-body tracking-wider uppercase backdrop-blur-md bg-black/65 text-white border border-white/20">
-                      {comp.tag}
-                    </span>
-                    <span className="text-[10px] sm:text-xs font-black text-white drop-shadow font-display">
-                      0{idx + 1}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+      {/* ============================================================ */}
+      {/* 2. DESKTOP VIEW (hidden lg:flex) - Full Pinned 3D Stage       */}
+      {/* ============================================================ */}
+      <div className="hidden lg:flex flex-col justify-between w-full h-full">
+        {/* Floating Section Header Tag */}
+        <div className="relative z-30 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-7 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-3">
+            <span className="w-6 h-[2px] bg-red-600" />
+            <span className={`text-xs font-black tracking-[0.2em] uppercase font-body ${
+              isDark ? 'text-neutral-300' : 'text-slate-950'
+            }`}>
+              KIẾN TRÚC THIẾT KẾ • 3 ĐIỂM NHẤN HOÀN THIỆN
+            </span>
+          </div>
+          <div className="flex items-center gap-2 font-mono text-xs font-bold">
+            <span className="text-red-500">0{activeStep + 1}</span>
+            <span className={isDark ? 'text-neutral-500' : 'text-slate-400'}>/</span>
+            <span className={isDark ? 'text-neutral-400' : 'text-slate-800'}>03</span>
+          </div>
         </div>
 
-        {/* ============================================================ */}
-        {/* ZONE 2: TECH HUD TEXT DATA READOUT TERMINAL                   */}
-        {/* ============================================================ */}
-        <div className="lg:col-span-5 relative w-full flex flex-col justify-center min-h-[170px] sm:min-h-[260px] lg:min-h-[380px]">
-          
-          {/* Stack of 3 Text Panels cross-fading */}
-          <div className="relative w-full">
+        {/* Main 3D Space Stage */}
+        <div className="relative z-20 w-full max-w-7xl mx-auto px-6 lg:px-8 my-auto grid grid-cols-12 gap-10 items-center">
+          {/* ZONE 1: 3D FLOATING CARDS STAGE */}
+          <div 
+            ref={stageRef}
+            className="col-span-7 relative flex items-center justify-center w-full h-[62vh] pointer-events-none"
+            style={{
+              perspective: '1400px',
+              perspectiveOrigin: '50% 50%',
+            }}
+          >
+            <div className={`absolute bottom-0 w-[80%] h-12 rounded-full blur-3xl ${
+              isDark ? 'bg-red-600/10' : 'bg-slate-400/25'
+            }`} />
+
             {DESIGN_COMPONENTS.map((comp, idx) => {
-              const Icon = comp.icon;
+              const isActive = activeStep === idx;
               return (
                 <div
-                  key={`text-${comp.id}`}
-                  ref={(el) => (textRefs.current[idx] = el)}
-                  className={`w-full transition-colors ${
-                    idx === 0 ? 'relative' : 'absolute inset-0'
+                  key={comp.id}
+                  ref={(el) => (cardRefs.current[idx] = el)}
+                  onClick={() => selectStep(idx)}
+                  className={`absolute w-[480px] max-w-[500px] rounded-3xl p-3 transition-shadow duration-500 will-change-transform cursor-pointer pointer-events-auto ${
+                    isDark 
+                      ? 'bg-slate-900/80 border border-white/20 shadow-2xl backdrop-blur-xl' 
+                      : 'bg-white/95 border border-slate-300 shadow-xl shadow-slate-900/15 backdrop-blur-xl'
                   }`}
+                  style={{
+                    transformStyle: 'preserve-3d',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                  }}
                 >
-                  {/* Category Pill with Icon */}
-                  <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-xs font-bold uppercase tracking-wider mb-1.5 sm:mb-3 backdrop-blur-md font-body bg-red-600/10 border border-red-600/25 text-red-600 dark:text-red-400">
-                    <Icon size={12} className="text-red-500 shrink-0" />
-                    <span>{comp.category}</span>
-                  </div>
+                  {/* Tech Bracket Accents */}
+                  <span className="absolute top-2 left-2 w-2.5 h-2.5 border-t-2 border-l-2 border-red-500/80 rounded-tl-sm pointer-events-none" />
+                  <span className="absolute top-2 right-2 w-2.5 h-2.5 border-t-2 border-r-2 border-red-500/80 rounded-tr-sm pointer-events-none" />
+                  <span className="absolute bottom-2 left-2 w-2.5 h-2.5 border-b-2 border-l-2 border-red-500/80 rounded-bl-sm pointer-events-none" />
+                  <span className="absolute bottom-2 right-2 w-2.5 h-2.5 border-b-2 border-r-2 border-red-500/80 rounded-br-sm pointer-events-none" />
 
-                  {/* Main Title - Responsive Brevity */}
-                  <h3 className={`font-display text-lg sm:text-2xl lg:text-3xl font-black tracking-tight leading-snug uppercase ${
-                    isDark ? 'text-white' : 'text-slate-950'
-                  }`}>
-                    <span className="sm:hidden">{comp.shortTitle}</span>
-                    <span className="hidden sm:inline">{comp.title}</span>
-                  </h3>
-
-                  {/* Concise Executive Summary - 1 short sentence on mobile */}
-                  <p className={`mt-1.5 sm:mt-3 text-xs sm:text-sm lg:text-[15px] leading-relaxed font-body ${
-                    isDark ? 'text-neutral-300' : 'text-slate-800 font-medium'
-                  }`}>
-                    <span className="sm:hidden">{comp.shortSummary}</span>
-                    <span className="hidden sm:inline">{comp.summary}</span>
-                  </p>
-
-                  {/* Desktop: 3 Tech Spec Mini Badges */}
-                  <div className="hidden sm:grid mt-3 sm:mt-5 grid-cols-3 gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-body">
-                    {comp.specs.map((s, sIdx) => (
-                      <div
-                        key={sIdx}
-                        className={`p-2 sm:p-2.5 rounded-xl border flex flex-col justify-between transition-colors ${
-                          isDark 
-                            ? 'bg-white/[0.04] border-white/10 text-white' 
-                            : 'bg-white border-slate-300 text-slate-900 shadow-sm'
-                        }`}
-                      >
-                        <span className={`text-[9px] font-bold uppercase tracking-wider ${
-                          isDark ? 'text-neutral-400' : 'text-slate-700'
-                        }`}>
-                          {s.label}
-                        </span>
-                        <span className="font-bold text-[10px] sm:text-xs mt-0.5 font-display line-clamp-2">
-                          {s.value}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Mobile: 2 Minimalist Tag Chips (No vertical bloat) */}
-                  <div className="sm:hidden mt-2 flex items-center gap-1.5 font-body">
-                    {comp.mobileTags.map((tag, tIdx) => (
-                      <span
-                        key={tIdx}
-                        className={`px-2.5 py-0.5 rounded-lg text-[10px] font-bold border flex items-center gap-1.5 ${
-                          isDark
-                            ? 'bg-white/[0.05] border-white/15 text-neutral-200'
-                            : 'bg-white border-slate-300 text-slate-800 shadow-xs'
-                        }`}
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />
-                        {tag}
+                  {/* Top HUD Bar */}
+                  <div className="flex items-center justify-between px-2.5 py-1.5 mb-1.5 border-b border-white/10 text-[10px] font-mono tracking-wider">
+                    <div className="flex items-center gap-1.5">
+                      <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-red-500 animate-pulse' : 'bg-slate-400'}`} />
+                      <span className={isDark ? 'text-neutral-300 font-bold' : 'text-slate-800 font-bold'}>
+                        {comp.code}
                       </span>
-                    ))}
+                    </div>
+                    <span className={`font-semibold uppercase tracking-widest ${isDark ? 'text-neutral-400' : 'text-slate-600'}`}>
+                      SH350i • 2026
+                    </span>
+                  </div>
+
+                  {/* High-Res Image Container */}
+                  <div className="relative w-full aspect-[16/9.5] rounded-2xl overflow-hidden group">
+                    <img
+                      src={comp.image}
+                      alt={comp.title}
+                      className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.08] to-transparent pointer-events-none" />
+
+                    <div className="absolute bottom-3 left-3.5 right-3.5 flex items-center justify-between">
+                      <span className="px-2.5 py-0.5 rounded text-[10px] font-bold font-body tracking-wider uppercase backdrop-blur-md bg-black/65 text-white border border-white/20">
+                        {comp.tag}
+                      </span>
+                      <span className="text-xs font-black text-white drop-shadow font-display">
+                        0{idx + 1}
+                      </span>
+                    </div>
                   </div>
                 </div>
               );
             })}
           </div>
 
-          {/* Interactive 3D Step Switcher Tabs */}
-          <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-slate-200 dark:border-white/10 flex items-center justify-between gap-2">
-            <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* ZONE 2: TECH HUD TEXT DATA TERMINAL */}
+          <div className="col-span-5 relative w-full flex flex-col justify-center min-h-[380px]">
+            <div className="relative w-full">
               {DESIGN_COMPONENTS.map((comp, idx) => {
-                const isActive = activeStep === idx;
+                const Icon = comp.icon;
                 return (
-                  <button
-                    key={`btn-${comp.id}`}
-                    onClick={() => selectStep(idx)}
-                    onMouseEnter={() => soundFx.playHover()}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer font-body flex items-center gap-1.5 ${
-                      isActive
-                        ? (isDark 
-                            ? 'bg-white text-black shadow-md' 
-                            : 'bg-slate-900 text-white shadow-md')
-                        : (isDark 
-                            ? 'bg-white/[0.06] text-neutral-300 hover:text-white hover:bg-white/[0.12] border border-white/10' 
-                            : 'bg-slate-200/90 text-slate-800 hover:text-slate-950 hover:bg-slate-300 border border-slate-300')
+                  <div
+                    key={`text-${comp.id}`}
+                    ref={(el) => (textRefs.current[idx] = el)}
+                    className={`w-full transition-colors ${
+                      idx === 0 ? 'relative' : 'absolute inset-0'
                     }`}
                   >
-                    <span>0{idx + 1}</span>
-                    <span className="hidden sm:inline font-medium">
-                      {idx === 0 ? 'Mặt Nạ LED' : idx === 1 ? 'Đồng Hồ LCD' : 'Đèn Hậu 3D'}
-                    </span>
-                  </button>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3 backdrop-blur-md font-body bg-red-600/10 border border-red-600/25 text-red-600 dark:text-red-400">
+                      <Icon size={13} className="text-red-500 shrink-0" />
+                      <span>{comp.category}</span>
+                    </div>
+
+                    <h3 className={`font-display text-3xl font-black tracking-tight leading-snug uppercase ${
+                      isDark ? 'text-white' : 'text-slate-950'
+                    }`}>
+                      {comp.title}
+                    </h3>
+
+                    <p className={`mt-3 text-[15px] leading-relaxed font-body ${
+                      isDark ? 'text-neutral-300' : 'text-slate-800 font-medium'
+                    }`}>
+                      {comp.summary}
+                    </p>
+
+                    <div className="mt-5 grid grid-cols-3 gap-2 text-xs font-body">
+                      {comp.specs.map((s, sIdx) => (
+                        <div
+                          key={sIdx}
+                          className={`p-2.5 rounded-xl border flex flex-col justify-between transition-colors ${
+                            isDark 
+                              ? 'bg-white/[0.04] border-white/10 text-white' 
+                              : 'bg-white border-slate-300 text-slate-900 shadow-sm'
+                          }`}
+                        >
+                          <span className={`text-[9px] font-bold uppercase tracking-wider ${
+                            isDark ? 'text-neutral-400' : 'text-slate-700'
+                          }`}>
+                            {s.label}
+                          </span>
+                          <span className="font-bold text-xs mt-0.5 font-display line-clamp-2">
+                            {s.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 );
               })}
             </div>
 
-            <div 
-              onClick={() => selectStep((activeStep + 1) % DESIGN_COMPONENTS.length)}
-              className={`flex items-center gap-1 text-[11px] font-semibold font-body cursor-pointer transition-colors ${
-                isDark ? 'text-neutral-400 hover:text-white' : 'text-slate-600 hover:text-slate-950'
-              }`}
-            >
-              <span className="hidden xs:inline">Tiếp theo</span>
-              <ChevronRight size={14} className="text-red-600" />
+            {/* Desktop Tabs */}
+            <div className="mt-6 pt-4 border-t border-slate-200 dark:border-white/10 flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                {DESIGN_COMPONENTS.map((comp, idx) => {
+                  const isActive = activeStep === idx;
+                  return (
+                    <button
+                      key={`btn-${comp.id}`}
+                      onClick={() => selectStep(idx)}
+                      onMouseEnter={() => soundFx.playHover()}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer font-body flex items-center gap-1.5 ${
+                        isActive
+                          ? (isDark 
+                              ? 'bg-white text-black shadow-md' 
+                              : 'bg-slate-900 text-white shadow-md')
+                          : (isDark 
+                              ? 'bg-white/[0.06] text-neutral-300 hover:text-white hover:bg-white/[0.12] border border-white/10' 
+                              : 'bg-slate-200/90 text-slate-800 hover:text-slate-950 hover:bg-slate-300 border border-slate-300')
+                      }`}
+                    >
+                      <span>0{idx + 1}</span>
+                      <span className="font-medium">
+                        {idx === 0 ? 'Mặt Nạ LED' : idx === 1 ? 'Đồng Hồ LCD' : 'Đèn Hậu 3D'}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div 
+                onClick={() => selectStep((activeStep + 1) % DESIGN_COMPONENTS.length)}
+                className={`flex items-center gap-1 text-[11px] font-semibold font-body cursor-pointer transition-colors ${
+                  isDark ? 'text-neutral-400 hover:text-white' : 'text-slate-600 hover:text-slate-950'
+                }`}
+              >
+                <span>Tiếp theo</span>
+                <ChevronRight size={14} className="text-red-600" />
+              </div>
             </div>
           </div>
-
         </div>
 
+        {/* Desktop Bottom Hint */}
+        <div className="relative z-30 w-full pb-3 flex items-center justify-center gap-2 text-xs font-body tracking-wider text-slate-400">
+          <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
+          <span className={isDark ? 'text-neutral-400' : 'text-slate-800'}>
+            Cuộn chuột để xoay chuyển góc nhìn 3D
+          </span>
+        </div>
       </div>
-
-      {/* Bottom Hint */}
-      <div className="relative z-30 w-full pb-3 flex items-center justify-center gap-2 text-[10px] sm:text-xs font-body tracking-wider text-slate-400">
-        <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
-        <span className={isDark ? 'text-neutral-400' : 'text-slate-800'}>
-          Cuộn chuột để xoay chuyển góc nhìn 3D
-        </span>
-      </div>
-
     </section>
   );
 }
