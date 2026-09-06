@@ -39,12 +39,13 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
     soundFx.playClick();
     setMobileMenuOpen(false);
 
-    if (targetId === '#colors') {
-      const st = ScrollTrigger.getAll().find(t => t.trigger && t.trigger.id === 'colors');
+    if (targetId === '#colors' || targetId === '#design') {
+      const elId = targetId.replace('#', '');
+      const st = ScrollTrigger.getAll().find(t => t.trigger && (t.trigger.id === elId || t.trigger === document.getElementById(elId)));
       if (st) {
         gsap.to(window, {
           duration: 1.2,
-          scrollTo: st.start + 5,
+          scrollTo: st.start + 2,
           ease: 'power3.inOut'
         });
         return;

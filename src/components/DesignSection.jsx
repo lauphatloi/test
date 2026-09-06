@@ -2,120 +2,232 @@ import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { soundFx } from '../utils/audio';
-import { Sparkles, Eye, Compass, Shield, ChevronRight, Layers } from 'lucide-react';
+import { Sparkles, Eye, Compass, ShieldCheck, ChevronRight, Layers, Cpu, Zap, Lightbulb } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const DESIGN_CARDS = [
-  {
-    id: 'overview',
-    number: '01',
-    category: 'Ngôn Ngữ Thiết Kế',
-    title: 'Kiệt Tác Điêu Khắc Đậm Phong Vị Nước Ý',
-    subtitle: 'Tỉ Lệ Vàng Công Thái Học Chuẩn Châu Âu',
-    description: 'Honda SH350i sở hữu diện mạo đồ sộ nhưng thanh thoát phi thường. Các mảng khối dập nổi vuốt dọc thân xe theo nguyên lý khí động học, tạo thế đứng bệ vệ, tự tin khẳng định vị thế thủ lĩnh trên mọi cung đường.',
-    highlight: 'Kích thước chuẩn mực: 2.160 x 743 x 1.162 mm mang lại tư thế lái thẳng lưng vương giả.',
-    image: './images/thiet-ke-tong-quan.png',
-    isPng: true,
-  },
+const DESIGN_COMPONENTS = [
   {
     id: 'headlight',
-    number: '02',
-    category: 'Mặt Nạ Trước & Chiếu Sáng',
-    title: 'Cụm Đèn Trước LED Hiện Đại & Mặt Nạ Chrome',
-    subtitle: 'Nhận Diện Thương Hiệu Độc Bản Từ Xa',
-    description: 'Chi tiết kim loại mạ chrome sáng bóng kết hợp cấu trúc tạo khối chữ S uyển chuyển. Đèn xi-nhan và dải LED định vị ban ngày bố trí tách biệt, tạo nên ánh nhìn sắc sảo, quyền lực và không thể nhầm lẫn.',
-    highlight: 'Hệ thống đèn LED chiếu sáng liên tục công suất cao, tối ưu tầm nhìn trong mọi thời tiết.',
+    number: '01',
+    code: 'FRONT-LED-01',
+    category: 'Mặt Nạ Trước & Đèn Pha',
+    tag: 'Chữ S Quyền Lực',
+    title: 'Cụm Đèn LED & Mặt Nạ Chrome Chữ S',
+    summary: 'Đường nét mạ chrome sáng bóng kết hợp dải LED định vị ban ngày tách biệt. Cấu trúc tạo khối chữ S trứ danh kiến tạo diện mạo quyền uy và ánh nhìn kiêu hãnh của thủ lĩnh.',
+    icon: Lightbulb,
+    specs: [
+      { label: 'Hệ thống', value: 'Full LED 2 Tầng' },
+      { label: 'Hoàn thiện', value: 'Mạ Chrome Ánh Gương' },
+      { label: 'Tầm nhìn', value: 'Chiếu sáng liên tục cao cấp' },
+    ],
     image: './images/thiet-ke-dau.jpg',
-    isPng: false,
   },
   {
     id: 'cockpit',
-    number: '03',
-    category: 'Khoang Lái Thông Minh',
-    title: 'Mặt Đồng Hồ Đôi LCD Kỹ Thuật Số Đa Tầng',
-    subtitle: 'Bản Giao Hưởng Công Nghệ Điện Tử',
-    description: 'Cụm màn hình LCD hiển thị tinh thể lỏng hiển thị đầy đủ thông số hành trình: tốc độ, thời gian, điện áp ắc quy, mức tiêu thụ nhiên liệu và đèn cảnh báo hệ thống kiểm soát lực kéo HSTC tân tiến.',
-    highlight: 'Hỗ trợ kết nối thông minh với điện thoại thông minh qua ứng dụng My Honda+.',
+    number: '02',
+    code: 'COCKPIT-LCD-02',
+    category: 'Khoang Lái Kỹ Thuật Số',
+    tag: 'Kết Nối My Honda+',
+    title: 'Mặt Đồng Hồ Đôi LCD Đa Tầng Thông Minh',
+    summary: 'Màn hình tinh thể lỏng hiển thị đa thông số hành trình sắc nét: vận tốc, mức tiêu hao, điện áp và cảnh báo HSTC. Hỗ trợ đồng bộ dữ liệu thông minh qua Bluetooth với My Honda+.',
+    icon: Cpu,
+    specs: [
+      { label: 'Hiển thị', value: 'Dual LCD Kỹ Thuật Số' },
+      { label: 'Kết nối', value: 'Bluetooth • My Honda+' },
+      { label: 'Chỉ số', value: 'Vận tốc, HSTC, điện áp' },
+    ],
     image: './images/thiet-ke-mat-dong-ho.jpg',
-    isPng: false,
   },
   {
     id: 'taillight',
-    number: '04',
+    number: '03',
+    code: 'REAR-ESS-03',
     category: 'Đuôi Xe & Đèn Hậu 3D',
-    title: 'Đèn Hậu LED 3D Tinh Tế & Tay Dắt Cao Cấp',
-    subtitle: 'Dấu Ấn Đẳng Cấp Trong Từng Góc Nhìn',
-    description: 'Phần đuôi xe được vuốt nhọn gọn gàng phong cách Grand Touring. Cụm đèn hậu 2 tầng viền chrome phân cách tinh tế cùng tay dắt nhôm đúc nguyên khối tôn thêm nét cơ bắp và sự vững chãi.',
-    highlight: 'Thiết kế đèn tín hiệu dừng khẩn cấp (ESS) tự động chớp nháy cảnh báo xe phía sau.',
+    tag: 'Đèn Dừng Khẩn Cấp ESS',
+    title: 'Cụm Đèn Hậu LED 3D & Tay Dắt Nhôm Đúc',
+    summary: 'Đuôi xe vuốt nhọn khí động học Grand Touring vững chãi. Đèn hậu LED 2 tầng phân cách viền chrome sang trọng, tích hợp đèn dừng khẩn cấp ESS tự động chớp nháy cảnh báo khi phanh gấp.',
+    icon: ShieldCheck,
+    specs: [
+      { label: 'Đèn hậu', value: 'LED Đồ Họa 3D 2 Tầng' },
+      { label: 'An toàn', value: 'Cảnh báo khẩn cấp ESS' },
+      { label: 'Kết cấu', value: 'Tay dắt nhôm đúc nguyên khối' },
+    ],
     image: './images/thiet-ke-duoi.jpg',
-    isPng: false,
   },
 ];
 
 export default function DesignSection() {
   const sectionRef = useRef(null);
-  const visualContainerRef = useRef(null);
-  const cardsRef = useRef([]);
+  const stageRef = useRef(null);
+  const cardRefs = useRef([]);
+  const textRefs = useRef([]);
   const [activeStep, setActiveStep] = useState(0);
   const { isDark } = useTheme();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Pin the section to create fluid, graceful scrolling narrative
-      const totalSteps = DESIGN_CARDS.length;
-      
+      const isMobile = window.innerWidth < 1024;
+
+      // Responsive 3D transform poses
+      const getPose = (slot) => {
+        // slot: -2 (far left), -1 (left), 0 (center active), 1 (right), 2 (far right)
+        if (slot === 0) {
+          return {
+            xPercent: 0,
+            y: 0,
+            z: isMobile ? 30 : 60,
+            rotateY: 0,
+            rotateX: 0,
+            rotateZ: 0,
+            scale: 1,
+            opacity: 1,
+            filter: 'blur(0px) brightness(1)',
+            zIndex: 30,
+          };
+        }
+        if (slot === 1) {
+          return {
+            xPercent: isMobile ? 48 : 58,
+            y: isMobile ? 12 : 20,
+            z: isMobile ? -130 : -190,
+            rotateY: isMobile ? -26 : -32,
+            rotateX: isMobile ? 4 : 6,
+            rotateZ: 1,
+            scale: isMobile ? 0.86 : 0.82,
+            opacity: 0.45,
+            filter: 'blur(3px) brightness(0.85)',
+            zIndex: 20,
+          };
+        }
+        if (slot === -1) {
+          return {
+            xPercent: isMobile ? -48 : -58,
+            y: isMobile ? -12 : -20,
+            z: isMobile ? -130 : -190,
+            rotateY: isMobile ? 26 : 32,
+            rotateX: isMobile ? -4 : -6,
+            rotateZ: -1,
+            scale: isMobile ? 0.86 : 0.82,
+            opacity: 0.45,
+            filter: 'blur(3px) brightness(0.85)',
+            zIndex: 20,
+          };
+        }
+        if (slot > 1) {
+          return {
+            xPercent: isMobile ? 95 : 115,
+            y: isMobile ? 24 : 38,
+            z: isMobile ? -260 : -360,
+            rotateY: isMobile ? -38 : -46,
+            rotateX: isMobile ? 7 : 10,
+            rotateZ: 2,
+            scale: isMobile ? 0.72 : 0.68,
+            opacity: 0.15,
+            filter: 'blur(6px) brightness(0.7)',
+            zIndex: 10,
+          };
+        }
+        // slot < -1
+        return {
+          xPercent: isMobile ? -95 : -115,
+          y: isMobile ? -24 : -38,
+          z: isMobile ? -260 : -360,
+          rotateY: isMobile ? 38 : 46,
+          rotateX: isMobile ? -7 : -10,
+          rotateZ: -2,
+          scale: isMobile ? 0.72 : 0.68,
+          opacity: 0.15,
+          filter: 'blur(6px) brightness(0.7)',
+          zIndex: 10,
+        };
+      };
+
+      // Set initial positions:
+      // Card 0 -> Center (0)
+      // Card 1 -> Right (1)
+      // Card 2 -> Far Right (2)
+      gsap.set(cardRefs.current[0], getPose(0));
+      gsap.set(cardRefs.current[1], getPose(1));
+      gsap.set(cardRefs.current[2], getPose(2));
+
+      // Set text positions:
+      gsap.set(textRefs.current[0], { opacity: 1, y: 0, filter: 'blur(0px)', pointerEvents: 'auto' });
+      gsap.set(textRefs.current[1], { opacity: 0, y: 25, filter: 'blur(8px)', pointerEvents: 'none' });
+      gsap.set(textRefs.current[2], { opacity: 0, y: 25, filter: 'blur(8px)', pointerEvents: 'none' });
+
+      // Pinned 3D Scrollytelling Timeline
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: `+=${totalSteps * 100}%`,
+          end: '+=260%',
           pin: true,
-          scrub: 1.2,
+          scrub: 0.9,
           anticipatePin: 1,
           onUpdate: (self) => {
-            const step = Math.min(
-              Math.floor(self.progress * totalSteps),
-              totalSteps - 1
-            );
-            setActiveStep(step);
-          }
-        }
+            const p = self.progress;
+            let current = 0;
+            if (p < 0.35) current = 0;
+            else if (p < 0.68) current = 1;
+            else current = 2;
+            setActiveStep((prev) => (prev !== current ? current : prev));
+          },
+        },
       });
 
-      // Animate cards transitions gracefully
-      cardsRef.current.forEach((card, index) => {
-        if (index > 0) {
-          gsap.set(card, { opacity: 0, scale: 0.9, y: 50, filter: 'blur(10px)' });
-        } else {
-          gsap.set(card, { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' });
-        }
-      });
+      // -------------------------------------------------------------
+      // Giai đoạn 1: Card 1 -> Slot -1, Card 2 -> Slot 0, Card 3 -> Slot 1
+      // Scroll scrub: 0.3 to 1.3
+      // -------------------------------------------------------------
+      tl.to(cardRefs.current[0], { ...getPose(-1), duration: 1.0, ease: 'power2.inOut' }, 0.3);
+      tl.to(cardRefs.current[1], { ...getPose(0), duration: 1.0, ease: 'power2.inOut' }, 0.3);
+      tl.to(cardRefs.current[2], { ...getPose(1), duration: 1.0, ease: 'power2.inOut' }, 0.3);
 
-      // Chain step animations
-      for (let i = 0; i < totalSteps - 1; i++) {
-        const time = i * 1.5;
-        // Fade out current
-        tl.to(cardsRef.current[i], {
-          opacity: 0,
-          scale: 1.08,
-          y: -40,
-          filter: 'blur(12px)',
-          ease: 'power2.inOut',
-          duration: 1
-        }, time + 0.5);
+      // Text 0 fades out, Text 1 reveals smoothly
+      tl.to(textRefs.current[0], {
+        opacity: 0,
+        y: -25,
+        filter: 'blur(6px)',
+        duration: 0.6,
+        ease: 'power1.inOut',
+        pointerEvents: 'none',
+      }, 0.3);
+      tl.to(textRefs.current[1], {
+        opacity: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        duration: 0.7,
+        ease: 'power2.out',
+        pointerEvents: 'auto',
+      }, 0.65);
 
-        // Fade in next
-        tl.to(cardsRef.current[i + 1], {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          ease: 'power2.out',
-          duration: 1
-        }, time + 0.8);
-      }
+      // -------------------------------------------------------------
+      // Giai đoạn 2: Card 1 -> Slot -2, Card 2 -> Slot -1, Card 3 -> Slot 0
+      // Scroll scrub: 1.6 to 2.6
+      // -------------------------------------------------------------
+      tl.to(cardRefs.current[0], { ...getPose(-2), duration: 1.0, ease: 'power2.inOut' }, 1.6);
+      tl.to(cardRefs.current[1], { ...getPose(-1), duration: 1.0, ease: 'power2.inOut' }, 1.6);
+      tl.to(cardRefs.current[2], { ...getPose(0), duration: 1.0, ease: 'power2.inOut' }, 1.6);
+
+      // Text 1 fades out, Text 2 reveals smoothly
+      tl.to(textRefs.current[1], {
+        opacity: 0,
+        y: -25,
+        filter: 'blur(6px)',
+        duration: 0.6,
+        ease: 'power1.inOut',
+        pointerEvents: 'none',
+      }, 1.6);
+      tl.to(textRefs.current[2], {
+        opacity: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        duration: 0.7,
+        ease: 'power2.out',
+        pointerEvents: 'auto',
+      }, 1.95);
 
     }, sectionRef);
 
@@ -124,205 +236,254 @@ export default function DesignSection() {
 
   const selectStep = (index) => {
     soundFx.playClick();
+    setActiveStep(index);
     const st = ScrollTrigger.getAll().find(t => t.trigger === sectionRef.current);
     if (st) {
-      const stepFraction = index / (DESIGN_CARDS.length - 0.5);
+      const stepFraction = [0.08, 0.50, 0.92][index];
       const targetScroll = st.start + (st.end - st.start) * stepFraction;
       gsap.to(window, {
-        duration: 1.2,
+        duration: 1.0,
         scrollTo: targetScroll,
-        ease: 'power3.inOut'
+        ease: 'power2.out',
       });
     }
   };
-
-  const current = DESIGN_CARDS[activeStep];
 
   return (
     <section 
       id="design" 
       ref={sectionRef} 
-      className={`relative w-full h-screen overflow-hidden select-none transition-colors duration-500 ${
-        isDark ? 'bg-[#07090e]' : 'bg-[#f8fafc]'
+      className={`relative w-full h-screen overflow-hidden select-none transition-colors duration-500 flex flex-col justify-between ${
+        isDark ? 'bg-[#07090e]' : 'bg-[#eef2f6]'
       }`}
     >
-      {/* Background ambient lighting - Soft executive tones */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className={`absolute top-1/4 -left-48 w-96 h-96 rounded-full blur-[140px] ${
-          isDark ? 'bg-slate-700/10' : 'bg-red-500/5'
+      {/* Background ambient lighting - Soft executive showroom glow */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className={`absolute top-1/4 -left-40 w-[600px] h-[600px] rounded-full blur-[160px] ${
+          isDark ? 'bg-red-950/15' : 'bg-red-500/5'
         }`} />
-        <div className={`absolute bottom-1/4 -right-48 w-96 h-96 rounded-full blur-[140px] ${
-          isDark ? 'bg-slate-600/10' : 'bg-slate-300/30'
+        <div className={`absolute bottom-1/4 -right-40 w-[600px] h-[600px] rounded-full blur-[160px] ${
+          isDark ? 'bg-slate-800/30' : 'bg-slate-300/40'
         }`} />
-        <div className={`absolute inset-0 bg-tech-grid ${isDark ? 'opacity-10' : 'opacity-[0.03]'}`} />
+        <div className={`absolute inset-0 bg-tech-grid ${isDark ? 'opacity-15' : 'opacity-[0.04]'}`} />
       </div>
 
       {/* Floating Section Header Tag */}
-      <div className="absolute top-8 sm:top-12 left-6 sm:left-12 lg:left-16 z-30 flex items-center gap-3">
-        <span className="w-6 h-[2px] bg-red-600" />
-        <span className={`text-[10px] sm:text-[11px] font-bold tracking-[0.25em] uppercase font-body ${
-          isDark ? 'text-neutral-400' : 'text-slate-800'
-        }`}>
-          NGÔN NGỮ THIẾT KẾ CHÂU ÂU • KHÍ CHẤT THỦ LĨNH
-        </span>
+      <div className="relative z-30 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 sm:pt-7 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <span className="w-5 sm:w-6 h-[2px] bg-red-600" />
+          <span className={`text-[10px] sm:text-xs font-black tracking-[0.2em] uppercase font-body ${
+            isDark ? 'text-neutral-300' : 'text-slate-950'
+          }`}>
+            KIẾN TRÚC THIẾT KẾ • 3 ĐIỂM NHẤN HOÀN THIỆN
+          </span>
+        </div>
+        <div className="flex items-center gap-2 font-mono text-[11px] sm:text-xs font-bold">
+          <span className="text-red-500">0{activeStep + 1}</span>
+          <span className={isDark ? 'text-neutral-500' : 'text-slate-400'}>/</span>
+          <span className={isDark ? 'text-neutral-400' : 'text-slate-800'}>03</span>
+        </div>
       </div>
 
-      {/* Main Layout: Asymmetric 2-Column Scrollytelling Stage */}
-      <div className="relative w-full h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between z-20 pt-20 pb-12">
+      {/* Main 3D Space Stage */}
+      <div className="relative z-20 w-full max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 my-auto grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-6 lg:gap-10 items-center">
         
-        {/* Left Visual Stage */}
+        {/* ============================================================ */}
+        {/* ZONE 1: 3D FLOATING CARDS STAGE (Perspective Viewport)        */}
+        {/* ============================================================ */}
         <div 
-          ref={visualContainerRef}
-          className="relative w-full lg:w-[54%] h-[46vh] sm:h-[54vh] lg:h-[72vh] flex items-center justify-center"
+          ref={stageRef}
+          className="lg:col-span-7 relative flex items-center justify-center w-full h-[32vh] sm:h-[40vh] lg:h-[62vh] max-h-[300px] sm:max-h-[380px] lg:max-h-none pointer-events-none"
+          style={{
+            perspective: '1400px',
+            perspectiveOrigin: '50% 50%',
+          }}
         >
-          {/* Decorative Framing Ring */}
-          <div className={`absolute inset-0 border rounded-3xl pointer-events-none -m-2 sm:-m-4 transition-colors ${
-            isDark ? 'border-white/[0.07]' : 'border-slate-300'
+          {/* Subtle Ambient Floor Reflection Ring */}
+          <div className={`absolute bottom-0 w-[80%] h-12 rounded-full blur-3xl ${
+            isDark ? 'bg-red-600/10' : 'bg-slate-400/25'
           }`} />
 
-          {/* Cards Stack */}
-          {DESIGN_CARDS.map((card, idx) => (
-            <div
-              key={card.id}
-              ref={(el) => (cardsRef.current[idx] = el)}
-              className={`absolute inset-0 w-full h-full rounded-2xl overflow-hidden flex items-center justify-center p-3 sm:p-6 transition-all duration-300 ${
-                isDark 
-                  ? 'glass-panel border border-white/[0.08] shadow-2xl' 
-                  : 'bg-white border border-slate-300 shadow-xl shadow-slate-300/40'
-              }`}
-            >
-              {card.isPng ? (
-                // Transparent PNG Showcase
-                <div className="relative w-full h-full flex items-center justify-center">
-                  <div className={`absolute w-[80%] h-12 bottom-6 rounded-full blur-3xl ${
-                    isDark ? 'bg-slate-500/10' : 'bg-slate-300/30'
-                  }`} />
-                  <img
-                    src={card.image}
-                    alt={card.title}
-                    className={`max-w-full max-h-full object-contain filter animate-float-subtle ${
-                      isDark ? 'drop-shadow-[0_20px_30px_rgba(0,0,0,0.85)]' : 'drop-shadow-[0_16px_25px_rgba(15,23,42,0.25)]'
-                    }`}
-                  />
-                </div>
-              ) : (
-                // High-res Detailed Photography
-                <div className="relative w-full h-full rounded-xl overflow-hidden group">
-                  <img
-                    src={card.image}
-                    alt={card.title}
-                    className="w-full h-full object-cover object-center transform group-hover:scale-102 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-neutral-300">
-                    <span className="font-mono text-[10px] text-neutral-300 bg-black/60 px-3 py-1 rounded border border-white/[0.1] backdrop-blur-md">
-                      HONDA DESIGN • {card.category.toUpperCase()}
+          {/* 3 Floating 3D Cards */}
+          {DESIGN_COMPONENTS.map((comp, idx) => {
+            const isActive = activeStep === idx;
+            return (
+              <div
+                key={comp.id}
+                ref={(el) => (cardRefs.current[idx] = el)}
+                onClick={() => selectStep(idx)}
+                className={`absolute w-[86vw] sm:w-[70vw] lg:w-[480px] max-w-[500px] rounded-2xl sm:rounded-3xl p-2 sm:p-3 transition-shadow duration-500 will-change-transform cursor-pointer pointer-events-auto ${
+                  isDark 
+                    ? 'bg-slate-900/80 border border-white/20 shadow-2xl backdrop-blur-xl' 
+                    : 'bg-white/95 border border-slate-300 shadow-xl shadow-slate-900/15 backdrop-blur-xl'
+                }`}
+                style={{
+                  transformStyle: 'preserve-3d',
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                }}
+              >
+                {/* Tech Bracket Accents on 4 Corners */}
+                <span className="absolute top-2 left-2 w-2.5 h-2.5 border-t-2 border-l-2 border-red-500/80 rounded-tl-sm pointer-events-none" />
+                <span className="absolute top-2 right-2 w-2.5 h-2.5 border-t-2 border-r-2 border-red-500/80 rounded-tr-sm pointer-events-none" />
+                <span className="absolute bottom-2 left-2 w-2.5 h-2.5 border-b-2 border-l-2 border-red-500/80 rounded-bl-sm pointer-events-none" />
+                <span className="absolute bottom-2 right-2 w-2.5 h-2.5 border-b-2 border-r-2 border-red-500/80 rounded-br-sm pointer-events-none" />
+
+                {/* Top HUD Metadata Header Bar */}
+                <div className="flex items-center justify-between px-2.5 py-1.5 mb-1.5 border-b border-white/10 dark:border-white/10 light:border-slate-200 text-[9px] sm:text-[10px] font-mono tracking-wider">
+                  <div className="flex items-center gap-1.5">
+                    <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-red-500 animate-pulse' : 'bg-slate-400'}`} />
+                    <span className={isDark ? 'text-neutral-300 font-bold' : 'text-slate-800 font-bold'}>
+                      {comp.code}
                     </span>
-                    <span className="text-white/90 font-medium text-xs flex items-center gap-1 font-body">
-                      SH350i
+                  </div>
+                  <span className={`font-semibold uppercase tracking-widest ${isDark ? 'text-neutral-400' : 'text-slate-600'}`}>
+                    SH350i • 2026
+                  </span>
+                </div>
+
+                {/* High-Res Image Container with Glass Sheen */}
+                <div className="relative w-full aspect-[16/10] sm:aspect-[16/9.5] rounded-xl sm:rounded-2xl overflow-hidden group">
+                  <img
+                    src={comp.image}
+                    alt={comp.title}
+                    className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
+                  />
+                  {/* Subtle Gradient Overlays */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.08] to-transparent pointer-events-none" />
+
+                  {/* On-Image Bottom Badge */}
+                  <div className="absolute bottom-2 sm:bottom-3 left-2.5 sm:left-3.5 right-2.5 sm:right-3.5 flex items-center justify-between">
+                    <span className="px-2 sm:px-2.5 py-0.5 rounded text-[9px] sm:text-[10px] font-bold font-body tracking-wider uppercase backdrop-blur-md bg-black/65 text-white border border-white/20">
+                      {comp.tag}
+                    </span>
+                    <span className="text-[10px] sm:text-xs font-black text-white drop-shadow font-display">
+                      0{idx + 1}
                     </span>
                   </div>
                 </div>
-              )}
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
 
-        {/* Right Fluid Narrative Text Column */}
-        <div className="w-full lg:w-[42%] flex flex-col justify-center mt-6 lg:mt-0 pl-0 lg:pl-8">
-          {/* Active Step Indicator Dots */}
-          <div className="flex items-center gap-2 mb-4">
-            {DESIGN_CARDS.map((item, idx) => (
-              <button
-                key={item.id}
-                onClick={() => selectStep(idx)}
-                onMouseEnter={() => soundFx.playHover()}
-                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                  activeStep === idx 
-                    ? (isDark ? 'w-8 bg-white' : 'w-8 bg-red-600') 
-                    : (isDark ? 'w-2 bg-white/20 hover:bg-white/40' : 'w-2 bg-slate-300 hover:bg-slate-400')
-                }`}
-                title={`Xem ${item.category}`}
-              />
-            ))}
-            <span className={`ml-3 font-mono text-xs font-bold ${isDark ? 'text-neutral-400' : 'text-slate-800'}`}>
-              0{activeStep + 1} / 0{DESIGN_CARDS.length}
-            </span>
+        {/* ============================================================ */}
+        {/* ZONE 2: TECH HUD TEXT DATA READOUT TERMINAL                   */}
+        {/* ============================================================ */}
+        <div className="lg:col-span-5 relative w-full flex flex-col justify-center min-h-[220px] sm:min-h-[260px] lg:min-h-[380px]">
+          
+          {/* Stack of 3 Text Panels cross-fading */}
+          <div className="relative w-full">
+            {DESIGN_COMPONENTS.map((comp, idx) => {
+              const Icon = comp.icon;
+              return (
+                <div
+                  key={`text-${comp.id}`}
+                  ref={(el) => (textRefs.current[idx] = el)}
+                  className={`w-full transition-colors ${
+                    idx === 0 ? 'relative' : 'absolute inset-0'
+                  }`}
+                >
+                  {/* Category Pill with Icon */}
+                  <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-2 sm:mb-3 backdrop-blur-md font-body bg-red-600/10 border border-red-600/25 text-red-600 dark:text-red-400">
+                    <Icon size={13} className="text-red-500 shrink-0" />
+                    <span>{comp.category}</span>
+                  </div>
+
+                  {/* Main Title */}
+                  <h3 className={`font-display text-xl sm:text-2xl lg:text-3xl font-black tracking-tight leading-snug uppercase ${
+                    isDark ? 'text-white' : 'text-slate-950'
+                  }`}>
+                    {comp.title}
+                  </h3>
+
+                  {/* Concise Executive Summary */}
+                  <p className={`mt-2 sm:mt-3 text-xs sm:text-sm lg:text-[15px] leading-relaxed font-body ${
+                    isDark ? 'text-neutral-300' : 'text-slate-800 font-medium'
+                  }`}>
+                    {comp.summary}
+                  </p>
+
+                  {/* 3 Tech Spec Mini Badges */}
+                  <div className="mt-3 sm:mt-5 grid grid-cols-3 gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-body">
+                    {comp.specs.map((s, sIdx) => (
+                      <div
+                        key={sIdx}
+                        className={`p-2 sm:p-2.5 rounded-xl border flex flex-col justify-between transition-colors ${
+                          isDark 
+                            ? 'bg-white/[0.04] border-white/10 text-white' 
+                            : 'bg-white border-slate-300 text-slate-900 shadow-sm'
+                        }`}
+                      >
+                        <span className={`text-[9px] font-bold uppercase tracking-wider ${
+                          isDark ? 'text-neutral-400' : 'text-slate-700'
+                        }`}>
+                          {s.label}
+                        </span>
+                        <span className="font-bold text-[10px] sm:text-xs mt-0.5 font-display line-clamp-2">
+                          {s.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
-          {/* Badge & Category */}
-          <div className="flex items-center gap-2 mb-3">
-            <span className={`px-2.5 py-0.5 rounded text-[11px] font-bold tracking-wider uppercase font-body border ${
-              isDark 
-                ? 'bg-white/[0.06] border-white/[0.08] text-neutral-200' 
-                : 'bg-slate-200 border-slate-300 text-slate-950'
-            }`}>
-              {current.category}
-            </span>
-            <span className={`text-xs font-bold font-body ${isDark ? 'text-neutral-400' : 'text-slate-800'}`}>
-              {current.subtitle}
-            </span>
-          </div>
-
-          {/* Main Headline */}
-          <h3 className={`font-display text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight leading-tight transition-all duration-300 ${
-            isDark ? 'text-white' : 'text-slate-950'
-          }`}>
-            {current.title}
-          </h3>
-
-          {/* Description */}
-          <p className={`mt-4 text-xs sm:text-sm leading-relaxed font-body ${
-            isDark ? 'text-neutral-300' : 'text-slate-800 font-semibold'
-          }`}>
-            {current.description}
-          </p>
-
-          {/* Key Engineering Highlight Box */}
-          <div className={`mt-6 p-4 rounded-xl backdrop-blur-md flex items-start gap-3.5 border transition-colors ${
-            isDark 
-              ? 'bg-white/[0.03] border-white/[0.08]' 
-              : 'bg-slate-100 border-slate-300 shadow-sm'
-          }`}>
-            <div className={`p-2 rounded-lg shrink-0 mt-0.5 ${
-              isDark ? 'bg-white/[0.05] text-white' : 'bg-red-50 text-red-600'
-            }`}>
-              <Compass size={16} />
+          {/* Interactive 3D Step Switcher Tabs */}
+          <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-slate-200 dark:border-white/10 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              {DESIGN_COMPONENTS.map((comp, idx) => {
+                const isActive = activeStep === idx;
+                return (
+                  <button
+                    key={`btn-${comp.id}`}
+                    onClick={() => selectStep(idx)}
+                    onMouseEnter={() => soundFx.playHover()}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer font-body flex items-center gap-1.5 ${
+                      isActive
+                        ? (isDark 
+                            ? 'bg-white text-black shadow-md' 
+                            : 'bg-slate-900 text-white shadow-md')
+                        : (isDark 
+                            ? 'bg-white/[0.06] text-neutral-300 hover:text-white hover:bg-white/[0.12] border border-white/10' 
+                            : 'bg-slate-200/90 text-slate-800 hover:text-slate-950 hover:bg-slate-300 border border-slate-300')
+                    }`}
+                  >
+                    <span>0{idx + 1}</span>
+                    <span className="hidden sm:inline font-medium">
+                      {idx === 0 ? 'Mặt Nạ LED' : idx === 1 ? 'Đồng Hồ LCD' : 'Đèn Hậu 3D'}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
-            <div>
-              <span className={`block text-[10px] uppercase tracking-wider font-bold font-body ${
-                isDark ? 'text-neutral-400' : 'text-slate-800'
-              }`}>
-                Chi Tiết Hoàn Thiện
-              </span>
-              <p className={`text-xs sm:text-sm mt-1 font-bold leading-normal font-body ${
-                isDark ? 'text-neutral-200' : 'text-slate-950'
-              }`}>
-                {current.highlight}
-              </p>
-            </div>
-          </div>
 
-          {/* Quick Step Switcher Buttons */}
-          <div className="mt-6 flex flex-wrap items-center gap-2">
-            {DESIGN_CARDS.map((card, idx) => (
-              <button
-                key={card.id}
-                onClick={() => selectStep(idx)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer font-body ${
-                  activeStep === idx
-                    ? (isDark ? 'bg-white/15 text-white font-semibold border border-white/20 shadow-sm' : 'bg-slate-900 text-white font-semibold border border-slate-900 shadow-sm')
-                    : (isDark ? 'bg-white/[0.03] text-neutral-400 hover:text-white hover:bg-white/[0.06] border border-transparent' : 'bg-slate-200 text-slate-800 hover:text-slate-950 hover:bg-slate-300 border border-transparent')
-                }`}
-              >
-                {card.number}. {card.category.split('&')[0]}
-              </button>
-            ))}
+            <div 
+              onClick={() => selectStep((activeStep + 1) % DESIGN_COMPONENTS.length)}
+              className={`flex items-center gap-1 text-[11px] font-semibold font-body cursor-pointer transition-colors ${
+                isDark ? 'text-neutral-400 hover:text-white' : 'text-slate-600 hover:text-slate-950'
+              }`}
+            >
+              <span className="hidden xs:inline">Tiếp theo</span>
+              <ChevronRight size={14} className="text-red-600" />
+            </div>
           </div>
 
         </div>
 
       </div>
+
+      {/* Bottom Hint */}
+      <div className="relative z-30 w-full pb-3 flex items-center justify-center gap-2 text-[10px] sm:text-xs font-body tracking-wider text-slate-400">
+        <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
+        <span className={isDark ? 'text-neutral-400' : 'text-slate-800'}>
+          Cuộn chuột để xoay chuyển góc nhìn 3D
+        </span>
+      </div>
+
     </section>
   );
 }
