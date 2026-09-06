@@ -9,16 +9,16 @@
     --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
     /* Honda Vietnam Official Day Mode Tone (Premium Studio Grey/White, Deep Charcoal, Honda Wing Red) */
-    --bg-page: #f8fafc;
+    --bg-page: #f1f5f9;
     --bg-surface: #ffffff;
     --bg-surface-elevated: #ffffff;
     --text-primary: #020617;
     --text-secondary: #0f172a;
-    --text-muted: #334155;
-    --border-subtle: rgba(0, 0, 0, 0.12);
-    --border-strong: #94a3b8;
-    --scrollbar-track: #f1f5f9;
-    --scrollbar-thumb: #94a3b8;
+    --text-muted: #1e293b;
+    --border-subtle: rgba(0, 0, 0, 0.15);
+    --border-strong: #64748b;
+    --scrollbar-track: #e2e8f0;
+    --scrollbar-thumb: #64748b;
 
     /* Glass Panels for Day Mode */
     --glass-bg: rgba(255, 255, 255, 0.94);

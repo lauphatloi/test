@@ -245,7 +245,7 @@ export default function DesignSection() {
                 title={`Xem ${item.category}`}
               />
             ))}
-            <span className={`ml-3 font-mono text-xs font-bold ${isDark ? 'text-neutral-400' : 'text-slate-700'}`}>
+            <span className={`ml-3 font-mono text-xs font-bold ${isDark ? 'text-neutral-400' : 'text-slate-800'}`}>
               0{activeStep + 1} / 0{DESIGN_CARDS.length}
             </span>
           </div>
@@ -255,17 +255,17 @@ export default function DesignSection() {
             <span className={`px-2.5 py-0.5 rounded text-[11px] font-bold tracking-wider uppercase font-body border ${
               isDark 
                 ? 'bg-white/[0.06] border-white/[0.08] text-neutral-200' 
-                : 'bg-slate-100 border-slate-300 text-slate-900'
+                : 'bg-slate-200 border-slate-300 text-slate-950'
             }`}>
               {current.category}
             </span>
-            <span className={`text-xs font-semibold font-body ${isDark ? 'text-neutral-400' : 'text-slate-700'}`}>
+            <span className={`text-xs font-bold font-body ${isDark ? 'text-neutral-400' : 'text-slate-800'}`}>
               {current.subtitle}
             </span>
           </div>
 
           {/* Main Headline */}
-          <h3 className={`font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight transition-all duration-300 ${
+          <h3 className={`font-display text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight leading-tight transition-all duration-300 ${
             isDark ? 'text-white' : 'text-slate-950'
           }`}>
             {current.title}
@@ -273,7 +273,7 @@ export default function DesignSection() {
 
           {/* Description */}
           <p className={`mt-4 text-xs sm:text-sm leading-relaxed font-body ${
-            isDark ? 'text-neutral-300' : 'text-slate-800 font-medium'
+            isDark ? 'text-neutral-300' : 'text-slate-800 font-semibold'
           }`}>
             {current.description}
           </p>
@@ -291,12 +291,12 @@ export default function DesignSection() {
             </div>
             <div>
               <span className={`block text-[10px] uppercase tracking-wider font-bold font-body ${
-                isDark ? 'text-neutral-400' : 'text-slate-700'
+                isDark ? 'text-neutral-400' : 'text-slate-800'
               }`}>
                 Chi Tiết Hoàn Thiện
               </span>
-              <p className={`text-xs sm:text-sm mt-1 font-semibold leading-normal font-body ${
-                isDark ? 'text-neutral-200' : 'text-slate-900'
+              <p className={`text-xs sm:text-sm mt-1 font-bold leading-normal font-body ${
+                isDark ? 'text-neutral-200' : 'text-slate-950'
               }`}>
                 {current.highlight}
               </p>

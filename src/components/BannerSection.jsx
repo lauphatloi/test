@@ -139,7 +139,9 @@ export default function BannerSection({ onOpenTestRide }) {
       {/* ============================================================ */}
       <div 
         ref={bgRef}
-        className="absolute inset-0 w-full h-full will-change-transform scale-100 pointer-events-none bg-cover bg-no-repeat banner-bg-frame"
+        className={`absolute inset-0 w-full h-full will-change-transform scale-100 pointer-events-none bg-cover bg-no-repeat banner-bg-frame transition-all duration-500 ${
+          isDark ? '' : 'brightness-[0.86] contrast-[1.03]'
+        }`}
         style={{
           backgroundImage: `url('./images/banner-bg.jpg')`,
         }}
@@ -147,9 +149,9 @@ export default function BannerSection({ onOpenTestRide }) {
         <div className={`absolute inset-0 transition-opacity duration-500 ${
           isDark 
             ? 'bg-gradient-to-t from-[#08090d] from-20% via-black/40 to-black/75 sm:via-black/35 sm:to-black/70' 
-            : 'bg-gradient-to-t from-slate-950/80 from-15% via-black/30 to-black/45'
+            : 'bg-gradient-to-t from-slate-950/90 from-15% via-slate-950/45 to-slate-950/65'
         }`} />
-        <div className={`absolute inset-0 bg-radial-vignette transition-opacity duration-500 ${isDark ? 'opacity-85 sm:opacity-80' : 'opacity-0'}`} />
+        <div className={`absolute inset-0 bg-radial-vignette transition-opacity duration-500 ${isDark ? 'opacity-85 sm:opacity-80' : 'opacity-65'}`} />
         <div className="absolute inset-0 bg-tech-grid opacity-15" />
       </div>
 
@@ -161,37 +163,37 @@ export default function BannerSection({ onOpenTestRide }) {
         {/* Top Tagline */}
         <div className="flex items-center gap-2.5 sm:gap-3">
           <span className="w-5 sm:w-6 h-[2px] bg-red-600 shrink-0" />
-          <span className="text-[9px] sm:text-[11px] font-semibold tracking-[0.16em] sm:tracking-[0.3em] uppercase font-body truncate text-slate-200 drop-shadow-sm">
+          <span className="text-[9px] sm:text-[11px] font-bold tracking-[0.16em] sm:tracking-[0.3em] uppercase font-body truncate text-slate-100 drop-shadow-md">
             HONDA MOTOR VIỆT NAM • THỦ LĨNH XE GA CAO CẤP
           </span>
         </div>
 
         {/* Center/Bottom Banner Messaging - Anchored comfortably below the motorcycle on mobile */}
         <div className="max-w-3xl sm:my-auto mt-auto mb-1 py-1 sm:py-6">
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-2.5 sm:mb-4 backdrop-blur-md font-body bg-white/10 border border-white/20 text-white shadow-sm">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-2.5 sm:mb-4 backdrop-blur-md font-body bg-black/55 border border-white/25 text-white shadow-sm">
             <Award size={13} className="text-red-500 shrink-0" />
             <span>ĐẲNG CẤP CHÂU ÂU • VẺ ĐẸP SANG TRỌNG</span>
           </div>
 
-          <h1 className="font-display font-extrabold text-3xl sm:text-6xl lg:text-7xl tracking-tight leading-tight uppercase text-white drop-shadow-md">
-            HONDA <span className="text-white drop-shadow-md">SH350</span><span className="text-red-500 drop-shadow-md">i</span>
+          <h1 className="font-display font-black text-3xl sm:text-6xl lg:text-7xl tracking-tight leading-tight uppercase text-white drop-shadow-lg">
+            HONDA <span className="text-white drop-shadow-lg">SH350</span><span className="text-red-500 drop-shadow-lg">i</span>
           </h1>
 
-          <p className="mt-2.5 sm:mt-4 text-xs sm:text-base font-body leading-relaxed max-w-2xl line-clamp-3 sm:line-clamp-none text-slate-200 drop-shadow-sm font-normal">
+          <p className="mt-2.5 sm:mt-4 text-xs sm:text-base font-body leading-relaxed max-w-2xl line-clamp-3 sm:line-clamp-none text-slate-100 drop-shadow-md font-medium">
             Tuyệt tác kết hợp hài hòa giữa ngôn ngữ thiết kế điêu khắc thượng lưu nước Ý và sức mạnh động cơ eSP+ 330cc thế hệ mới. Khẳng định vị thế dẫn đầu và phong thái đĩnh đạc của chủ nhân trên mọi hành trình.
           </p>
 
           {/* Quick Specifications Pills */}
           <div className="mt-3.5 sm:mt-6 flex flex-wrap gap-2 sm:gap-3 text-[11px] sm:text-xs font-body">
-            <div className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg backdrop-blur-md flex items-center gap-1.5 sm:gap-2 bg-black/45 border border-white/20 text-white shadow-sm">
+            <div className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg backdrop-blur-md flex items-center gap-1.5 sm:gap-2 bg-black/60 border border-white/25 text-white shadow-sm font-medium">
               <Gauge size={13} className="text-red-500 shrink-0" />
               <span>Động cơ <strong>329.6cc eSP+</strong></span>
             </div>
-            <div className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg backdrop-blur-md flex items-center gap-1.5 sm:gap-2 bg-black/45 border border-white/20 text-white shadow-sm">
+            <div className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg backdrop-blur-md flex items-center gap-1.5 sm:gap-2 bg-black/60 border border-white/25 text-white shadow-sm font-medium">
               <ShieldCheck size={13} className="text-red-500 shrink-0" />
               <span>Phanh <strong>ABS 2 Kênh & HSTC</strong></span>
             </div>
-            <div className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg backdrop-blur-md flex items-center gap-1.5 sm:gap-2 bg-black/45 border border-white/20 text-white shadow-sm">
+            <div className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg backdrop-blur-md flex items-center gap-1.5 sm:gap-2 bg-black/60 border border-white/25 text-white shadow-sm font-medium">
               <Zap size={13} className="text-red-500 shrink-0" />
               <span>Chuẩn khí thải <strong>Euro 5</strong></span>
             </div>
@@ -251,7 +253,7 @@ export default function BannerSection({ onOpenTestRide }) {
           cy="50%"
           r="0"
           fill="none"
-          stroke={isDark ? "rgba(255, 255, 255, 0.45)" : "rgba(203, 213, 225, 0.6)"}
+          stroke={isDark ? "rgba(255, 255, 255, 0.45)" : "rgba(100, 116, 139, 0.45)"}
           strokeWidth="3.5"
           filter="url(#portal-ring-glow)"
         />
@@ -263,7 +265,7 @@ export default function BannerSection({ onOpenTestRide }) {
           cy="50%"
           r="0"
           fill="none"
-          stroke={isDark ? "#ffffff" : "#ffffff"}
+          stroke={isDark ? "#ffffff" : "#64748b"}
           strokeWidth="2"
           strokeOpacity="0.95"
         />
@@ -276,7 +278,7 @@ export default function BannerSection({ onOpenTestRide }) {
       <div 
         ref={portalLayerRef}
         className={`absolute inset-0 w-full h-full z-20 overflow-hidden pointer-events-none flex items-center justify-center will-change-[clip-path] transition-colors duration-500 ${
-          isDark ? 'bg-[#07090e]' : 'bg-[#edf0f4]'
+          isDark ? 'bg-[#07090e]' : 'bg-[#dce3ea]'
         }`}
         style={{
           clipPath: 'circle(0px at 50% 50%)',
@@ -286,28 +288,28 @@ export default function BannerSection({ onOpenTestRide }) {
         {/* Studio Lighting inside the portal */}
         <div className="absolute inset-0 pointer-events-none">
           <div className={`absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full blur-[140px] ${
-            isDark ? 'bg-slate-700/20' : 'bg-slate-400/15'
+            isDark ? 'bg-slate-700/20' : 'bg-slate-400/20'
           }`} />
           <div className="absolute inset-0 bg-tech-grid opacity-15" />
         </div>
 
         {/* Center Portal Content: Revealing the Vehicle Versions Preview */}
         <div className="relative z-10 max-w-5xl mx-auto px-4 text-center flex flex-col items-center justify-center">
-          <div className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-3 backdrop-blur-md font-body ${
-            isDark ? 'bg-white/[0.08] border border-white/15 text-neutral-200' : 'bg-white border border-slate-300 text-slate-900 shadow-sm'
+          <div className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3 backdrop-blur-md font-body ${
+            isDark ? 'bg-white/[0.08] border border-white/15 text-neutral-200' : 'bg-white/95 border border-slate-300 text-slate-900 shadow-sm'
           }`}>
             <Sparkles size={13} className="text-red-500" />
             <span>KHÔNG GIAN TRƯNG BÀY XE SANG</span>
           </div>
 
-          <h2 className={`font-display font-extrabold text-3xl sm:text-5xl tracking-tight uppercase ${
+          <h2 className={`font-display font-black text-3xl sm:text-5xl tracking-tight uppercase ${
             isDark ? 'text-white' : 'text-slate-950'
           }`}>
             BỘ SƯU TẬP PHIÊN BẢN SH350i
           </h2>
           
           <p className={`mt-2 text-xs sm:text-sm font-body max-w-lg mx-auto ${
-            isDark ? 'text-neutral-400' : 'text-slate-700 font-medium'
+            isDark ? 'text-neutral-400' : 'text-slate-800 font-semibold'
           }`}>
             Khám phá 4 phong thái màu sắc đương đại được chế tác tỉ mỉ cho từng đẳng cấp phong cách.
           </p>
@@ -315,9 +317,9 @@ export default function BannerSection({ onOpenTestRide }) {
           {/* Vehicle Silhouette & Shadow Preview */}
           <div className="relative w-[85vw] max-w-[650px] h-[32vh] sm:h-[40vh] my-4 flex items-center justify-center">
             <div className={`absolute bottom-4 w-[75%] h-8 rounded-full blur-xl ${
-              isDark ? 'bg-slate-400/20' : 'bg-slate-300/40'
+              isDark ? 'bg-slate-400/20' : 'bg-slate-400/30'
             }`} />
-            <div className="absolute bottom-6 w-[65%] h-4 bg-black/90 rounded-full blur-md" />
+            <div className="absolute bottom-6 w-[65%] h-4 bg-slate-950/80 rounded-full blur-md" />
             <img 
               src="./images/motorcycle-grey.png" 
               alt="Honda SH350i" 

@@ -198,13 +198,13 @@ export default function EngineHighlight() {
             CƠ KHÍ CHÍNH XÁC • HONDA ADVANCED POWERTRAIN
           </div>
 
-          <h2 className={`font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight uppercase ${
+          <h2 className={`font-display text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight uppercase ${
             isDark ? 'text-white' : 'text-slate-950'
           }`}>
             ĐỘNG CƠ <span className="text-gradient-platinum">eSP+ 330CC</span> THẾ HỆ MỚI
           </h2>
           <p className={`mt-3 text-xs sm:text-sm leading-relaxed max-w-2xl mx-auto font-body ${
-            isDark ? 'text-neutral-400' : 'text-slate-700 font-medium'
+            isDark ? 'text-neutral-400' : 'text-slate-800 font-semibold'
           }`}>
             Sức mạnh bền bỉ, phản hồi ga êm ái và hiệu suất đốt cháy nhiên liệu tối ưu dựa trên triết lý kỹ thuật cơ khí chính xác hàng đầu của Honda.
           </p>
@@ -283,7 +283,7 @@ export default function EngineHighlight() {
                   className={`flex-1 py-2 px-2 rounded-lg text-xs tracking-wide transition-all cursor-pointer text-center font-body ${
                     activeMode === idx
                       ? (isDark ? 'bg-white/15 text-white shadow-sm border border-white/10 font-semibold' : 'bg-white text-slate-950 shadow border border-slate-300 font-bold')
-                      : (isDark ? 'text-neutral-400 hover:text-white hover:bg-white/[0.04]' : 'text-slate-700 hover:text-slate-950 hover:bg-slate-200/80 font-medium')
+                      : (isDark ? 'text-neutral-400 hover:text-white hover:bg-white/[0.04]' : 'text-slate-800 hover:text-slate-950 hover:bg-slate-200/80 font-bold')
                   }`}
                 >
                   {mode.name.split(' ')[0]} {mode.name.split(' ')[1]}
@@ -299,20 +299,20 @@ export default function EngineHighlight() {
               <div className="flex items-center gap-2 mb-2">
                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: currentMode.color }} />
                 <span className={`text-[11px] font-bold tracking-wider uppercase font-body ${
-                  isDark ? 'text-neutral-300' : 'text-slate-800'
+                  isDark ? 'text-neutral-300' : 'text-slate-950'
                 }`}>
                   {currentMode.name}
                 </span>
               </div>
 
-              <h3 className={`font-display text-xl sm:text-2xl font-bold tracking-tight leading-snug ${
+              <h3 className={`font-display text-xl sm:text-2xl font-black tracking-tight leading-snug ${
                 isDark ? 'text-white' : 'text-slate-950'
               }`}>
                 {currentMode.title}
               </h3>
 
               <p className={`mt-2.5 text-xs sm:text-sm leading-relaxed font-body ${
-                isDark ? 'text-neutral-300' : 'text-slate-800 font-medium'
+                isDark ? 'text-neutral-300' : 'text-slate-800 font-semibold'
               }`}>
                 {currentMode.desc}
               </p>
@@ -322,7 +322,7 @@ export default function EngineHighlight() {
               }`}>
                 {currentMode.features.map((feat, i) => (
                   <div key={i} className={`flex items-center gap-2 text-xs font-body ${
-                    isDark ? 'text-neutral-300' : 'text-slate-800 font-medium'
+                    isDark ? 'text-neutral-300' : 'text-slate-800 font-semibold'
                   }`}>
                     <CheckCircle2 size={13} className={`shrink-0 ${isDark ? 'text-neutral-400' : 'text-red-500'}`} />
                     <span>{feat}</span>
@@ -346,22 +346,22 @@ export default function EngineHighlight() {
               }`}
             >
               <div className={`text-[10px] font-bold uppercase tracking-wider flex items-center justify-between mb-2 font-body ${
-                isDark ? 'text-neutral-400' : 'text-slate-700'
+                isDark ? 'text-neutral-400' : 'text-slate-800'
               }`}>
                 <span>{spec.label}</span>
                 <Activity size={12} className={`transition-colors ${
-                  isDark ? 'text-neutral-500 group-hover:text-white' : 'text-slate-400 group-hover:text-slate-800'
+                  isDark ? 'text-neutral-500 group-hover:text-white' : 'text-slate-500 group-hover:text-slate-900'
                 }`} />
               </div>
-              <div className={`flex items-baseline gap-1.5 font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold ${
+              <div className={`flex items-baseline gap-1.5 font-display text-3xl sm:text-4xl lg:text-5xl font-black ${
                 isDark ? 'text-white' : 'text-slate-950'
               }`}>
                 <span>{counters[idx] || spec.value}</span>
-                <span className={`text-sm sm:text-base font-semibold font-body ${
+                <span className={`text-sm sm:text-base font-bold font-body ${
                   isDark ? 'text-neutral-400' : 'text-slate-700'
                 }`}>{spec.unit}</span>
               </div>
-              <p className={`mt-2 text-[11px] sm:text-xs line-clamp-1 font-body font-medium ${
+              <p className={`mt-2 text-[11px] font-body font-semibold leading-normal ${
                 isDark ? 'text-neutral-400' : 'text-slate-700'
               }`}>
                 {spec.desc}

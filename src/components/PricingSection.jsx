@@ -169,13 +169,13 @@ export default function PricingSection({ onOpenTestRide }) {
             HONDA FINANCIAL SERVICES • CHÍNH SÁCH BÁN HÀNG
           </div>
 
-          <h2 className={`font-display text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight uppercase ${
+          <h2 className={`font-display text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight uppercase ${
             isDark ? 'text-white' : 'text-slate-950'
           }`}>
             BẢNG GIÁ & <span className="text-gradient-platinum">DỰ TOÁN TRẢ GÓP</span>
           </h2>
           <p className={`mt-3 text-xs sm:text-sm leading-relaxed font-body ${
-            isDark ? 'text-neutral-400' : 'text-slate-700 font-medium'
+            isDark ? 'text-neutral-400' : 'text-slate-800 font-semibold'
           }`}>
             Sở hữu Honda SH350i với các giải pháp tài chính linh hoạt, thủ tục tinh gọn và minh bạch từ hệ thống Honda HEAD trên toàn quốc.
           </p>
@@ -209,7 +209,7 @@ export default function PricingSection({ onOpenTestRide }) {
                   {/* Top Category */}
                   <div className="flex items-center justify-between">
                     <span className={`text-[11px] font-bold uppercase tracking-wider font-body ${
-                      isDark ? 'text-neutral-400' : 'text-slate-700'
+                      isDark ? 'text-neutral-400' : 'text-slate-800'
                     }`}>
                       {edition.sub}
                     </span>
@@ -220,7 +220,7 @@ export default function PricingSection({ onOpenTestRide }) {
                   </div>
 
                   {/* Edition Name */}
-                  <h3 className={`font-display text-2xl font-extrabold mt-2 ${
+                  <h3 className={`font-display text-2xl font-black mt-2 ${
                     isDark ? 'text-white' : 'text-slate-950'
                   }`}>
                     {edition.name}
@@ -229,10 +229,10 @@ export default function PricingSection({ onOpenTestRide }) {
                   {/* Color Options Available */}
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {edition.colors.map((c, i) => (
-                      <span key={i} className={`text-[11px] px-2.5 py-0.5 rounded font-body border font-medium ${
+                      <span key={i} className={`text-[11px] px-2.5 py-0.5 rounded font-body border font-bold ${
                         isDark 
                           ? 'bg-white/[0.04] text-neutral-300 border-white/[0.06]' 
-                          : 'bg-slate-100 text-slate-800 border-slate-300 shadow-xs'
+                          : 'bg-slate-100 text-slate-900 border-slate-300 shadow-xs'
                       }`}>
                         {c}
                       </span>
@@ -244,7 +244,7 @@ export default function PricingSection({ onOpenTestRide }) {
                     isDark ? 'border-white/[0.08]' : 'border-slate-300'
                   }`}>
                     <span className={`text-[10px] uppercase font-bold font-body ${
-                      isDark ? 'text-neutral-400' : 'text-slate-700'
+                      isDark ? 'text-neutral-400' : 'text-slate-800'
                     }`}>Giá Bán Lẻ Đề Xuất</span>
                     <div className="flex items-baseline gap-1 mt-1">
                       <span className={`font-display text-3xl sm:text-4xl font-black tracking-tight ${
@@ -253,10 +253,10 @@ export default function PricingSection({ onOpenTestRide }) {
                         {edition.priceFormatted}
                       </span>
                       <span className={`text-xs font-bold font-body ${
-                        isDark ? 'text-neutral-400' : 'text-slate-700'
+                        isDark ? 'text-neutral-400' : 'text-slate-800'
                       }`}>VNĐ</span>
                     </div>
-                    <span className={`block text-[11px] mt-0.5 font-body font-medium ${
+                    <span className={`block text-[11px] mt-0.5 font-body font-semibold ${
                       isDark ? 'text-neutral-400' : 'text-slate-700'
                     }`}>
                       Đã bao gồm VAT 10%
@@ -269,7 +269,7 @@ export default function PricingSection({ onOpenTestRide }) {
                   }`}>
                     {edition.features.map((feat, i) => (
                       <div key={i} className={`flex items-start gap-2.5 text-xs font-body ${
-                        isDark ? 'text-neutral-300' : 'text-slate-800 font-medium'
+                        isDark ? 'text-neutral-300' : 'text-slate-800 font-semibold'
                       }`}>
                         <Check size={13} className={`shrink-0 mt-0.5 ${
                           isDark ? 'text-white/80' : 'text-red-600'
@@ -451,27 +451,27 @@ export default function PricingSection({ onOpenTestRide }) {
                 </span>
 
                 <div className="flex justify-between text-xs">
-                  <span className={`font-medium ${isDark ? 'text-neutral-400' : 'text-slate-700'}`}>Giá trị xe niêm yết:</span>
+                  <span className={`font-semibold ${isDark ? 'text-neutral-400' : 'text-slate-800'}`}>Giá trị xe niêm yết:</span>
                   <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-950'}`}>{formatVND(basePrice)}</span>
                 </div>
 
                 <div className="flex justify-between text-xs">
-                  <span className={`font-medium ${isDark ? 'text-neutral-400' : 'text-slate-700'}`}>Số tiền trả trước ({downPercent}%):</span>
+                  <span className={`font-semibold ${isDark ? 'text-neutral-400' : 'text-slate-800'}`}>Số tiền trả trước ({downPercent}%):</span>
                   <span className="font-bold text-amber-500">{formatVND(downPayment)}</span>
                 </div>
 
                 <div className="flex justify-between text-xs">
-                  <span className={`font-medium ${isDark ? 'text-neutral-400' : 'text-slate-700'}`}>Số tiền vay còn lại:</span>
+                  <span className={`font-semibold ${isDark ? 'text-neutral-400' : 'text-slate-800'}`}>Số tiền vay còn lại:</span>
                   <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-950'}`}>{formatVND(loanAmount)}</span>
                 </div>
 
                 <div className="flex justify-between text-xs">
-                  <span className={`font-medium ${isDark ? 'text-neutral-400' : 'text-slate-700'}`}>Tiền gốc hàng tháng:</span>
+                  <span className={`font-semibold ${isDark ? 'text-neutral-400' : 'text-slate-800'}`}>Tiền gốc hàng tháng:</span>
                   <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-950'}`}>{formatVND(monthlyPrincipal)}</span>
                 </div>
 
                 <div className="flex justify-between text-xs">
-                  <span className={`font-medium ${isDark ? 'text-neutral-400' : 'text-slate-700'}`}>Tiền lãi ước tính hàng tháng:</span>
+                  <span className={`font-semibold ${isDark ? 'text-neutral-400' : 'text-slate-800'}`}>Tiền lãi ước tính hàng tháng:</span>
                   <span className={`font-bold ${isDark ? 'text-white' : 'text-slate-950'}`}>{formatVND(monthlyInterest)}</span>
                 </div>
               </div>
@@ -481,7 +481,7 @@ export default function PricingSection({ onOpenTestRide }) {
                 isDark ? 'border-white/[0.08]' : 'border-slate-300'
               }`}>
                 <span className={`text-[10px] uppercase font-bold block font-body ${
-                  isDark ? 'text-neutral-400' : 'text-slate-700'
+                  isDark ? 'text-neutral-400' : 'text-slate-800'
                 }`}>
                   Tổng Trả Góp Ước Tính Hàng Tháng
                 </span>
@@ -489,8 +489,8 @@ export default function PricingSection({ onOpenTestRide }) {
                   isDark ? 'text-gradient-platinum' : 'text-slate-950'
                 }`}>
                   {formatVND(totalMonthly)}
-                  <span className={`text-xs font-semibold ml-1 font-body ${
-                    isDark ? 'text-neutral-400' : 'text-slate-700'
+                  <span className={`text-xs font-bold ml-1 font-body ${
+                    isDark ? 'text-neutral-400' : 'text-slate-800'
                   }`}>/tháng</span>
                 </div>
 

@@ -37,18 +37,18 @@ export default function Footer({ onOpenTestRide }) {
             : 'bg-white border border-slate-200/90 shadow-xl shadow-slate-200/50'
         }`}>
           <div>
-            <span className={`text-[11px] font-semibold uppercase tracking-[0.2em] font-body ${
-              isDark ? 'text-neutral-400' : 'text-slate-500'
+            <span className={`text-[11px] font-bold uppercase tracking-[0.2em] font-body ${
+              isDark ? 'text-neutral-400' : 'text-slate-800'
             }`}>
               HONDA VIỆT NAM • ĐẶC QUYỀN TRẢI NGHIỆM
             </span>
-            <h3 className={`font-display text-2xl sm:text-3xl font-bold mt-1 ${
-              isDark ? 'text-white' : 'text-slate-900'
+            <h3 className={`font-display text-2xl sm:text-3xl font-black mt-1 ${
+              isDark ? 'text-white' : 'text-slate-950'
             }`}>
               Khám Phá Trực Tiếp Tại Honda HEAD
             </h3>
             <p className={`mt-2 text-xs sm:text-sm max-w-xl font-body ${
-              isDark ? 'text-neutral-400' : 'text-slate-600'
+              isDark ? 'text-neutral-400' : 'text-slate-800 font-semibold'
             }`}>
               Liên hệ ngay hệ thống Cửa hàng Bán xe và Dịch vụ do Honda Ủy nhiệm (HEAD) trên toàn quốc để nhận tư vấn chuyên sâu và đặt lịch lái thử riêng biệt.
             </p>
