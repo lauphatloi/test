@@ -41,7 +41,8 @@ async function main() {
       '--disable-gpu',
       '--no-sandbox',
       '--window-size=1440,900',
-      'https://lauphatloi.github.io/test/'
+      '--incognito',
+      `https://lauphatloi.github.io/test/?t=${Date.now()}`
     ]);
 
     // Chờ Chrome khởi động và tải trang
