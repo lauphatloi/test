@@ -72,10 +72,10 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Pinned scrollytelling timeline for the 4 vehicle versions with deliberate dwell pauses
-      // Hành trình cuộn rộng rãi kết hợp điểm dừng tĩnh (dwell pause) và scroll snap tinh tế
-      const totalScroll = 380;
-      const snapTargets = [0.05, 0.34, 0.66, 0.95];
+      // Scrollytelling timeline for the 4 vehicle versions
+      // Giữ nguyên cuộn thủ công tự nhiên (scrub), loại bỏ hoàn toàn snap tự động theo phản hồi người dùng
+      // Mở rộng khoảng đệm dừng tĩnh (dwell buffer ~1.2s - 1.4s) và tăng hành trình cuộn để chống trôi/lố phiên bản
+      const totalScroll = 440;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -85,13 +85,6 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
           pin: true,
           scrub: 0.6,
           anticipatePin: 1,
-          snap: {
-            snapTo: snapTargets,
-            duration: { min: 0.2, max: 0.45 },
-            delay: 0.12, // Dừng nhẹ nhàng giúp người dùng quan sát trọn vẹn, không bị trôi lố
-            ease: 'power2.out',
-            inertia: false,
-          },
           onUpdate: (self) => {
             const p = self.progress;
             let index = 0;
@@ -122,82 +115,82 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
       gsap.set(floorGlowRefs.current.slice(1), { opacity: 0 });
 
       // =========================================================================
-      // BẢN 01 (Xám Đương Đại): Dừng tĩnh thư thái từ 0.0s đến 0.9s
+      // BẢN 01 (Xám Đương Đại): Dừng tĩnh thư thái từ 0.0s đến 1.2s (Buffer 1.2s)
       // =========================================================================
 
       // =========================================================================
       // GIAI ĐOẠN 1: Chuyển sang Bản 02 (Đen Nhám Doanh Nhân - Vàng Đồng)
-      // HOẠT ẢNH: Khối Bát Giác bung mở từ tâm (0.9s -> 2.7s)
+      // HOẠT ẢNH: Khối Bát Giác bung mở từ tâm (1.2s -> 2.8s)
       // =========================================================================
       tl.to(bleed1Ref.current, {
         scale: 1.35,
         rotate: 12,
-        duration: 1.8,
+        duration: 1.6,
         ease: 'none',
         force3D: true,
-      }, 0.9);
+      }, 1.2);
 
       // Xe đứng im tại chỗ, chuyển mượt mà độ trong suốt
-      tl.to(bikeRefs.current[0], { opacity: 0, duration: 0.8, ease: 'power1.inOut' }, 1.4);
-      tl.to(bikeRefs.current[1], { opacity: 1, duration: 0.8, ease: 'power1.inOut' }, 1.4);
+      tl.to(bikeRefs.current[0], { opacity: 0, duration: 0.8, ease: 'power1.inOut' }, 1.6);
+      tl.to(bikeRefs.current[1], { opacity: 1, duration: 0.8, ease: 'power1.inOut' }, 1.6);
 
       // Sàn hắt ánh vàng đồng theo vệt loang
-      tl.to(floorGlowRefs.current[0], { opacity: 0, duration: 0.8 }, 1.4);
-      tl.to(floorGlowRefs.current[1], { opacity: 1, duration: 0.8 }, 1.4);
+      tl.to(floorGlowRefs.current[0], { opacity: 0, duration: 0.8 }, 1.6);
+      tl.to(floorGlowRefs.current[1], { opacity: 1, duration: 0.8 }, 1.6);
 
       // Kích hoạt ngầm lớp Trắng Ngọc Trai bên dưới khi bleed1Ref đang che kín màn hình
-      tl.to(bleed2Ref.current, { opacity: 1, duration: 0.1 }, 2.6);
+      tl.to(bleed2Ref.current, { opacity: 1, duration: 0.1 }, 2.7);
 
       // =========================================================================
-      // BẢN 02 (Đen Nhám): Dừng tĩnh thư thái trọn vẹn từ 2.7s đến 3.9s
+      // BẢN 02 (Đen Nhám): Dừng tĩnh thư thái trọn vẹn từ 2.8s đến 4.2s (Buffer 1.4s)
       // =========================================================================
 
       // =========================================================================
       // GIAI ĐOẠN 2: Chuyển sang Bản 03 (Trắng Ngọc Trai - Băng Tinh Pearl Ice)
-      // HOẠT ẢNH: Khối Bát Giác Đen Nhám thu ngược về tâm (3.9s -> 5.7s)
+      // HOẠT ẢNH: Khối Bát Giác Đen Nhám thu ngược về tâm (4.2s -> 5.8s)
       // =========================================================================
       tl.to(bleed1Ref.current, {
         scale: 0,
         rotate: -8,
-        duration: 1.8,
+        duration: 1.6,
         ease: 'none',
         force3D: true,
-      }, 3.9);
+      }, 4.2);
 
       // Xe đứng im tại chỗ, hòa tan độ trong suốt
-      tl.to(bikeRefs.current[1], { opacity: 0, duration: 0.8, ease: 'power1.inOut' }, 4.4);
-      tl.to(bikeRefs.current[2], { opacity: 1, duration: 0.8, ease: 'power1.inOut' }, 4.4);
+      tl.to(bikeRefs.current[1], { opacity: 0, duration: 0.8, ease: 'power1.inOut' }, 4.6);
+      tl.to(bikeRefs.current[2], { opacity: 1, duration: 0.8, ease: 'power1.inOut' }, 4.6);
 
       // Sàn hắt ánh ngọc trai
-      tl.to(floorGlowRefs.current[1], { opacity: 0, duration: 0.8 }, 4.4);
-      tl.to(floorGlowRefs.current[2], { opacity: 1, duration: 0.8 }, 4.4);
+      tl.to(floorGlowRefs.current[1], { opacity: 0, duration: 0.8 }, 4.6);
+      tl.to(floorGlowRefs.current[2], { opacity: 1, duration: 0.8 }, 4.6);
 
       // =========================================================================
-      // BẢN 03 (Trắng Ngọc Trai): Dừng tĩnh thư thái trọn vẹn từ 5.7s đến 6.9s
+      // BẢN 03 (Trắng Ngọc Trai): Dừng tĩnh thư thái trọn vẹn từ 5.8s đến 7.2s (Buffer 1.4s)
       // =========================================================================
 
       // =========================================================================
       // GIAI ĐOẠN 3: Chuyển sang Bản 04 (Xanh Lục Bảo - Emerald Jade)
-      // HOẠT ẢNH: Khối Bát Giác Xanh Lục Bảo bung mở từ tâm (6.9s -> 8.7s)
+      // HOẠT ẢNH: Khối Bát Giác Xanh Lục Bảo bung mở từ tâm (7.2s -> 8.8s)
       // =========================================================================
       tl.to(bleed3Ref.current, {
         scale: 1.35,
         rotate: 18,
-        duration: 1.8,
+        duration: 1.6,
         ease: 'none',
         force3D: true,
-      }, 6.9);
+      }, 7.2);
 
       // Xe đứng im tại chỗ, hòa tan độ trong suốt
-      tl.to(bikeRefs.current[2], { opacity: 0, duration: 0.8, ease: 'power1.inOut' }, 7.4);
-      tl.to(bikeRefs.current[3], { opacity: 1, duration: 0.8, ease: 'power1.inOut' }, 7.4);
+      tl.to(bikeRefs.current[2], { opacity: 0, duration: 0.8, ease: 'power1.inOut' }, 7.6);
+      tl.to(bikeRefs.current[3], { opacity: 1, duration: 0.8, ease: 'power1.inOut' }, 7.6);
 
       // Sàn hắt ánh ngọc bích
-      tl.to(floorGlowRefs.current[2], { opacity: 0, duration: 0.8 }, 7.4);
-      tl.to(floorGlowRefs.current[3], { opacity: 1, duration: 0.8 }, 7.4);
+      tl.to(floorGlowRefs.current[2], { opacity: 0, duration: 0.8 }, 7.6);
+      tl.to(floorGlowRefs.current[3], { opacity: 1, duration: 0.8 }, 7.6);
 
       // =========================================================================
-      // BẢN 04 (Xanh Lục Bảo): Dừng tĩnh thư thái trọn vẹn từ 8.7s đến 9.6s
+      // BẢN 04 (Xanh Lục Bảo): Dừng tĩnh thư thái trọn vẹn từ 8.8s đến 10.0s (Buffer 1.2s)
       // =========================================================================
 
     }, containerRef);
@@ -208,7 +201,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
   // Jump to specific variant scroll position
   const jumpToVariant = (index) => {
     soundFx.playClick();
-    const targets = [0.05, 0.34, 0.66, 0.95];
+    const targets = [0.06, 0.35, 0.65, 0.94];
     const trigger = ScrollTrigger.getAll().find(t => t.trigger === containerRef.current);
     if (trigger) {
       const targetScroll = trigger.start + (trigger.end - trigger.start) * targets[index];
