@@ -15,8 +15,11 @@ const DESIGN_COMPONENTS = [
     category: 'Mặt Nạ Trước & Đèn Pha',
     tag: 'Chữ S Quyền Lực',
     title: 'Cụm Đèn LED & Mặt Nạ Chrome Chữ S',
+    shortTitle: 'Đèn LED & Mặt Nạ Chữ S',
     summary: 'Đường nét mạ chrome sáng bóng kết hợp dải LED định vị ban ngày tách biệt. Cấu trúc tạo khối chữ S trứ danh kiến tạo diện mạo quyền uy và ánh nhìn kiêu hãnh của thủ lĩnh.',
+    shortSummary: 'Đèn Full LED 2 tầng kết hợp dải định vị ban ngày và mặt nạ chrome chữ S quyền uy.',
     icon: Lightbulb,
+    mobileTags: ['Full LED 2 Tầng', 'Mạ Chrome Ánh Gương'],
     specs: [
       { label: 'Hệ thống', value: 'Full LED 2 Tầng' },
       { label: 'Hoàn thiện', value: 'Mạ Chrome Ánh Gương' },
@@ -31,8 +34,11 @@ const DESIGN_COMPONENTS = [
     category: 'Khoang Lái Kỹ Thuật Số',
     tag: 'Kết Nối My Honda+',
     title: 'Mặt Đồng Hồ Đôi LCD Đa Tầng Thông Minh',
+    shortTitle: 'Mặt Đồng Hồ Đôi LCD',
     summary: 'Màn hình tinh thể lỏng hiển thị đa thông số hành trình sắc nét: vận tốc, mức tiêu hao, điện áp và cảnh báo HSTC. Hỗ trợ đồng bộ dữ liệu thông minh qua Bluetooth với My Honda+.',
+    shortSummary: 'Màn hình LCD đôi sắc nét hiển thị đầy đủ thông số hành trình, đồng bộ My Honda+.',
     icon: Cpu,
+    mobileTags: ['Dual LCD Kỹ Thuật Số', 'Bluetooth My Honda+'],
     specs: [
       { label: 'Hiển thị', value: 'Dual LCD Kỹ Thuật Số' },
       { label: 'Kết nối', value: 'Bluetooth • My Honda+' },
@@ -47,8 +53,11 @@ const DESIGN_COMPONENTS = [
     category: 'Đuôi Xe & Đèn Hậu 3D',
     tag: 'Đèn Dừng Khẩn Cấp ESS',
     title: 'Cụm Đèn Hậu LED 3D & Tay Dắt Nhôm Đúc',
+    shortTitle: 'Đèn Hậu LED 3D & Tay Dắt Nhôm',
     summary: 'Đuôi xe vuốt nhọn khí động học Grand Touring vững chãi. Đèn hậu LED 2 tầng phân cách viền chrome sang trọng, tích hợp đèn dừng khẩn cấp ESS tự động chớp nháy cảnh báo khi phanh gấp.',
+    shortSummary: 'Đèn hậu LED 3D phân tầng thể thao kết hợp tay dắt nhôm đúc và cảnh báo phanh ESS.',
     icon: ShieldCheck,
+    mobileTags: ['LED Đồ Họa 3D', 'Phanh Khẩn Cấp ESS'],
     specs: [
       { label: 'Đèn hậu', value: 'LED Đồ Họa 3D 2 Tầng' },
       { label: 'An toàn', value: 'Cảnh báo khẩn cấp ESS' },
@@ -70,14 +79,90 @@ export default function DesignSection() {
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 1024;
 
-      // Responsive 3D transform poses
+      // Responsive transform poses (optimized for high FPS on mobile)
       const getPose = (slot) => {
         // slot: -2 (far left), -1 (left), 0 (center active), 1 (right), 2 (far right)
+        if (isMobile) {
+          // ULTRA-SMOOTH MOBILE POSES:
+          // Zero CSS filter blur (blur on mobile GPU is the primary cause of scroll lag)
+          // Simplified 2.5D hardware-composited transforms
+          if (slot === 0) {
+            return {
+              xPercent: 0,
+              y: 0,
+              z: 0,
+              rotateY: 0,
+              rotateX: 0,
+              rotateZ: 0,
+              scale: 1,
+              opacity: 1,
+              filter: 'none',
+              zIndex: 30,
+            };
+          }
+          if (slot === 1) {
+            return {
+              xPercent: 50,
+              y: 6,
+              z: 0,
+              rotateY: -12,
+              rotateX: 0,
+              rotateZ: 0,
+              scale: 0.88,
+              opacity: 0.35,
+              filter: 'none',
+              zIndex: 20,
+            };
+          }
+          if (slot === -1) {
+            return {
+              xPercent: -50,
+              y: -6,
+              z: 0,
+              rotateY: 12,
+              rotateX: 0,
+              rotateZ: 0,
+              scale: 0.88,
+              opacity: 0.35,
+              filter: 'none',
+              zIndex: 20,
+            };
+          }
+          if (slot > 1) {
+            return {
+              xPercent: 95,
+              y: 10,
+              z: 0,
+              rotateY: -16,
+              rotateX: 0,
+              rotateZ: 0,
+              scale: 0.78,
+              opacity: 0,
+              filter: 'none',
+              zIndex: 10,
+            };
+          }
+          // slot < -1
+          return {
+            xPercent: -95,
+            y: -10,
+            z: 0,
+            rotateY: 16,
+            rotateX: 0,
+            rotateZ: 0,
+            scale: 0.78,
+            opacity: 0,
+            filter: 'none',
+            zIndex: 10,
+          };
+        }
+
+        // DESKTOP: FULL ARTISTIC 3D PERSPECTIVE & DEPTH OF FIELD
         if (slot === 0) {
           return {
             xPercent: 0,
             y: 0,
-            z: isMobile ? 30 : 60,
+            z: 60,
             rotateY: 0,
             rotateX: 0,
             rotateZ: 0,
@@ -89,13 +174,13 @@ export default function DesignSection() {
         }
         if (slot === 1) {
           return {
-            xPercent: isMobile ? 48 : 58,
-            y: isMobile ? 12 : 20,
-            z: isMobile ? -130 : -190,
-            rotateY: isMobile ? -26 : -32,
-            rotateX: isMobile ? 4 : 6,
+            xPercent: 58,
+            y: 20,
+            z: -190,
+            rotateY: -32,
+            rotateX: 6,
             rotateZ: 1,
-            scale: isMobile ? 0.86 : 0.82,
+            scale: 0.82,
             opacity: 0.45,
             filter: 'blur(3px) brightness(0.85)',
             zIndex: 20,
@@ -103,13 +188,13 @@ export default function DesignSection() {
         }
         if (slot === -1) {
           return {
-            xPercent: isMobile ? -48 : -58,
-            y: isMobile ? -12 : -20,
-            z: isMobile ? -130 : -190,
-            rotateY: isMobile ? 26 : 32,
-            rotateX: isMobile ? -4 : -6,
+            xPercent: -58,
+            y: -20,
+            z: -190,
+            rotateY: 32,
+            rotateX: -6,
             rotateZ: -1,
-            scale: isMobile ? 0.86 : 0.82,
+            scale: 0.82,
             opacity: 0.45,
             filter: 'blur(3px) brightness(0.85)',
             zIndex: 20,
@@ -117,13 +202,13 @@ export default function DesignSection() {
         }
         if (slot > 1) {
           return {
-            xPercent: isMobile ? 95 : 115,
-            y: isMobile ? 24 : 38,
-            z: isMobile ? -260 : -360,
-            rotateY: isMobile ? -38 : -46,
-            rotateX: isMobile ? 7 : 10,
+            xPercent: 115,
+            y: 38,
+            z: -360,
+            rotateY: -46,
+            rotateX: 10,
             rotateZ: 2,
-            scale: isMobile ? 0.72 : 0.68,
+            scale: 0.68,
             opacity: 0.15,
             filter: 'blur(6px) brightness(0.7)',
             zIndex: 10,
@@ -131,13 +216,13 @@ export default function DesignSection() {
         }
         // slot < -1
         return {
-          xPercent: isMobile ? -95 : -115,
-          y: isMobile ? -24 : -38,
-          z: isMobile ? -260 : -360,
-          rotateY: isMobile ? 38 : 46,
-          rotateX: isMobile ? -7 : -10,
+          xPercent: -115,
+          y: -38,
+          z: -360,
+          rotateY: 46,
+          rotateX: -10,
           rotateZ: -2,
-          scale: isMobile ? 0.72 : 0.68,
+          scale: 0.68,
           opacity: 0.15,
           filter: 'blur(6px) brightness(0.7)',
           zIndex: 10,
@@ -145,26 +230,23 @@ export default function DesignSection() {
       };
 
       // Set initial positions:
-      // Card 0 -> Center (0)
-      // Card 1 -> Right (1)
-      // Card 2 -> Far Right (2)
       gsap.set(cardRefs.current[0], getPose(0));
       gsap.set(cardRefs.current[1], getPose(1));
       gsap.set(cardRefs.current[2], getPose(2));
 
-      // Set text positions:
-      gsap.set(textRefs.current[0], { opacity: 1, y: 0, filter: 'blur(0px)', pointerEvents: 'auto' });
-      gsap.set(textRefs.current[1], { opacity: 0, y: 25, filter: 'blur(8px)', pointerEvents: 'none' });
-      gsap.set(textRefs.current[2], { opacity: 0, y: 25, filter: 'blur(8px)', pointerEvents: 'none' });
+      // Set text positions (zero blur on mobile):
+      gsap.set(textRefs.current[0], { opacity: 1, y: 0, filter: isMobile ? 'none' : 'blur(0px)', pointerEvents: 'auto' });
+      gsap.set(textRefs.current[1], { opacity: 0, y: isMobile ? 12 : 25, filter: isMobile ? 'none' : 'blur(8px)', pointerEvents: 'none' });
+      gsap.set(textRefs.current[2], { opacity: 0, y: isMobile ? 12 : 25, filter: isMobile ? 'none' : 'blur(8px)', pointerEvents: 'none' });
 
-      // Pinned 3D Scrollytelling Timeline
+      // Pinned Scrollytelling Timeline
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
           end: '+=260%',
           pin: true,
-          scrub: 0.9,
+          scrub: isMobile ? 0.6 : 0.9,
           anticipatePin: 1,
           onUpdate: (self) => {
             const p = self.progress;
@@ -179,52 +261,50 @@ export default function DesignSection() {
 
       // -------------------------------------------------------------
       // Giai đoạn 1: Card 1 -> Slot -1, Card 2 -> Slot 0, Card 3 -> Slot 1
-      // Scroll scrub: 0.3 to 1.3
       // -------------------------------------------------------------
-      tl.to(cardRefs.current[0], { ...getPose(-1), duration: 1.0, ease: 'power2.inOut' }, 0.3);
-      tl.to(cardRefs.current[1], { ...getPose(0), duration: 1.0, ease: 'power2.inOut' }, 0.3);
-      tl.to(cardRefs.current[2], { ...getPose(1), duration: 1.0, ease: 'power2.inOut' }, 0.3);
+      tl.to(cardRefs.current[0], { ...getPose(-1), duration: 1.0, ease: 'power1.inOut' }, 0.3);
+      tl.to(cardRefs.current[1], { ...getPose(0), duration: 1.0, ease: 'power1.inOut' }, 0.3);
+      tl.to(cardRefs.current[2], { ...getPose(1), duration: 1.0, ease: 'power1.inOut' }, 0.3);
 
-      // Text 0 fades out, Text 1 reveals smoothly
+      // Text 0 fades out, Text 1 reveals
       tl.to(textRefs.current[0], {
         opacity: 0,
-        y: -25,
-        filter: 'blur(6px)',
-        duration: 0.6,
+        y: isMobile ? -10 : -25,
+        ...(isMobile ? {} : { filter: 'blur(6px)' }),
+        duration: 0.55,
         ease: 'power1.inOut',
         pointerEvents: 'none',
       }, 0.3);
       tl.to(textRefs.current[1], {
         opacity: 1,
         y: 0,
-        filter: 'blur(0px)',
-        duration: 0.7,
+        ...(isMobile ? {} : { filter: 'blur(0px)' }),
+        duration: 0.65,
         ease: 'power2.out',
         pointerEvents: 'auto',
       }, 0.65);
 
       // -------------------------------------------------------------
       // Giai đoạn 2: Card 1 -> Slot -2, Card 2 -> Slot -1, Card 3 -> Slot 0
-      // Scroll scrub: 1.6 to 2.6
       // -------------------------------------------------------------
-      tl.to(cardRefs.current[0], { ...getPose(-2), duration: 1.0, ease: 'power2.inOut' }, 1.6);
-      tl.to(cardRefs.current[1], { ...getPose(-1), duration: 1.0, ease: 'power2.inOut' }, 1.6);
-      tl.to(cardRefs.current[2], { ...getPose(0), duration: 1.0, ease: 'power2.inOut' }, 1.6);
+      tl.to(cardRefs.current[0], { ...getPose(-2), duration: 1.0, ease: 'power1.inOut' }, 1.6);
+      tl.to(cardRefs.current[1], { ...getPose(-1), duration: 1.0, ease: 'power1.inOut' }, 1.6);
+      tl.to(cardRefs.current[2], { ...getPose(0), duration: 1.0, ease: 'power1.inOut' }, 1.6);
 
-      // Text 1 fades out, Text 2 reveals smoothly
+      // Text 1 fades out, Text 2 reveals
       tl.to(textRefs.current[1], {
         opacity: 0,
-        y: -25,
-        filter: 'blur(6px)',
-        duration: 0.6,
+        y: isMobile ? -10 : -25,
+        ...(isMobile ? {} : { filter: 'blur(6px)' }),
+        duration: 0.55,
         ease: 'power1.inOut',
         pointerEvents: 'none',
       }, 1.6);
       tl.to(textRefs.current[2], {
         opacity: 1,
         y: 0,
-        filter: 'blur(0px)',
-        duration: 0.7,
+        ...(isMobile ? {} : { filter: 'blur(0px)' }),
+        duration: 0.65,
         ease: 'power2.out',
         pointerEvents: 'auto',
       }, 1.95);
@@ -314,8 +394,8 @@ export default function DesignSection() {
                 onClick={() => selectStep(idx)}
                 className={`absolute w-[86vw] sm:w-[70vw] lg:w-[480px] max-w-[500px] rounded-2xl sm:rounded-3xl p-2 sm:p-3 transition-shadow duration-500 will-change-transform cursor-pointer pointer-events-auto ${
                   isDark 
-                    ? 'bg-slate-900/80 border border-white/20 shadow-2xl backdrop-blur-xl' 
-                    : 'bg-white/95 border border-slate-300 shadow-xl shadow-slate-900/15 backdrop-blur-xl'
+                    ? 'bg-slate-900/95 lg:bg-slate-900/80 border border-white/20 shadow-2xl lg:backdrop-blur-xl' 
+                    : 'bg-white border border-slate-300 shadow-xl shadow-slate-900/10 lg:backdrop-blur-xl'
                 }`}
                 style={{
                   transformStyle: 'preserve-3d',
@@ -371,7 +451,7 @@ export default function DesignSection() {
         {/* ============================================================ */}
         {/* ZONE 2: TECH HUD TEXT DATA READOUT TERMINAL                   */}
         {/* ============================================================ */}
-        <div className="lg:col-span-5 relative w-full flex flex-col justify-center min-h-[220px] sm:min-h-[260px] lg:min-h-[380px]">
+        <div className="lg:col-span-5 relative w-full flex flex-col justify-center min-h-[170px] sm:min-h-[260px] lg:min-h-[380px]">
           
           {/* Stack of 3 Text Panels cross-fading */}
           <div className="relative w-full">
@@ -386,27 +466,29 @@ export default function DesignSection() {
                   }`}
                 >
                   {/* Category Pill with Icon */}
-                  <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-2 sm:mb-3 backdrop-blur-md font-body bg-red-600/10 border border-red-600/25 text-red-600 dark:text-red-400">
-                    <Icon size={13} className="text-red-500 shrink-0" />
+                  <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-xs font-bold uppercase tracking-wider mb-1.5 sm:mb-3 backdrop-blur-md font-body bg-red-600/10 border border-red-600/25 text-red-600 dark:text-red-400">
+                    <Icon size={12} className="text-red-500 shrink-0" />
                     <span>{comp.category}</span>
                   </div>
 
-                  {/* Main Title */}
-                  <h3 className={`font-display text-xl sm:text-2xl lg:text-3xl font-black tracking-tight leading-snug uppercase ${
+                  {/* Main Title - Responsive Brevity */}
+                  <h3 className={`font-display text-lg sm:text-2xl lg:text-3xl font-black tracking-tight leading-snug uppercase ${
                     isDark ? 'text-white' : 'text-slate-950'
                   }`}>
-                    {comp.title}
+                    <span className="sm:hidden">{comp.shortTitle}</span>
+                    <span className="hidden sm:inline">{comp.title}</span>
                   </h3>
 
-                  {/* Concise Executive Summary */}
-                  <p className={`mt-2 sm:mt-3 text-xs sm:text-sm lg:text-[15px] leading-relaxed font-body ${
+                  {/* Concise Executive Summary - 1 short sentence on mobile */}
+                  <p className={`mt-1.5 sm:mt-3 text-xs sm:text-sm lg:text-[15px] leading-relaxed font-body ${
                     isDark ? 'text-neutral-300' : 'text-slate-800 font-medium'
                   }`}>
-                    {comp.summary}
+                    <span className="sm:hidden">{comp.shortSummary}</span>
+                    <span className="hidden sm:inline">{comp.summary}</span>
                   </p>
 
-                  {/* 3 Tech Spec Mini Badges */}
-                  <div className="mt-3 sm:mt-5 grid grid-cols-3 gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-body">
+                  {/* Desktop: 3 Tech Spec Mini Badges */}
+                  <div className="hidden sm:grid mt-3 sm:mt-5 grid-cols-3 gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-body">
                     {comp.specs.map((s, sIdx) => (
                       <div
                         key={sIdx}
@@ -425,6 +507,23 @@ export default function DesignSection() {
                           {s.value}
                         </span>
                       </div>
+                    ))}
+                  </div>
+
+                  {/* Mobile: 2 Minimalist Tag Chips (No vertical bloat) */}
+                  <div className="sm:hidden mt-2 flex items-center gap-1.5 font-body">
+                    {comp.mobileTags.map((tag, tIdx) => (
+                      <span
+                        key={tIdx}
+                        className={`px-2.5 py-0.5 rounded-lg text-[10px] font-bold border flex items-center gap-1.5 ${
+                          isDark
+                            ? 'bg-white/[0.05] border-white/15 text-neutral-200'
+                            : 'bg-white border-slate-300 text-slate-800 shadow-xs'
+                        }`}
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />
+                        {tag}
+                      </span>
                     ))}
                   </div>
                 </div>

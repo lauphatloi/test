@@ -333,52 +333,22 @@ export default function BannerSection({ onOpenTestRide }) {
             Khám phá 4 phong thái màu sắc đương đại được chế tác tỉ mỉ cho từng đẳng cấp phong cách và uy quyền của thủ lĩnh.
           </p>
 
-          {/* 4 Luxury Edition Indicator Chips */}
-          <div className="mt-5 sm:mt-7 flex flex-wrap items-center justify-center gap-2 sm:gap-3 max-w-3xl">
-            <div className={`flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md transition-all ${
-              isDark ? 'bg-white/[0.06] border border-white/15 text-slate-200' : 'bg-white/90 border border-slate-300 text-slate-900 shadow-sm'
+          {/* Minimalist Centered Scroll Indicator */}
+          <div 
+            onClick={scrollToVariants}
+            className={`mt-8 sm:mt-12 flex flex-col items-center justify-center gap-2.5 text-xs font-body cursor-pointer transition-all duration-300 group select-none ${
+              isDark ? 'text-neutral-400 hover:text-white' : 'text-slate-700 hover:text-slate-950'
+            }`}
+          >
+            <span className="tracking-[0.25em] text-[11px] sm:text-xs uppercase font-bold text-center">
+              Cuộn xuống để khám phá
+            </span>
+            <div className={`w-8 h-8 rounded-full border flex items-center justify-center group-hover:scale-110 transition-transform ${
+              isDark 
+                ? 'border-white/20 bg-white/[0.04] group-hover:border-red-500/60' 
+                : 'border-slate-300 bg-white/80 group-hover:border-red-600 shadow-xs'
             }`}>
-              <span className="w-2.5 h-2.5 rounded-full bg-slate-400 ring-2 ring-slate-400/40" />
-              <span>01 • Xám Đương Đại</span>
-            </div>
-            <div className={`flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md transition-all ${
-              isDark ? 'bg-white/[0.06] border border-white/15 text-slate-200' : 'bg-white/90 border border-slate-300 text-slate-900 shadow-sm'
-            }`}>
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 ring-2 ring-amber-500/40" />
-              <span>02 • Đen Nhám Doanh Nhân</span>
-            </div>
-            <div className={`flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md transition-all ${
-              isDark ? 'bg-white/[0.06] border border-white/15 text-slate-200' : 'bg-white/90 border border-slate-300 text-slate-900 shadow-sm'
-            }`}>
-              <span className="w-2.5 h-2.5 rounded-full bg-slate-200 ring-2 ring-slate-300/60" />
-              <span>03 • Trắng Ngọc Trai</span>
-            </div>
-            <div className={`flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md transition-all ${
-              isDark ? 'bg-white/[0.06] border border-white/15 text-slate-200' : 'bg-white/90 border border-slate-300 text-slate-900 shadow-sm'
-            }`}>
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-emerald-500/40" />
-              <span>04 • Xanh Lục Bảo</span>
-            </div>
-          </div>
-
-          {/* Interactive Navigation & Scroll Cue */}
-          <div className="mt-6 sm:mt-9 flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
-            <button
-              onClick={scrollToVariants}
-              className="px-6 sm:px-7 py-2.5 sm:py-3 rounded-full honda-red-btn text-xs font-semibold tracking-wider uppercase flex items-center justify-center gap-2 shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer font-display"
-            >
-              <span>Xem Chi Tiết 4 Phiên Bản</span>
-              <ChevronRight size={15} />
-            </button>
-
-            <div 
-              onClick={scrollToVariants}
-              className={`flex items-center justify-center gap-2 text-xs font-body cursor-pointer transition-colors px-3 py-1.5 rounded-full ${
-                isDark ? 'text-neutral-400 hover:text-white' : 'text-slate-700 hover:text-slate-950'
-              }`}
-            >
-              <ArrowDown size={14} className="text-red-600 animate-bounce" />
-              <span className="tracking-wider text-xs font-medium">Cuộn để xem bộ sưu tập</span>
+              <ArrowDown size={15} className="text-red-600 animate-bounce" />
             </div>
           </div>
         </div>
