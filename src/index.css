@@ -143,4 +143,15 @@
   animation: float-subtle 6s ease-in-out infinite;
 }
 
+/* Responsive Banner Background Framing */
+.banner-bg-frame {
+  background-position: 72% 16%;
+}
+
+@media (min-width: 640px) {
+  .banner-bg-frame {
+    background-position: center 45%;
+  }
+}
+
 

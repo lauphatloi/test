@@ -52,9 +52,11 @@ export default function BannerSection({ onOpenTestRide }) {
       });
 
       // Stage 1: Banner Zoom while pinned (0.0 -> 1.5)
+      // On vertical mobile screens, use a subtle zoom (1.06) so the motorcycle remains fully framed; on desktop use 1.28
+      const isMobile = window.innerWidth < 640;
       tl.to(bgRef.current, {
-        scale: 1.3,
-        y: '5%',
+        scale: isMobile ? 1.06 : 1.28,
+        y: isMobile ? '2%' : '5%',
         ease: 'none',
         duration: 1.5,
       }, 0);
@@ -135,68 +137,65 @@ export default function BannerSection({ onOpenTestRide }) {
       {/* ============================================================ */}
       <div 
         ref={bgRef}
-        className="absolute inset-0 w-full h-full will-change-transform scale-100 pointer-events-none"
+        className="absolute inset-0 w-full h-full will-change-transform scale-100 pointer-events-none bg-cover bg-no-repeat banner-bg-frame"
         style={{
           backgroundImage: `url('./images/banner-bg.jpg')`,
-          backgroundPosition: 'center 45%',
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-[#08090d] via-black/35 to-black/70" />
-        <div className="absolute inset-0 bg-radial-vignette opacity-80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#08090d] from-20% via-black/40 to-black/75 sm:via-black/35 sm:to-black/70" />
+        <div className="absolute inset-0 bg-radial-vignette opacity-85 sm:opacity-80" />
         <div className="absolute inset-0 bg-tech-grid opacity-15" />
       </div>
 
       {/* Banner Text Elements & Interactive Buttons */}
       <div 
         ref={bannerContentRef}
-        className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12 flex flex-col justify-between h-full pointer-events-auto"
+        className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-32 pb-4 sm:pb-12 flex flex-col justify-between h-full pointer-events-auto"
       >
         {/* Top Tagline */}
-        <div className="flex items-center gap-3">
-          <span className="w-6 h-[2px] bg-red-600" />
-          <span className="text-[10px] sm:text-[11px] font-semibold tracking-[0.3em] uppercase text-neutral-300 font-body">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <span className="w-5 sm:w-6 h-[2px] bg-red-600 shrink-0" />
+          <span className="text-[9px] sm:text-[11px] font-semibold tracking-[0.16em] sm:tracking-[0.3em] uppercase text-neutral-300 font-body truncate">
             HONDA MOTOR VIỆT NAM • THỦ LĨNH XE GA CAO CẤP
           </span>
         </div>
 
-        {/* Center Banner Messaging */}
-        <div className="max-w-3xl my-auto py-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/10 text-neutral-200 text-xs font-semibold uppercase tracking-wider mb-4 backdrop-blur-md font-body">
-            <Award size={13} className="text-white" />
+        {/* Center/Bottom Banner Messaging - Anchored comfortably below the motorcycle on mobile */}
+        <div className="max-w-3xl sm:my-auto mt-auto mb-1 py-1 sm:py-6">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 rounded-full bg-white/[0.08] border border-white/10 text-neutral-200 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-2.5 sm:mb-4 backdrop-blur-md font-body">
+            <Award size={13} className="text-white shrink-0" />
             <span>ĐẲNG CẤP CHÂU ÂU • VẺ ĐẸP SANG TRỌNG</span>
           </div>
 
-          <h1 className="font-display font-extrabold text-4xl sm:text-6xl lg:text-7xl text-white tracking-tight leading-tight uppercase">
+          <h1 className="font-display font-extrabold text-3xl sm:text-6xl lg:text-7xl text-white tracking-tight leading-tight uppercase">
             HONDA <span className="text-gradient-platinum">SH350i</span>
           </h1>
 
-          <p className="mt-4 text-sm sm:text-base text-neutral-300 font-body leading-relaxed max-w-2xl">
+          <p className="mt-2.5 sm:mt-4 text-xs sm:text-base text-neutral-300 font-body leading-relaxed max-w-2xl line-clamp-3 sm:line-clamp-none">
             Tuyệt tác kết hợp hài hòa giữa ngôn ngữ thiết kế điêu khắc thượng lưu nước Ý và sức mạnh động cơ eSP+ 330cc thế hệ mới. Khẳng định vị thế dẫn đầu và phong thái đĩnh đạc của chủ nhân trên mọi hành trình.
           </p>
 
           {/* Quick Specifications Pills */}
-          <div className="mt-6 flex flex-wrap gap-3 text-xs font-body text-neutral-300">
-            <div className="px-3.5 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.08] backdrop-blur-md flex items-center gap-2">
-              <Gauge size={14} className="text-neutral-400" />
+          <div className="mt-3.5 sm:mt-6 flex flex-wrap gap-2 sm:gap-3 text-[11px] sm:text-xs font-body text-neutral-300">
+            <div className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg bg-white/[0.06] border border-white/[0.08] backdrop-blur-md flex items-center gap-1.5 sm:gap-2">
+              <Gauge size={13} className="text-neutral-400 shrink-0" />
               <span>Động cơ <strong>329.6cc eSP+</strong></span>
             </div>
-            <div className="px-3.5 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.08] backdrop-blur-md flex items-center gap-2">
-              <ShieldCheck size={14} className="text-neutral-400" />
+            <div className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg bg-white/[0.06] border border-white/[0.08] backdrop-blur-md flex items-center gap-1.5 sm:gap-2">
+              <ShieldCheck size={13} className="text-neutral-400 shrink-0" />
               <span>Phanh <strong>ABS 2 Kênh & HSTC</strong></span>
             </div>
-            <div className="px-3.5 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.08] backdrop-blur-md flex items-center gap-2">
-              <Zap size={14} className="text-neutral-400" />
+            <div className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg bg-white/[0.06] border border-white/[0.08] backdrop-blur-md flex items-center gap-1.5 sm:gap-2">
+              <Zap size={13} className="text-neutral-400 shrink-0" />
               <span>Chuẩn khí thải <strong>Euro 5</strong></span>
             </div>
           </div>
 
           {/* Banner Interactive Buttons */}
-          <div className="mt-8 flex flex-wrap items-center gap-4">
+          <div className="mt-5 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4">
             <button
               onClick={scrollToVariants}
-              className="px-7 py-3.5 rounded-full honda-red-btn text-xs font-semibold tracking-wider uppercase flex items-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer font-display"
+              className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-full honda-red-btn text-xs font-semibold tracking-wider uppercase flex items-center justify-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer font-display"
             >
               <span>Khám Phá Các Phiên Bản Xe</span>
               <ChevronRight size={15} />
@@ -204,7 +203,7 @@ export default function BannerSection({ onOpenTestRide }) {
 
             <button
               onClick={() => { soundFx.playRev(); onOpenTestRide(); }}
-              className="px-6 py-3.5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-white text-xs font-medium tracking-wide transition-all cursor-pointer font-body"
+              className="w-full sm:w-auto px-5 sm:px-6 py-2.5 sm:py-3.5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 text-white text-xs font-medium tracking-wide transition-all cursor-pointer font-body text-center"
             >
               Đăng Ký Lái Thử
             </button>
