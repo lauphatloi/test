@@ -70,20 +70,49 @@ export default function TechFeaturesSection() {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
   const cardRefs = useRef([]);
+  const mobileTrackRef = useRef(null);
+  const [activeMobileIdx, setActiveMobileIdx] = useState(0);
   const { isDark } = useTheme();
 
+  const scrollMobileTo = (idx) => {
+    soundFx.playClick();
+    setActiveMobileIdx(idx);
+    const container = mobileTrackRef.current;
+    if (container && container.children[idx]) {
+      container.children[idx].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  };
+
+  const handleMobileScroll = (e) => {
+    const container = e.currentTarget;
+    const scrollLeft = container.scrollLeft;
+    const cardWidth = container.children[0]?.offsetWidth || 300;
+    const idx = Math.round(scrollLeft / (cardWidth + 14));
+    const clamped = Math.min(Math.max(idx, 0), TECH_ITEMS.length - 1);
+    if (clamped !== activeMobileIdx) {
+      setActiveMobileIdx(clamped);
+    }
+  };
+
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Horizontal Scroll Experience with GSAP ScrollTrigger
+    const mm = gsap.matchMedia();
+
+    // DESKTOP ONLY: Horizontal Scroll Experience with GSAP ScrollTrigger
+    mm.add('(min-width: 1024px)', () => {
       const track = trackRef.current;
       const cards = cardRefs.current;
+      if (!track) return;
       
       const scrollWidth = track.scrollWidth;
       const viewportWidth = window.innerWidth;
       const distanceToMove = scrollWidth - viewportWidth;
 
       if (distanceToMove > 0) {
-        gsap.to(track, {
+        const tween = gsap.to(track, {
           x: -distanceToMove,
           ease: 'none',
           scrollTrigger: {
@@ -99,6 +128,7 @@ export default function TechFeaturesSection() {
 
         // 3D Parallax tilt and scale on each card during horizontal travel
         cards.forEach((card) => {
+          if (!card) return;
           gsap.fromTo(card, {
             rotateY: 8,
             scale: 0.95,
@@ -107,7 +137,7 @@ export default function TechFeaturesSection() {
             scale: 1,
             scrollTrigger: {
               trigger: card,
-              containerAnimation: gsap.getTweensOf(track)[0],
+              containerAnimation: tween,
               start: 'left right',
               end: 'right left',
               scrub: true,
@@ -115,17 +145,16 @@ export default function TechFeaturesSection() {
           });
         });
       }
+    });
 
-    }, sectionRef);
-
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
   return (
     <section 
       id="technology" 
       ref={sectionRef}
-      className={`relative w-full h-screen overflow-hidden select-none flex flex-col justify-center transition-colors duration-500 ${
+      className={`relative w-full py-12 sm:py-16 lg:py-0 lg:h-screen overflow-hidden select-none flex flex-col justify-center transition-colors duration-500 scroll-mt-20 ${
         isDark ? 'bg-[#05070c]' : 'bg-[#f1f5f9]'
       }`}
     >
@@ -140,152 +169,343 @@ export default function TechFeaturesSection() {
         <div className={`absolute inset-0 bg-tech-grid ${isDark ? 'opacity-10' : 'opacity-[0.03]'}`} />
       </div>
 
-      {/* Top Header Tag */}
-      <div className="absolute top-8 sm:top-12 left-6 sm:left-12 lg:left-16 z-20">
-        <div className="flex items-center gap-3">
-          <span className="w-6 h-[2px] bg-red-600" />
-          <span className={`text-[10px] sm:text-[11px] font-bold tracking-[0.25em] uppercase font-body ${
-            isDark ? 'text-neutral-400' : 'text-slate-800'
-          }`}>
-            CÔNG NGHỆ THÔNG MINH & AN TOÀN CHỦ ĐỘNG
-          </span>
-        </div>
-        <h2 className={`font-display text-2xl sm:text-4xl font-black tracking-tight mt-2 ${
-          isDark ? 'text-white' : 'text-slate-950'
-        }`}>
-          GIẢI PHÁP TIÊN PHONG <span className="text-gradient-platinum">TỪ HONDA</span>
-        </h2>
-      </div>
-
-      {/* Horizontal Cards Runway Track */}
-      <div 
-        ref={trackRef} 
-        className="flex items-center gap-6 sm:gap-8 px-6 sm:px-12 lg:px-16 w-max pt-20 pb-8 will-change-transform"
-      >
-        {/* First Introductory Teaser Column */}
-        <div className={`w-[300px] sm:w-[360px] shrink-0 p-8 rounded-3xl flex flex-col justify-between transition-all duration-300 ${
-          isDark 
-            ? 'glass-panel border border-white/[0.08]' 
-            : 'bg-white border border-slate-300 shadow-xl shadow-slate-300/40'
-        }`}>
-          <div>
-            <span className={`px-2.5 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider font-body border ${
-              isDark 
-                ? 'bg-white/[0.06] border-white/[0.08] text-neutral-200' 
-                : 'bg-slate-200 border-slate-300 text-slate-950'
+      {/* ============================================================ */}
+      {/* 1. MOBILE VIEW (lg:hidden) - NATIVE CSS SMOOTH HORIZONTAL SWIPE */}
+      {/* ============================================================ */}
+      <div className="lg:hidden relative z-20 w-full flex flex-col gap-4">
+        {/* Mobile Header */}
+        <div className="px-4 sm:px-6">
+          <div className="flex items-center gap-2">
+            <span className="w-5 h-[2px] bg-red-600" />
+            <span className={`text-[10px] font-bold tracking-[0.2em] uppercase font-body ${
+              isDark ? 'text-neutral-400' : 'text-slate-800'
             }`}>
-              An Toàn & Tiện Ích
+              CÔNG NGHỆ & AN TOÀN CHỦ ĐỘNG
             </span>
-            <h3 className={`font-display text-2xl sm:text-3xl font-black mt-4 leading-snug ${
-              isDark ? 'text-white' : 'text-slate-950'
-            }`}>
-              Trải Nghiệm Tiện Nghi Đỉnh Cao
-            </h3>
-            <p className={`mt-3 text-xs sm:text-sm leading-relaxed font-body ${
-              isDark ? 'text-neutral-300' : 'text-slate-800 font-semibold'
-            }`}>
-              Mỗi tính năng trên Honda SH350i được chế tác nhằm nâng cao sự an tâm, bảo đảm kiểm soát tối đa trong mọi hành trình di chuyển đô thị hiện đại.
-            </p>
           </div>
-
-          <div className={`mt-8 pt-6 border-t flex items-center justify-between text-xs font-body ${
-            isDark ? 'border-white/[0.08] text-neutral-400' : 'border-slate-300 text-slate-800 font-bold'
+          <h2 className={`font-display text-2xl sm:text-3xl font-black tracking-tight mt-1.5 ${
+            isDark ? 'text-white' : 'text-slate-950'
           }`}>
-            <span className={`flex items-center gap-1.5 font-bold ${
-              isDark ? 'text-neutral-300' : 'text-slate-900'
-            }`}>
-              Cuộn ngang để xem chi tiết
-            </span>
-            <ChevronRight size={16} className={isDark ? 'text-neutral-400' : 'text-slate-800'} />
-          </div>
-        </div>
-
-        {/* 4 Feature High-Res Photographic Cards */}
-        {TECH_ITEMS.map((item, idx) => {
-          const IconComp = item.icon;
-          return (
-            <div
-              key={item.id}
-              ref={(el) => (cardRefs.current[idx] = el)}
-              className={`w-[320px] sm:w-[420px] lg:w-[450px] shrink-0 rounded-3xl overflow-hidden group transition-all duration-500 ${
-                isDark 
-                  ? 'glass-panel border border-white/[0.08] hover:border-white/20 shadow-2xl' 
-                  : 'bg-white border border-slate-300 hover:border-slate-400 shadow-xl shadow-slate-300/40'
-              }`}
-            >
-              {/* Image Frame */}
-              <div className="relative w-full h-[220px] sm:h-[260px] overflow-hidden">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/30" />
-
-                {/* Tag Badge */}
-                <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/[0.1] text-[10px] font-semibold text-neutral-200 font-body">
-                  <IconComp size={13} className="text-white" />
-                  <span>{item.tag}</span>
-                </div>
-
-                <div className="absolute top-4 right-4 text-[11px] font-mono text-neutral-300 bg-black/60 px-2.5 py-0.5 rounded border border-white/[0.1]">
-                  0{idx + 1}
-                </div>
-              </div>
-
-              {/* Content Body */}
-              <div className="p-6 sm:p-7">
-                <span className={`text-xs font-bold font-body ${isDark ? 'text-neutral-400' : 'text-slate-800'}`}>{item.sub}</span>
-                <h4 className={`font-display text-xl sm:text-2xl font-black mt-1 transition-colors ${
-                  isDark ? 'text-white group-hover:text-neutral-100' : 'text-slate-950 group-hover:text-red-600'
-                }`}>
-                  {item.title}
-                </h4>
-                <p className={`mt-2.5 text-xs sm:text-sm leading-relaxed line-clamp-3 font-body ${
-                  isDark ? 'text-neutral-300' : 'text-slate-800 font-semibold'
-                }`}>
-                  {item.desc}
-                </p>
-
-                {/* Metrics Breakdown */}
-                <div className={`mt-5 pt-4 border-t grid grid-cols-3 gap-2 ${
-                  isDark ? 'border-white/[0.08]' : 'border-slate-300'
-                }`}>
-                  {item.metrics.map((m, i) => (
-                    <div key={i} className="flex flex-col">
-                      <span className={`text-[10px] truncate font-body font-bold ${isDark ? 'text-neutral-400' : 'text-slate-700'}`}>{m.label}</span>
-                      <span className={`text-xs font-black mt-0.5 truncate font-display ${
-                        isDark ? 'text-white' : 'text-slate-950'
-                      }`}>
-                        {m.val}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-
-        {/* End Runway Banner */}
-        <div className={`w-[280px] sm:w-[300px] shrink-0 p-8 rounded-3xl flex flex-col items-center justify-center text-center transition-all ${
-          isDark 
-            ? 'glass-panel border border-white/[0.08]' 
-            : 'bg-white border border-slate-300 shadow-xl'
-        }`}>
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-4 border ${
-            isDark ? 'bg-white/[0.05] text-white border-white/10' : 'bg-red-50 text-red-600 border-red-100'
-          }`}>
-            <Sparkles size={18} />
-          </div>
-          <h4 className={`font-display text-xl font-bold ${isDark ? 'text-white' : 'text-slate-950'}`}>
-            Chuẩn Mực Toàn Diện
-          </h4>
-          <p className={`mt-2 text-xs font-body font-semibold ${isDark ? 'text-neutral-400' : 'text-slate-800'}`}>
-            Thiết kế vì người lái, khẳng định vị thế dẫn đầu phân khúc xe ga cao cấp.
+            GIẢI PHÁP TIÊN PHONG <span className="text-red-600">HONDA</span>
+          </h2>
+          <p className={`mt-1 text-xs font-body ${isDark ? 'text-neutral-400' : 'text-slate-600'}`}>
+            Vuốt ngang để khám phá 4 công nghệ đột phá trên SH350i
           </p>
         </div>
 
+        {/* Mobile Native Horizontal Touch Runway */}
+        <div
+          ref={mobileTrackRef}
+          onScroll={handleMobileScroll}
+          className="flex items-stretch gap-3.5 px-4 sm:px-6 overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-none py-2 will-change-transform"
+          style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+        >
+          {TECH_ITEMS.map((item, idx) => {
+            const IconComp = item.icon;
+            return (
+              <div
+                key={`mob-tech-${item.id}`}
+                className={`w-[84vw] max-w-[330px] shrink-0 snap-center rounded-2xl overflow-hidden border flex flex-col justify-between transition-all duration-300 ${
+                  isDark
+                    ? 'bg-slate-900/95 border-white/15 text-white shadow-xl shadow-black/40'
+                    : 'bg-white border-slate-300 text-slate-900 shadow-lg shadow-slate-900/5'
+                }`}
+              >
+                {/* Image Frame */}
+                <div className="relative w-full aspect-[16/10] overflow-hidden bg-black">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover object-center"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/30 pointer-events-none" />
+
+                  {/* Tag Badge */}
+                  <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15 text-[10px] font-semibold text-neutral-200 font-body">
+                    <IconComp size={12} className="text-white" />
+                    <span>{item.tag}</span>
+                  </div>
+
+                  <div className="absolute top-3 right-3 text-[10px] font-mono text-white bg-black/70 px-2 py-0.5 rounded border border-white/15 font-bold">
+                    0{idx + 1} / 04
+                  </div>
+                </div>
+
+                {/* Content Body */}
+                <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+                  <div>
+                    <span className={`text-[11px] font-bold font-body ${isDark ? 'text-red-400' : 'text-red-600'}`}>
+                      {item.sub}
+                    </span>
+                    <h4 className={`font-display text-lg font-black mt-1 leading-snug ${
+                      isDark ? 'text-white' : 'text-slate-950'
+                    }`}>
+                      {item.title}
+                    </h4>
+                    <p className={`mt-2 text-xs leading-relaxed font-body ${
+                      isDark ? 'text-neutral-300' : 'text-slate-700'
+                    }`}>
+                      {item.desc}
+                    </p>
+                  </div>
+
+                  {/* Metrics Breakdown */}
+                  <div className={`mt-4 pt-3 border-t grid grid-cols-3 gap-1.5 ${
+                    isDark ? 'border-white/10' : 'border-slate-200'
+                  }`}>
+                    {item.metrics.map((m, i) => (
+                      <div key={i} className="flex flex-col">
+                        <span className={`text-[9px] truncate font-body font-bold ${isDark ? 'text-neutral-400' : 'text-slate-500'}`}>
+                          {m.label}
+                        </span>
+                        <span className={`text-[11px] font-bold mt-0.5 truncate font-display ${
+                          isDark ? 'text-white' : 'text-slate-950'
+                        }`}>
+                          {m.val}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+
+          {/* End Summary Card on Mobile */}
+          <div className={`w-[70vw] max-w-[280px] shrink-0 snap-center p-6 rounded-2xl border flex flex-col items-center justify-center text-center ${
+            isDark
+              ? 'bg-slate-900/90 border-white/15 text-white'
+              : 'bg-white border-slate-300 text-slate-900 shadow-md'
+          }`}>
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-3 border ${
+              isDark ? 'bg-white/10 text-white border-white/15' : 'bg-red-50 text-red-600 border-red-200'
+            }`}>
+              <Sparkles size={18} />
+            </div>
+            <h4 className="font-display text-base font-black">
+              Chuẩn Mực Tiên Phong
+            </h4>
+            <p className={`mt-1.5 text-xs font-body ${isDark ? 'text-neutral-400' : 'text-slate-600'}`}>
+              Khẳng định đẳng cấp dẫn đầu trong từng chuyển động.
+            </p>
+          </div>
+        </div>
+
+        {/* Mobile Navigation Controls */}
+        <div className="px-4 sm:px-6 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5">
+            {TECH_ITEMS.map((item, idx) => {
+              const isActive = activeMobileIdx === idx;
+              return (
+                <button
+                  key={`dot-${item.id}`}
+                  onClick={() => scrollMobileTo(idx)}
+                  aria-label={`Chuyển đến công nghệ 0${idx + 1}`}
+                  className={`h-7 px-2.5 rounded-full text-[11px] font-bold font-mono transition-all flex items-center gap-1 cursor-pointer ${
+                    isActive
+                      ? (isDark ? 'bg-white text-black shadow-md' : 'bg-slate-900 text-white shadow-md')
+                      : (isDark ? 'bg-white/10 text-neutral-400' : 'bg-slate-200 text-slate-700')
+                  }`}
+                >
+                  <span>0{idx + 1}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => scrollMobileTo(Math.max(activeMobileIdx - 1, 0))}
+              disabled={activeMobileIdx === 0}
+              aria-label="Công nghệ trước"
+              className={`w-8 h-8 rounded-full flex items-center justify-center border transition-colors cursor-pointer ${
+                activeMobileIdx === 0 ? 'opacity-30 pointer-events-none' : ''
+              } ${
+                isDark
+                  ? 'bg-white/10 border-white/15 text-white active:bg-white/20'
+                  : 'bg-white border-slate-300 text-slate-800 active:bg-slate-100 shadow-xs'
+              }`}
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <button
+              onClick={() => scrollMobileTo(Math.min(activeMobileIdx + 1, TECH_ITEMS.length - 1))}
+              disabled={activeMobileIdx === TECH_ITEMS.length - 1}
+              aria-label="Công nghệ tiếp theo"
+              className={`w-8 h-8 rounded-full flex items-center justify-center border transition-colors cursor-pointer ${
+                activeMobileIdx === TECH_ITEMS.length - 1 ? 'opacity-30 pointer-events-none' : ''
+              } ${
+                isDark
+                  ? 'bg-white/10 border-white/15 text-white active:bg-white/20'
+                  : 'bg-white border-slate-300 text-slate-800 active:bg-slate-100 shadow-xs'
+              }`}
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        </div>
+
+        {/* Swipe Hint */}
+        <div className="flex items-center justify-center gap-2 text-[11px] font-body text-slate-400 pb-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
+          <span className={isDark ? 'text-neutral-400' : 'text-slate-600'}>
+            Lướt ngang hoặc chạm số để khám phá chi tiết
+          </span>
+        </div>
+      </div>
+
+      {/* ============================================================ */}
+      {/* 2. DESKTOP VIEW (hidden lg:flex) - PINNED GSAP RUNWAY         */}
+      {/* ============================================================ */}
+      <div className="hidden lg:flex flex-col justify-center w-full h-full relative">
+        {/* Top Header Tag */}
+        <div className="absolute top-8 sm:top-12 left-6 sm:left-12 lg:left-16 z-20">
+          <div className="flex items-center gap-3">
+            <span className="w-6 h-[2px] bg-red-600" />
+            <span className={`text-[10px] sm:text-[11px] font-bold tracking-[0.25em] uppercase font-body ${
+              isDark ? 'text-neutral-400' : 'text-slate-800'
+            }`}>
+              CÔNG NGHỆ THÔNG MINH & AN TOÀN CHỦ ĐỘNG
+            </span>
+          </div>
+          <h2 className={`font-display text-2xl sm:text-4xl font-black tracking-tight mt-2 ${
+            isDark ? 'text-white' : 'text-slate-950'
+          }`}>
+            GIẢI PHÁP TIÊN PHONG <span className="text-gradient-platinum">TỪ HONDA</span>
+          </h2>
+        </div>
+
+        {/* Horizontal Cards Runway Track */}
+        <div 
+          ref={trackRef} 
+          className="flex items-center gap-6 sm:gap-8 px-6 sm:px-12 lg:px-16 w-max pt-20 pb-8 will-change-transform"
+        >
+          {/* First Introductory Teaser Column */}
+          <div className={`w-[300px] sm:w-[360px] shrink-0 p-8 rounded-3xl flex flex-col justify-between transition-all duration-300 ${
+            isDark 
+              ? 'glass-panel border border-white/[0.08]' 
+              : 'bg-white border border-slate-300 shadow-xl shadow-slate-300/40'
+          }`}>
+            <div>
+              <span className={`px-2.5 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider font-body border ${
+                isDark 
+                  ? 'bg-white/[0.06] border-white/[0.08] text-neutral-200' 
+                  : 'bg-slate-200 border-slate-300 text-slate-950'
+              }`}>
+                An Toàn & Tiện Ích
+              </span>
+              <h3 className={`font-display text-2xl sm:text-3xl font-black mt-4 leading-snug ${
+                isDark ? 'text-white' : 'text-slate-950'
+              }`}>
+                Trải Nghiệm Tiện Nghi Đỉnh Cao
+              </h3>
+              <p className={`mt-3 text-xs sm:text-sm leading-relaxed font-body ${
+                isDark ? 'text-neutral-300' : 'text-slate-800 font-semibold'
+              }`}>
+                Mỗi tính năng trên Honda SH350i được chế tác nhằm nâng cao sự an tâm, bảo đảm kiểm soát tối đa trong mọi hành trình di chuyển đô thị hiện đại.
+              </p>
+            </div>
+
+            <div className={`mt-8 pt-6 border-t flex items-center justify-between text-xs font-body ${
+              isDark ? 'border-white/[0.08] text-neutral-400' : 'border-slate-300 text-slate-800 font-bold'
+            }`}>
+              <span className={`flex items-center gap-1.5 font-bold ${
+                isDark ? 'text-neutral-300' : 'text-slate-900'
+              }`}>
+                Cuộn ngang để xem chi tiết
+              </span>
+              <ChevronRight size={16} className={isDark ? 'text-neutral-400' : 'text-slate-800'} />
+            </div>
+          </div>
+
+          {/* 4 Feature High-Res Photographic Cards */}
+          {TECH_ITEMS.map((item, idx) => {
+            const IconComp = item.icon;
+            return (
+              <div
+                key={item.id}
+                ref={(el) => (cardRefs.current[idx] = el)}
+                className={`w-[320px] sm:w-[420px] lg:w-[450px] shrink-0 rounded-3xl overflow-hidden group transition-all duration-500 ${
+                  isDark 
+                    ? 'glass-panel border border-white/[0.08] hover:border-white/20 shadow-2xl' 
+                    : 'bg-white border border-slate-300 hover:border-slate-400 shadow-xl shadow-slate-300/40'
+                }`}
+              >
+                {/* Image Frame */}
+                <div className="relative w-full h-[220px] sm:h-[260px] overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/30" />
+
+                  {/* Tag Badge */}
+                  <div className="absolute top-4 left-4 flex items-center gap-2 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/[0.1] text-[10px] font-semibold text-neutral-200 font-body">
+                    <IconComp size={13} className="text-white" />
+                    <span>{item.tag}</span>
+                  </div>
+
+                  <div className="absolute top-4 right-4 text-[11px] font-mono text-neutral-300 bg-black/60 px-2.5 py-0.5 rounded border border-white/[0.1]">
+                    0{idx + 1}
+                  </div>
+                </div>
+
+                {/* Content Body */}
+                <div className="p-6 sm:p-7">
+                  <span className={`text-xs font-bold font-body ${isDark ? 'text-neutral-400' : 'text-slate-800'}`}>{item.sub}</span>
+                  <h4 className={`font-display text-xl sm:text-2xl font-black mt-1 transition-colors ${
+                    isDark ? 'text-white group-hover:text-neutral-100' : 'text-slate-950 group-hover:text-red-600'
+                  }`}>
+                    {item.title}
+                  </h4>
+                  <p className={`mt-2.5 text-xs sm:text-sm leading-relaxed line-clamp-3 font-body ${
+                    isDark ? 'text-neutral-300' : 'text-slate-800 font-semibold'
+                  }`}>
+                    {item.desc}
+                  </p>
+
+                  {/* Metrics Breakdown */}
+                  <div className={`mt-5 pt-4 border-t grid grid-cols-3 gap-2 ${
+                    isDark ? 'border-white/[0.08]' : 'border-slate-300'
+                  }`}>
+                    {item.metrics.map((m, i) => (
+                      <div key={i} className="flex flex-col">
+                        <span className={`text-[10px] truncate font-body font-bold ${isDark ? 'text-neutral-400' : 'text-slate-700'}`}>{m.label}</span>
+                        <span className={`text-xs font-black mt-0.5 truncate font-display ${
+                          isDark ? 'text-white' : 'text-slate-950'
+                        }`}>
+                          {m.val}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+
+          {/* End Runway Banner */}
+          <div className={`w-[280px] sm:w-[300px] shrink-0 p-8 rounded-3xl flex flex-col items-center justify-center text-center transition-all ${
+            isDark 
+              ? 'glass-panel border border-white/[0.08]' 
+              : 'bg-white border border-slate-300 shadow-xl'
+          }`}>
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-4 border ${
+              isDark ? 'bg-white/[0.05] text-white border-white/10' : 'bg-red-50 text-red-600 border-red-100'
+            }`}>
+              <Sparkles size={18} />
+            </div>
+            <h4 className={`font-display text-xl font-bold ${isDark ? 'text-white' : 'text-slate-950'}`}>
+              Chuẩn Mực Toàn Diện
+            </h4>
+            <p className={`mt-2 text-xs font-body font-semibold ${isDark ? 'text-neutral-400' : 'text-slate-800'}`}>
+              Thiết kế vì người lái, khẳng định vị thế dẫn đầu phân khúc xe ga cao cấp.
+            </p>
+          </div>
+
+        </div>
       </div>
     </section>
   );
