@@ -3,29 +3,19 @@
  * GOOGLE APPS SCRIPT: TỰ ĐỘNG THU THẬP DỮ LIỆU ĐĂNG KÝ HONDA SH350i
  * =========================================================================
  * 
- * HƯỚNG DẪN CÀI ĐẶT NHANH TRONG 5 BƯỚC:
+ * HƯỚNG DẪN CÀI ĐẶT & SỬA LỖI TRUY CẬP (HTTP 403):
  * -------------------------------------------------------------------------
- * BƯỚC 1: Mở Google Sheet mới (hoặc Sheet có sẵn) của bạn trên Google Drive.
+ * LƯU Ý QUAN TRỌNG NHẤT:
+ * Nếu gửi form bị lỗi "Bạn cần có quyền truy cập" hoặc mã 403 Forbidden:
+ * -> Đó là do khi Triển khai (Deploy), mục "Ai có quyền truy cập" (Who has access)
+ *    chưa được chọn là "BẤT KỲ AI" (Anyone).
  * 
- * BƯỚC 2: Trên thanh menu Google Sheet, chọn:
- *         "Tiện ích mở rộng" (Extensions) -> "Apps Script".
- * 
- * BƯỚC 3: Xóa sạch toàn bộ code mặc định trong file Code.gs,
- *         COPY TOÀN BỘ NỘI DUNG FILE NÀY VÀ DÁN VÀO ĐÓ, rồi nhấn Ctrl + S để lưu.
- * 
- * BƯỚC 4: Nhấn nút "Triển khai" (Deploy) màu xanh ở góc trên bên phải:
- *         -> Chọn "Tùy chọn triển khai mới" (New deployment).
- *         -> Bấm vào biểu tượng bánh răng ⚙ "Chọn loại" (Select type) -> chọn "Ứng dụng web" (Web App).
- *         -> Cấu hình như sau:
- *            + Mô tả (Description): Form Đăng Ký SH350i
- *            + Thực thi dưới dạng (Execute as): "Tôi" (Tài khoản Google của bạn)
- *            + Ai có quyền truy cập (Who has access): "Bất kỳ ai" (Anyone)  <-- CỰC KỲ QUAN TRỌNG!
- *         -> Nhấn nút "Triển khai" (Deploy).
- *         -> (Nếu Google hỏi cấp quyền: Bấm "Ủy quyền truy cập" -> Chọn tài khoản của bạn -> 
- *            Bấm "Nâng cao" (Advanced) -> Chọn "Đi tới... (không an toàn)" -> Bấm "Cho phép").
- * 
- * BƯỚC 5: Copy đường link "URL của ứng dụng web" (kết thúc bằng /exec)
- *         và dán vào file: src/config/googleSheet.js trong mã nguồn Landing Page!
+ * CÁCH CHỈNH LẠI:
+ * 1. Trong Apps Script, bấm nút "Triển khai" (Deploy) -> "Quản lý các bản triển khai" (Manage deployments).
+ * 2. Bấm vào biểu tượng CÂY BÚT CHÌ (Chỉnh sửa) ở bản triển khai đang có.
+ * 3. Ở mục "Phiên bản" (Version): Chọn "Phiên bản mới" (New version).
+ * 4. Ở mục "Ai có quyền truy cập" (Who has access): Chọn "Bất kỳ ai" (Anyone).
+ * 5. Bấm "Triển khai" (Deploy) để hoàn tất.
  * =========================================================================
  */
 
@@ -42,6 +32,10 @@ function doPost(e) {
 
   try {
     var doc = SpreadsheetApp.getActiveSpreadsheet();
+    if (!doc) {
+      throw new Error("Không tìm thấy Google Sheet. Vui lòng mở Apps Script từ menu 'Tiện ích mở rộng' -> 'Apps Script' trong Google Sheet của bạn.");
+    }
+
     var sheet = doc.getSheetByName(SHEET_NAME);
     
     // Nếu chưa có tab DanhSachDangKy thì lấy sheet hiện tại hoặc đổi tên sheet mặc định
@@ -81,24 +75,25 @@ function doPost(e) {
 
     // Đọc dữ liệu gửi lên từ Landing Page
     var data = {};
-    if (e.postData && e.postData.contents) {
+    if (e && e.postData && e.postData.contents) {
       try {
         data = JSON.parse(e.postData.contents);
       } catch (err) {
-        data = e.parameter || {};
+        data = (e && e.parameter) ? e.parameter : {};
       }
-    } else if (e.parameter) {
+    } else if (e && e.parameter) {
       data = e.parameter;
     }
 
     // Lấy thông tin từ payload
     var bookingCode = data.bookingCode || ('SH350-' + Math.floor(100000 + Math.random() * 900000));
     var timestamp = data.timestamp || Utilities.formatDate(new Date(), 'Asia/Ho_Chi_Minh', 'dd/MM/yyyy HH:mm:ss');
-    var name = data.name || '';
+    var name = data.name || 'Khách hàng';
+    
     // Thêm ký tự ' ở đầu số điện thoại để Google Sheet không làm mất số 0 đầu tiên
     var rawPhone = (data.phone || '').toString().trim();
     var phone = rawPhone ? (rawPhone.startsWith("'") ? rawPhone : "'" + rawPhone) : '';
-    var edition = data.edition || '';
+    var edition = data.edition || 'Honda SH350i';
     var city = data.city || 'Phú Nhuận - HEAD OSC';
     var note = data.note || '';
     var status = 'Mới tiếp nhận';
@@ -163,4 +158,28 @@ function doGet(e) {
       message: 'Hệ thống kết nối Google Sheet đang sẵn sàng nhận dữ liệu đăng ký!'
     }))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * HÀM TEST THỬ NGHIỆM:
+ * Dùng để test trực tiếp trong màn hình Apps Script:
+ * Chọn hàm "testChayThu" ở thanh công cụ phía trên rồi bấm nút "Chạy" (Run) ▶.
+ * Bạn sẽ thấy ngay 1 dòng dữ liệu mẫu tự động xuất hiện trên Google Sheet!
+ */
+function testChayThu() {
+  var fakeEvent = {
+    postData: {
+      contents: JSON.stringify({
+        bookingCode: 'SH350-TEST999',
+        name: 'Nguyễn Văn Test',
+        phone: '0988888888',
+        edition: 'Bản Thể Thao ( Xám Đen )',
+        city: 'Phú Nhuận - HEAD OSC',
+        note: 'Đơn hàng test thử nghiệm',
+        timestamp: Utilities.formatDate(new Date(), 'Asia/Ho_Chi_Minh', 'dd/MM/yyyy HH:mm:ss')
+      })
+    }
+  };
+  var result = doPost(fakeEvent);
+  Logger.log("Kết quả test: " + result.getContent());
 }
