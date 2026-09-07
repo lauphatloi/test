@@ -456,11 +456,15 @@ export default function DesignSection() {
     <section 
       id="design" 
       ref={sectionRef} 
-      className={`relative w-full overflow-hidden select-none transition-colors duration-500 scroll-mt-20 ${
+      className={`relative z-20 will-change-transform w-full overflow-hidden select-none transition-colors duration-500 scroll-mt-20 ${
         isDark ? 'bg-[#07090e]' : 'bg-[#eef2f6]'
-      } py-14 sm:py-20 lg:py-0 lg:h-screen lg:flex lg:flex-col lg:justify-between`}
+      } pt-28 pb-14 sm:pt-32 sm:pb-20 lg:py-0 lg:h-screen lg:flex lg:flex-col lg:justify-between`}
+      style={{
+        marginTop: '-100vh',
+      }}
     >
-      {/* Background ambient lighting */}
+      <div id="design-reveal-stage" className="w-full h-full flex flex-col justify-between will-change-transform">
+        {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className={`absolute top-1/4 -left-40 w-[600px] h-[600px] rounded-full blur-[160px] ${
           isDark ? 'bg-red-950/15' : 'bg-red-500/5'
@@ -696,6 +700,7 @@ export default function DesignSection() {
             Cuộn chuột để xoay chuyển góc nhìn 3D
           </span>
         </div>
+      </div>
       </div>
     </section>
   );
