@@ -15,6 +15,7 @@ export default function TestRideModal({ isOpen, onClose, preselectedEdition }) {
     edition: preselectedEdition || 'Phiên Bản Đặc Biệt (Đen Nhám)',
     city: CITIES[0],
     date: new Date().toISOString().split('T')[0],
+    note: '',
   });
 
   const [submitted, setSubmitted] = useState(false);
@@ -100,6 +101,7 @@ export default function TestRideModal({ isOpen, onClose, preselectedEdition }) {
                 />
               </div>
 
+
               <div>
                 <label className={`block text-xs font-semibold mb-1.5 flex items-center gap-1.5 ${
                   isDark ? 'text-neutral-300' : 'text-slate-700'
@@ -120,29 +122,48 @@ export default function TestRideModal({ isOpen, onClose, preselectedEdition }) {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Lựa Chọn Phiên Bản Màu & Ghi Chú */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className={`block text-xs font-semibold mb-1.5 flex items-center gap-1.5 ${
                     isDark ? 'text-neutral-300' : 'text-slate-700'
                   }`}>
-                    <Sparkles size={13} className="text-amber-500" /> Phiên Bản Quan Tâm
+                    <Sliders size={13} className="text-red-600" /> Phiên Bản Quan Tâm
                   </label>
                   <select
                     value={formData.edition}
                     onChange={(e) => setFormData({ ...formData, edition: e.target.value })}
-                    className={`w-full px-3 py-2.5 rounded-xl border text-xs focus:outline-none focus:border-red-600 transition-colors ${
+                    className={`w-full px-4 py-2.5 rounded-xl border text-xs focus:outline-none focus:border-red-600 transition-colors ${
                       isDark 
                         ? 'bg-[#11131a] border-white/10 text-white' 
                         : 'bg-slate-50 border-slate-200 text-slate-900'
                     }`}
                   >
-                    <option value="Phiên Bản Thể Thao (Xám Xi Măng)">Bản Thể Thao (Xám Xi Măng)</option>
-                    <option value="Phiên Bản Đặc Biệt (Đen Nhám)">Bản Đặc Biệt (Đen Nhám)</option>
-                    <option value="Phiên Bản Cao Cấp (Trắng Ngọc Trai)">Bản Cao Cấp (Trắng Ngọc Trai)</option>
+                    <option value="Phiên Bản Thể Thao (Xám Xi Măng)">Bản Thể Thao ( Xám Đen )</option>
+                    <option value="Phiên Bản Đặc Biệt (Đen Nhám)">Bản Đặc Biệt ( Đen Nhám )</option>
+                    <option value="Phiên Bản Cao Cấp (Trắng Ngọc Trai)">Bản Cao Cấp ( Trắng Đen )</option>
+                    <option value="Phiên Bản Đặc Biệt ( Xanh Đen )">Bản Đặc Biệt ( Xanh Đen )</option>
                   </select>
                 </div>
 
-                
+                <div>
+                  <label className={`block text-xs font-semibold mb-1.5 flex items-center gap-1.5 ${
+                    isDark ? 'text-neutral-300' : 'text-slate-700'
+                  }`}>
+                    <User size={13} className="text-red-600" /> Ghi chú thêm
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Ví dụ: khu vực ra biển,..."
+                    value={formData.note}
+                    onChange={(e) => setFormData({ ...formData, note: e.target.value })}
+                    className={`w-full px-4 py-2.5 rounded-xl border text-xs focus:outline-none focus:border-red-600 transition-colors ${
+                      isDark 
+                        ? 'bg-white/5 border-white/10 text-white placeholder-neutral-500' 
+                        : 'bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400'
+                    }`}
+                  />
+                </div>
               </div>
 
               <div>
