@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { X, CheckCircle2, Calendar, User, Phone, MapPin, Sparkles } from 'lucide-react';
+import { X, CheckCircle2, Calendar, User, Phone, MapPin, Sparkles, MessageSquare, Loader2 } from 'lucide-react';
 import { soundFx } from '../utils/audio';
 import { useTheme } from '../context/ThemeContext';
+import { GOOGLE_SHEET_SCRIPT_URL } from '../config/googleSheet';
 
 const CITIES = [
  'Phú Nhuận - HEAD OSC'
@@ -18,15 +19,56 @@ export default function TestRideModal({ isOpen, onClose, preselectedEdition }) {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingCode, setBookingCode] = useState('');
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
     soundFx.playRev();
+    setIsSubmitting(true);
+
     const code = 'SH350-' + Math.floor(100000 + Math.random() * 900000);
+    const currentTimestamp = new Date().toLocaleString('vi-VN', {
+      timeZone: 'Asia/Ho_Chi_Minh',
+      hour12: false
+    });
+
+    const payload = {
+      bookingCode: code,
+      name: formData.name.trim(),
+      phone: formData.phone.trim(),
+      edition: formData.edition,
+      city: formData.city,
+      note: formData.note ? formData.note.trim() : '',
+      timestamp: currentTimestamp
+    };
+
+    // Gửi dữ liệu tới Google Apps Script (nếu đã được cấu hình URL)
+    if (GOOGLE_SHEET_SCRIPT_URL && !GOOGLE_SHEET_SCRIPT_URL.includes('REPLACE_WITH_YOUR_SCRIPT_ID')) {
+      try {
+        const sendPromise = fetch(GOOGLE_SHEET_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8',
+          },
+          body: JSON.stringify(payload)
+        });
+
+        // Timeout dự phòng 3.5 giây để trải nghiệm khách hàng luôn mượt mà
+        const timeoutPromise = new Promise((resolve) => setTimeout(resolve, 3500));
+        await Promise.race([sendPromise, timeoutPromise]);
+      } catch (error) {
+        console.warn('Lưu ý khi gửi Google Sheet:', error);
+      }
+    }
+
     setBookingCode(code);
+    setIsSubmitting(false);
     setSubmitted(true);
   };
 
@@ -148,7 +190,7 @@ export default function TestRideModal({ isOpen, onClose, preselectedEdition }) {
                   <label className={`block text-xs font-semibold mb-1.5 flex items-center gap-1.5 ${
                     isDark ? 'text-neutral-300' : 'text-slate-700'
                   }`}>
-                    <User size={13} className="text-red-600" /> Ghi chú thêm
+                    <MessageSquare size={13} className="text-red-600" /> Ghi chú thêm
                   </label>
                   <input
                     type="text"
@@ -188,9 +230,19 @@ export default function TestRideModal({ isOpen, onClose, preselectedEdition }) {
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-xl honda-red-btn text-white text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer font-display"
+                  disabled={isSubmitting}
+                  className={`w-full py-3 rounded-xl honda-red-btn text-white text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer font-display flex items-center justify-center gap-2 ${
+                    isSubmitting ? 'opacity-80 cursor-wait' : ''
+                  }`}
                 >
-                  Xác Nhận Đăng Ký Lái Thử
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      <span>Đang Gửi Thông Tin...</span>
+                    </>
+                  ) : (
+                    <span>Xác Nhận Đăng Ký Lái Thử</span>
+                  )}
                 </button>
               </div>
             </form>

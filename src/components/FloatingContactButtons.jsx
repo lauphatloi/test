@@ -59,17 +59,17 @@ export default function FloatingContactButtons() {
   const CONTACT_ACTIONS = [
     {
       id: 'map',
-      title: 'Chỉ Đường HEAD OSC',
+      title: 'HEAD OSC',
       href: 'https://www.google.com/maps/search/?api=1&query=182+Hoàng+Văn+Thụ+Phường+9+Phú+Nhuận+Thành+phố+Hồ+Chí+Minh',
       target: '_blank',
-      bgColor: 'bg-[#15171e] hover:bg-[#1f232e]',
+      bgColor: 'bg-gradient-to-tr from-red-700 via-red-600 to-rose-600 hover:bg-[#1f232e]',
       borderColor: 'border-zinc-700/80 hover:border-red-500/80',
       ringColor: 'border-red-500/30 bg-red-500/10',
       shadowColor: 'shadow-black/70',
       icon: (
         <MapPin 
           size={20} 
-          className="text-red-500 transition-transform duration-300 group-hover:scale-115 drop-shadow-[0_0_8px_rgba(239,68,68,0.6)]" 
+          className="text-white transition-transform duration-300 group-hover:scale-115 drop-shadow-[0_0_8px_rgba(239,68,68,0.6)]" 
         />
       ),
     },
@@ -78,7 +78,7 @@ export default function FloatingContactButtons() {
       title: 'Chat Zalo Tư Vấn',
       href: 'https://zalo.me/0329701818',
       target: '_blank',
-      bgColor: 'bg-[#15171e] hover:bg-[#1f232e]',
+      bgColor: 'bg-[#626262] hover:bg-[#1f232e]',
       borderColor: 'border-zinc-700/80 hover:border-red-500/80',
       ringColor: 'border-white/20 bg-white/5 group-hover:border-red-500/30',
       shadowColor: 'shadow-black/70',
