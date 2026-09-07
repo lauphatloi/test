@@ -3,15 +3,16 @@ import { soundFx } from '../utils/audio';
 
 const ThemeContext = createContext();
 
-const STORAGE_KEY = 'honda_sh350i_theme_v2';
+const STORAGE_KEY = 'honda_sh350i_theme_v3';
 
 export function ThemeProvider({ children }) {
   // Default to 'light' (Day mode - Honda Việt Nam style) as requested
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
       try {
-        // Clean up legacy key if present so it doesn't force dark mode
+        // Clean up legacy keys if present
         localStorage.removeItem('honda_sh350i_theme');
+        localStorage.removeItem('honda_sh350i_theme_v2');
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved === 'dark' || saved === 'light') {
           return saved;

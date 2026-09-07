@@ -11,6 +11,7 @@ gsap.registerPlugin(ScrollToPlugin, ScrollTrigger);
 export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
   const { isDark } = useTheme();
   const [scrolled, setScrolled] = useState(false);
+  const [isOverBanner, setIsOverBanner] = useState(true);
   const [soundActive, setSoundActive] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -20,6 +21,15 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
       const isScrolled = window.scrollY > 40;
       setScrolled(isScrolled);
 
+      // Detect if user is still over the banner or reached subsequent sections
+      const bannerEl = document.getElementById('banner');
+      const st = ScrollTrigger.getAll().find(t => t.trigger === bannerEl);
+      if (st) {
+        setIsOverBanner(st.progress < 0.85);
+      } else {
+        setIsOverBanner(window.scrollY < window.innerHeight * 3.0);
+      }
+
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (totalHeight > 0) {
         setScrollProgress((window.scrollY / totalHeight) * 100);
@@ -27,8 +37,11 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const navIsDark = isDark || isOverBanner;
 
   const handleSoundToggle = () => {
     const active = soundFx.toggle();
@@ -81,10 +94,10 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
           scrolled 
-            ? (isDark 
+            ? (navIsDark 
                 ? 'py-3 bg-[#08090d]/90 backdrop-blur-xl border-b border-white/[0.08] shadow-lg text-white' 
                 : 'py-3 bg-white/92 backdrop-blur-xl border-b border-slate-200 shadow-sm text-slate-900')
-            : (isDark 
+            : (navIsDark 
                 ? 'py-5 sm:py-6 bg-gradient-to-b from-[#08090d]/90 via-[#08090d]/40 to-transparent text-white' 
                 : 'py-5 sm:py-6 bg-gradient-to-b from-white/95 via-white/50 to-transparent text-slate-900')
         }`}
@@ -98,18 +111,18 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
           >
             <div className="flex flex-col">
               <span className={`text-[10px] font-semibold tracking-[0.25em] uppercase transition-colors ${
-                isDark ? 'text-neutral-400 group-hover:text-white' : 'text-slate-500 group-hover:text-red-600'
+                navIsDark ? 'text-neutral-400 group-hover:text-white' : 'text-slate-500 group-hover:text-red-600'
               }`}>
                 HONDA MOTOR
               </span>
               <div className="flex items-center gap-2">
                 <span className={`font-display text-xl sm:text-2xl font-bold tracking-tight transition-all ${
-                  isDark ? 'text-white' : 'text-slate-900'
+                  navIsDark ? 'text-white' : 'text-slate-900'
                 }`}>
                   SH350i
                 </span>
                 <span className={`px-2 py-0.5 text-[9px] font-semibold tracking-wider uppercase rounded ${
-                  isDark ? 'bg-white/10 text-neutral-200 border border-white/10' : 'bg-slate-100 text-slate-700 border border-slate-200'
+                  navIsDark ? 'bg-white/10 text-neutral-200 border border-white/10' : 'bg-slate-100 text-slate-700 border border-slate-200'
                 }`}>
                   eSP+
                 </span>
@@ -119,7 +132,7 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
 
           {/* Desktop Navigation Links */}
           <nav className={`hidden lg:flex items-center gap-1 p-1 rounded-full backdrop-blur-md ${
-            isDark ? 'bg-white/[0.03] border border-white/[0.07]' : 'bg-slate-100/90 border border-slate-200/90 shadow-sm'
+            navIsDark ? 'bg-white/[0.03] border border-white/[0.07]' : 'bg-slate-100/90 border border-slate-200/90 shadow-sm'
           }`}>
             {navLinks.map((link) => (
               <button
@@ -127,7 +140,7 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
                 onClick={() => scrollToSection(link.id)}
                 onMouseEnter={() => soundFx.playHover()}
                 className={`px-4 py-1.5 text-xs font-medium tracking-wide rounded-full transition-all cursor-pointer font-body ${
-                  isDark 
+                  navIsDark 
                     ? 'text-neutral-300 hover:text-white hover:bg-white/[0.06]' 
                     : 'text-slate-700 hover:text-red-600 hover:bg-white'
                 }`}
@@ -144,7 +157,7 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
               onClick={handleSoundToggle}
               title={soundActive ? "Tắt âm thanh môi trường" : "Bật âm thanh động cơ"}
               className={`relative p-2 rounded-full border transition-all cursor-pointer flex items-center gap-2 text-xs font-medium ${
-                isDark 
+                navIsDark 
                   ? (soundActive 
                       ? 'border-white/20 bg-white/10 text-white' 
                       : 'border-white/[0.08] bg-white/[0.02] text-neutral-400 hover:text-white hover:border-white/15')
@@ -163,12 +176,12 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
             <button
               onClick={() => { soundFx.playClick(); onOpenSpecs(); }}
               className={`px-3.5 py-2 rounded-full border text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer font-body ${
-                isDark 
+                navIsDark 
                   ? 'border-white/[0.08] bg-white/[0.02] text-neutral-300 hover:text-white hover:border-white/20' 
                   : 'border-slate-300 bg-white text-slate-800 hover:text-slate-950 hover:border-slate-400 shadow-sm'
               }`}
             >
-              <Sliders size={13} className={isDark ? "text-neutral-400" : "text-slate-600"} />
+              <Sliders size={13} className={navIsDark ? "text-neutral-400" : "text-slate-600"} />
               <span>Thông Số</span>
             </button>
 
@@ -190,7 +203,7 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className={`p-2.5 rounded-xl border transition-all ${
-                isDark 
+                navIsDark 
                   ? 'text-neutral-300 hover:text-white bg-white/[0.05] border-white/10' 
                   : 'text-slate-800 hover:text-slate-950 bg-slate-100 border-slate-300 shadow-sm'
               }`}
@@ -204,7 +217,7 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
         {/* Mobile Slideout Nav */}
         {mobileMenuOpen && (
           <div className={`lg:hidden px-4 pt-4 pb-6 border-b backdrop-blur-2xl animate-in fade-in slide-in-from-top-4 duration-300 ${
-            isDark ? 'bg-black/95 border-white/10 text-white' : 'bg-white/98 border-slate-200 text-slate-900 shadow-2xl'
+            navIsDark ? 'bg-black/95 border-white/10 text-white' : 'bg-white/98 border-slate-200 text-slate-900 shadow-2xl'
           }`}>
             <div className="flex flex-col gap-2">
               {navLinks.map((link) => (
@@ -212,7 +225,7 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
                   key={link.id}
                   onClick={() => scrollToSection(link.id)}
                   className={`px-4 py-3 text-left text-sm font-semibold rounded-xl transition-all ${
-                    isDark 
+                    navIsDark 
                       ? 'text-neutral-200 hover:text-red-400 hover:bg-white/5' 
                       : 'text-slate-800 hover:text-red-600 hover:bg-slate-100'
                   }`}
@@ -220,13 +233,13 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
                   {link.label}
                 </button>
               ))}
-              <div className={`pt-3 mt-2 border-t flex flex-col gap-2.5 ${isDark ? 'border-white/10' : 'border-slate-200'}`}>
+              <div className={`pt-3 mt-2 border-t flex flex-col gap-2.5 ${navIsDark ? 'border-white/10' : 'border-slate-200'}`}>
                 <div className="flex items-center justify-between px-2">
-                  <span className={`text-xs font-medium ${isDark ? 'text-neutral-400' : 'text-slate-700'}`}>Âm thanh động cơ</span>
+                  <span className={`text-xs font-medium ${navIsDark ? 'text-neutral-400' : 'text-slate-700'}`}>Âm thanh động cơ</span>
                   <button
                     onClick={handleSoundToggle}
                     className={`p-2 rounded-lg border text-xs font-semibold flex items-center gap-2 ${
-                      isDark ? 'border-white/10 bg-white/5' : 'border-slate-300 bg-slate-50 text-slate-800'
+                      navIsDark ? 'border-white/10 bg-white/5' : 'border-slate-300 bg-slate-50 text-slate-800'
                     }`}
                   >
                     {soundActive ? <Volume2 size={16} className="text-red-500" /> : <VolumeX size={16} />}
@@ -237,7 +250,7 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
                 <button
                   onClick={() => { onOpenSpecs(); setMobileMenuOpen(false); }}
                   className={`w-full py-3 rounded-xl border text-xs font-semibold uppercase tracking-wider ${
-                    isDark ? 'border-white/10 bg-white/5 text-neutral-200' : 'border-slate-200 bg-slate-100 text-slate-700'
+                    navIsDark ? 'border-white/10 bg-white/5 text-neutral-200' : 'border-slate-200 bg-slate-100 text-slate-700'
                   }`}
                 >
                   Xem Thông Số Kỹ Thuật

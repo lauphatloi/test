@@ -2,13 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { soundFx } from '../utils/audio';
-import { useTheme } from '../context/ThemeContext';
 import { ChevronRight, ArrowDown, Award, Gauge, ShieldCheck, Zap, Sparkles } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function BannerSection({ onOpenTestRide }) {
-  const { isDark } = useTheme();
   const bannerRef = useRef(null);
   const bgRef = useRef(null);
   const bannerContentRef = useRef(null);
@@ -155,19 +153,13 @@ export default function BannerSection({ onOpenTestRide }) {
       {/* ============================================================ */}
       <div 
         ref={bgRef}
-        className={`absolute inset-0 w-full h-full will-change-transform scale-100 pointer-events-none bg-cover bg-no-repeat banner-bg-frame transition-all duration-500 ${
-          isDark ? '' : 'brightness-[0.86] contrast-[1.03]'
-        }`}
+        className="absolute inset-0 w-full h-full will-change-transform scale-100 pointer-events-none bg-cover bg-no-repeat banner-bg-frame transition-all duration-500"
         style={{
           backgroundImage: `url('./images/banner-bg.jpg')`,
         }}
       >
-        <div className={`absolute inset-0 transition-opacity duration-500 ${
-          isDark 
-            ? 'bg-gradient-to-t from-[#08090d] from-20% via-black/40 to-black/75 sm:via-black/35 sm:to-black/70' 
-            : 'bg-gradient-to-t from-slate-950/90 from-15% via-slate-950/45 to-slate-950/65'
-        }`} />
-        <div className={`absolute inset-0 bg-radial-vignette transition-opacity duration-500 ${isDark ? 'opacity-85 sm:opacity-80' : 'opacity-65'}`} />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#08090d] from-20% via-black/40 to-black/75 sm:via-black/35 sm:to-black/70 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-radial-vignette opacity-85 sm:opacity-80 transition-opacity duration-500" />
         <div className="absolute inset-0 bg-tech-grid opacity-15" />
       </div>
 
@@ -245,7 +237,7 @@ export default function BannerSection({ onOpenTestRide }) {
       </div>
 
       {/* ============================================================ */}
-      {/* 2. VECTOR APERTURE RING AT CENTER (Razor-sharp, non-scaling) */}
+      {/* 2. VECTOR APERTURE RING AT CENTER (Razor-sharp, luminous ring) */}
       {/* ============================================================ */}
       <svg
         ref={portalSvgRef}
@@ -269,7 +261,7 @@ export default function BannerSection({ onOpenTestRide }) {
           cy="50%"
           r="0"
           fill="none"
-          stroke={isDark ? "rgba(255, 255, 255, 0.45)" : "rgba(100, 116, 139, 0.45)"}
+          stroke="rgba(255, 255, 255, 0.45)"
           strokeWidth="3.5"
           filter="url(#portal-ring-glow)"
         />
@@ -281,7 +273,7 @@ export default function BannerSection({ onOpenTestRide }) {
           cy="50%"
           r="0"
           fill="none"
-          stroke={isDark ? "#ffffff" : "#64748b"}
+          stroke="#ffffff"
           strokeWidth="2"
           strokeOpacity="0.95"
         />
@@ -289,13 +281,11 @@ export default function BannerSection({ onOpenTestRide }) {
 
       {/* ============================================================ */}
       {/* 3. PORTAL LAYER REVEALED BY THE CIRCULAR MASK               */}
-      {/*    (Dedicated Studio Showroom Background - NOT banner-bg)    */}
+      {/*    (Dedicated Dark Studio Showroom Background)               */}
       {/* ============================================================ */}
       <div 
         ref={portalLayerRef}
-        className={`absolute inset-0 w-full h-full z-20 overflow-hidden pointer-events-none flex items-center justify-center will-change-[clip-path] transition-colors duration-500 ${
-          isDark ? 'bg-[#07090e]' : 'bg-[#dce3ea]'
-        }`}
+        className="absolute inset-0 w-full h-full z-20 overflow-hidden pointer-events-none flex items-center justify-center will-change-[clip-path] bg-[#07090e]"
         style={{
           clipPath: 'circle(0px at 50% 50%)',
           WebkitClipPath: 'circle(0px at 50% 50%)',
@@ -303,9 +293,7 @@ export default function BannerSection({ onOpenTestRide }) {
       >
         {/* Studio Lighting inside the portal */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className={`absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full blur-[140px] ${
-            isDark ? 'bg-slate-700/20' : 'bg-slate-400/20'
-          }`} />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full blur-[140px] bg-slate-700/20" />
           <div className="absolute inset-0 bg-tech-grid opacity-15" />
         </div>
 
@@ -314,40 +302,28 @@ export default function BannerSection({ onOpenTestRide }) {
           ref={portalContentRef}
           className="relative z-10 max-w-5xl mx-auto px-4 text-center flex flex-col items-center justify-center translate-y-1 sm:translate-y-4 will-change-transform pointer-events-auto"
         >
-          <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 sm:mb-4 backdrop-blur-md font-body ${
-            isDark ? 'bg-white/[0.08] border border-white/15 text-neutral-200' : 'bg-white/95 border border-slate-300 text-slate-900 shadow-sm'
-          }`}>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 sm:mb-4 backdrop-blur-md font-body bg-white/[0.08] border border-white/15 text-neutral-200">
             <Sparkles size={14} className="text-red-500" />
             <span>KHÔNG GIAN TRƯNG BÀY XE SANG</span>
           </div>
 
-          <h2 className={`font-display font-black text-3xl sm:text-5xl lg:text-6xl tracking-tight uppercase leading-tight ${
-            isDark ? 'text-white' : 'text-slate-950'
-          }`}>
+          <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl tracking-tight uppercase leading-tight text-white">
             BỘ SƯU TẬP PHIÊN BẢN SH350i
           </h2>
           
-          <p className={`mt-2.5 sm:mt-3.5 text-xs sm:text-base font-body max-w-2xl mx-auto leading-relaxed ${
-            isDark ? 'text-neutral-300' : 'text-slate-800 font-semibold'
-          }`}>
+          <p className="mt-2.5 sm:mt-3.5 text-xs sm:text-base font-body max-w-2xl mx-auto leading-relaxed text-neutral-300">
             Khám phá 4 phong thái màu sắc đương đại được chế tác tỉ mỉ cho từng đẳng cấp phong cách và uy quyền của thủ lĩnh.
           </p>
 
           {/* Minimalist Centered Scroll Indicator */}
           <div 
             onClick={scrollToVariants}
-            className={`mt-8 sm:mt-12 flex flex-col items-center justify-center gap-2.5 text-xs font-body cursor-pointer transition-all duration-300 group select-none ${
-              isDark ? 'text-neutral-400 hover:text-white' : 'text-slate-700 hover:text-slate-950'
-            }`}
+            className="mt-8 sm:mt-12 flex flex-col items-center justify-center gap-2.5 text-xs font-body cursor-pointer transition-all duration-300 group select-none text-neutral-400 hover:text-white"
           >
             <span className="tracking-[0.25em] text-[11px] sm:text-xs uppercase font-bold text-center">
               Cuộn xuống để khám phá
             </span>
-            <div className={`w-8 h-8 rounded-full border flex items-center justify-center group-hover:scale-110 transition-transform ${
-              isDark 
-                ? 'border-white/20 bg-white/[0.04] group-hover:border-red-500/60' 
-                : 'border-slate-300 bg-white/80 group-hover:border-red-600 shadow-xs'
-            }`}>
+            <div className="w-8 h-8 rounded-full border flex items-center justify-center group-hover:scale-110 transition-transform border-white/20 bg-white/[0.04] group-hover:border-red-500/60">
               <ArrowDown size={15} className="text-red-600 animate-bounce" />
             </div>
           </div>
