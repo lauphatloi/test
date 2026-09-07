@@ -17,6 +17,7 @@ export default function BannerSection({ onOpenTestRide }) {
   const portalSvgRef = useRef(null);
   const portalGlowRingRef = useRef(null);
   const portalCoreRingRef = useRef(null);
+  const portalScrollCueRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -119,6 +120,26 @@ export default function BannerSection({ onOpenTestRide }) {
         }, 2.2);
       }
 
+      // Portal Bottom Scroll Cue entrance and exit
+      if (portalScrollCueRef.current) {
+        tl.fromTo(portalScrollCueRef.current, {
+          opacity: 0,
+          y: 20,
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 0.45,
+          ease: 'power2.out',
+        }, 0.85);
+
+        tl.to(portalScrollCueRef.current, {
+          y: -35,
+          opacity: 0,
+          duration: 0.7,
+          ease: 'power1.inOut',
+        }, 2.2);
+      }
+
     }, bannerRef);
 
     return () => ctx.revert();
@@ -127,6 +148,10 @@ export default function BannerSection({ onOpenTestRide }) {
   // Smooth scroll directly through the aperture to the vehicle versions section
   const scrollToVariants = () => {
     soundFx.playRev();
+    if (window.__lenis) {
+      window.__lenis.scrollTo('#colors', { offset: 0, duration: 1.5 });
+      return;
+    }
     const st = ScrollTrigger.getAll().find(t => t.trigger === bannerRef.current);
     if (st) {
       // Scroll past the banner pin to land right at #colors
@@ -136,11 +161,8 @@ export default function BannerSection({ onOpenTestRide }) {
         ease: 'power3.inOut',
       });
     } else {
-      gsap.to(window, {
-        duration: 1.2,
-        scrollTo: { y: '#colors', offsetY: 0 },
-        ease: 'power3.inOut',
-      });
+      const el = document.getElementById('colors');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -317,18 +339,19 @@ export default function BannerSection({ onOpenTestRide }) {
           <p className="mt-2.5 sm:mt-3.5 text-xs sm:text-base font-body max-w-2xl mx-auto leading-relaxed text-neutral-300 font-medium">
             Khám phá 4 phong thái màu sắc đương đại được chế tác tỉ mỉ cho từng đẳng cấp phong cách và uy quyền của thủ lĩnh.
           </p>
+        </div>
 
-          {/* Minimalist Centered Scroll Indicator */}
-          <div 
-            onClick={scrollToVariants}
-            className="mt-8 sm:mt-12 flex flex-col items-center justify-center gap-2.5 text-xs font-body cursor-pointer transition-all duration-300 group select-none text-neutral-400 hover:text-white"
-          >
-            <span className="tracking-[0.25em] text-[11px] sm:text-xs uppercase font-bold text-center">
-              Cuộn xuống để khám phá
-            </span>
-            <div className="w-8 h-8 rounded-full border flex items-center justify-center group-hover:scale-110 transition-transform border-white/20 bg-white/[0.04] group-hover:border-red-500/60 shadow-lg">
-              <ArrowDown size={15} className="text-red-600 animate-bounce" />
-            </div>
+        {/* Minimalist Bottom Centered Scroll Indicator */}
+        <div 
+          ref={portalScrollCueRef}
+          onClick={scrollToVariants}
+          className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 z-20 pointer-events-auto flex flex-col items-center justify-center gap-2 sm:gap-2.5 text-xs font-body cursor-pointer transition-all duration-300 group select-none text-neutral-400 hover:text-white"
+        >
+          <span className="tracking-[0.25em] text-[10px] sm:text-[11px] uppercase font-bold text-center opacity-85 group-hover:opacity-100 transition-opacity">
+            Cuộn xuống để khám phá
+          </span>
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border flex items-center justify-center group-hover:scale-110 transition-all border-white/20 bg-white/[0.04] group-hover:border-red-500/60 group-hover:bg-red-500/10 shadow-lg">
+            <ArrowDown size={15} className="text-red-500 animate-bounce" />
           </div>
         </div>
 

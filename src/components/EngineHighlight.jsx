@@ -300,7 +300,7 @@ export default function EngineHighlight() {
             }`}
           >
             <Cpu size={13} className={isDark ? 'text-neutral-400' : 'text-red-600'} />
-            <span>CƠ KHÍ CHÍNH XÁC • HONDA ADVANCED POWERTRAIN</span>
+            <span>ĐỘNG CƠ • HONDA ADVANCED POWERTRAIN</span>
           </div>
 
           <h2 
@@ -346,7 +346,7 @@ export default function EngineHighlight() {
               }`}
             >
               <img 
-                src="./images/dong-co-esp.jpg" 
+                src="./images/dong-co.jpg" 
                 alt="Động cơ Honda eSP+ 330cc" 
                 className="w-full h-full object-cover object-center transform group-hover:scale-102 transition-transform duration-700"
               />

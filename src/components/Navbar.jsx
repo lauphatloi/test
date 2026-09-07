@@ -126,7 +126,7 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
               <span className={`text-[10px] font-semibold tracking-[0.25em] uppercase transition-colors ${
                 navIsDark ? 'text-neutral-400 group-hover:text-white' : 'text-slate-500 group-hover:text-red-600'
               }`}>
-                HONDA MOTOR
+                HONDA HEAD OSC
               </span>
               <div className="flex items-center gap-2">
                 <span className={`font-display text-xl sm:text-2xl font-bold tracking-tight transition-all ${
