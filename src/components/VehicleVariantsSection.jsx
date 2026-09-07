@@ -228,8 +228,8 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
     <section 
       id="colors" 
       ref={containerRef} 
-      className={`relative z-30 w-full h-screen overflow-hidden select-none flex flex-col justify-between transition-colors duration-500 shadow-[0_-30px_80px_rgba(0,0,0,0.6)] border-t border-white/15 dark:border-white/15 light:border-slate-300 ${
-        isDark ? 'bg-[#07090e]' : 'bg-[#dce3ea]'
+      className={`relative z-30 w-full h-screen overflow-hidden select-none flex flex-col justify-between transition-colors duration-500 shadow-[0_-30px_80px_rgba(0,0,0,0.5)] border-t border-slate-200 dark:border-white/15 ${
+        isDark ? 'bg-[#07090e]' : 'bg-[#f8fafc]'
       }`}
       style={{
         marginTop: '-100vh',
@@ -249,7 +249,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
           style={{
             background: isDark 
               ? 'radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 45%, #07090e 85%)'
-              : 'radial-gradient(circle at 50% 50%, #d5dce6 0%, #c4cfdc 35%, #94a3b8 70%, #64748b 100%)',
+              : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #f8fafc 35%, #e2e8f0 70%, #cbd5e1 100%)',
           }}
         />
 
@@ -272,7 +272,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                 clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                 background: isDark 
                   ? 'radial-gradient(circle at 50% 50%, #ffffff 0%, #e2e8f0 18%, #93c5fd 40%, #1e3a8a 68%, #0f172a 85%, #07090e 95%)'
-                  : 'radial-gradient(circle at 50% 50%, #cfdae6 0%, #b8c7d7 35%, #889eb4 70%, #52677d 100%)',
+                  : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #f0f9ff 35%, #e2e8f0 70%, #cbd5e1 100%)',
               }}
             />
           </div>
@@ -297,7 +297,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                 clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                 background: isDark
                   ? 'radial-gradient(circle at 50% 50%, #f59e0b 0%, #d97706 18%, #b45309 35%, #78350f 55%, #1f1206 75%, #07090e 92%)'
-                  : 'radial-gradient(circle at 50% 50%, #d8d0c2 0%, #c4b8a4 35%, #9e8e75 70%, #6f6048 100%)',
+                  : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #fef3c7 30%, #f3f4f6 70%, #e2e8f0 100%)',
               }}
             />
           </div>
@@ -322,7 +322,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                 clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                 background: isDark
                   ? 'radial-gradient(circle at 50% 50%, #34d399 0%, #10b981 18%, #059669 38%, #047857 58%, #032d22 78%, #07090e 92%)'
-                  : 'radial-gradient(circle at 50% 50%, #c8d8cf 0%, #adc4b8 35%, #7e9f8e 70%, #4a6d5c 100%)',
+                  : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #ecfdf5 30%, #f1f5f9 70%, #e2e8f0 100%)',
               }}
             />
           </div>

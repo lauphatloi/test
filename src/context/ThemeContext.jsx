@@ -3,26 +3,21 @@ import { soundFx } from '../utils/audio';
 
 const ThemeContext = createContext();
 
-const STORAGE_KEY = 'honda_sh350i_theme_v3';
-
 export function ThemeProvider({ children }) {
   // Default to 'light' (Day mode - Honda Việt Nam style) as requested
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        // Clean up legacy keys if present
-        localStorage.removeItem('honda_sh350i_theme');
-        localStorage.removeItem('honda_sh350i_theme_v2');
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved === 'dark' || saved === 'light') {
-          return saved;
-        }
-      } catch (e) {
-        // Ignore localStorage access errors
-      }
+  const [theme, setTheme] = useState('light');
+
+  useEffect(() => {
+    try {
+      // Clear legacy/cached keys so it never forces dark mode on reload
+      localStorage.removeItem('honda_sh350i_theme');
+      localStorage.removeItem('honda_sh350i_theme_v2');
+      localStorage.removeItem('honda_sh350i_theme_v3');
+      localStorage.removeItem('honda_sh350i_theme_v4');
+    } catch (e) {
+      // Ignore
     }
-    return 'light'; // Default Day Mode
-  });
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -33,11 +28,6 @@ export function ThemeProvider({ children }) {
     } else {
       root.classList.add('light');
       root.classList.remove('dark');
-    }
-    try {
-      localStorage.setItem(STORAGE_KEY, theme);
-    } catch (e) {
-      // Ignore
     }
   }, [theme]);
 

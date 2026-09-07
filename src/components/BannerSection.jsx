@@ -2,11 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { soundFx } from '../utils/audio';
+import { useTheme } from '../context/ThemeContext';
 import { ChevronRight, ArrowDown, Award, Gauge, ShieldCheck, Zap, Sparkles } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function BannerSection({ onOpenTestRide }) {
+  const { isDark } = useTheme();
   const bannerRef = useRef(null);
   const bgRef = useRef(null);
   const bannerContentRef = useRef(null);
@@ -281,20 +283,27 @@ export default function BannerSection({ onOpenTestRide }) {
 
       {/* ============================================================ */}
       {/* 3. PORTAL LAYER REVEALED BY THE CIRCULAR MASK               */}
-      {/*    (Dedicated Dark Studio Showroom Background)               */}
+      {/*    (Reveals Day Mode Luxury Showroom by default)             */}
       {/* ============================================================ */}
       <div 
         ref={portalLayerRef}
-        className="absolute inset-0 w-full h-full z-20 overflow-hidden pointer-events-none flex items-center justify-center will-change-[clip-path] bg-[#07090e]"
+        className={`absolute inset-0 w-full h-full z-20 overflow-hidden pointer-events-none flex items-center justify-center will-change-[clip-path] transition-colors duration-500 ${
+          isDark ? 'bg-[#07090e]' : 'bg-[#f8fafc]'
+        }`}
         style={{
           clipPath: 'circle(0px at 50% 50%)',
           WebkitClipPath: 'circle(0px at 50% 50%)',
+          background: isDark 
+            ? '#07090e' 
+            : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #f8fafc 40%, #e2e8f0 75%, #cbd5e1 100%)',
         }}
       >
         {/* Studio Lighting inside the portal */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full blur-[140px] bg-slate-700/20" />
-          <div className="absolute inset-0 bg-tech-grid opacity-15" />
+          <div className={`absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full blur-[140px] ${
+            isDark ? 'bg-slate-700/20' : 'bg-slate-300/40'
+          }`} />
+          <div className={`absolute inset-0 bg-tech-grid ${isDark ? 'opacity-15' : 'opacity-[0.04]'}`} />
         </div>
 
         {/* Center Portal Content: Revealing the Vehicle Versions Preview */}
@@ -302,28 +311,40 @@ export default function BannerSection({ onOpenTestRide }) {
           ref={portalContentRef}
           className="relative z-10 max-w-5xl mx-auto px-4 text-center flex flex-col items-center justify-center translate-y-1 sm:translate-y-4 will-change-transform pointer-events-auto"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 sm:mb-4 backdrop-blur-md font-body bg-white/[0.08] border border-white/15 text-neutral-200">
+          <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 sm:mb-4 backdrop-blur-md font-body ${
+            isDark ? 'bg-white/[0.08] border border-white/15 text-neutral-200' : 'bg-white border border-slate-300 text-slate-900 shadow-sm'
+          }`}>
             <Sparkles size={14} className="text-red-500" />
             <span>KHÔNG GIAN TRƯNG BÀY XE SANG</span>
           </div>
 
-          <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl tracking-tight uppercase leading-tight text-white">
+          <h2 className={`font-display font-black text-3xl sm:text-5xl lg:text-6xl tracking-tight uppercase leading-tight ${
+            isDark ? 'text-white' : 'text-slate-950'
+          }`}>
             BỘ SƯU TẬP PHIÊN BẢN SH350i
           </h2>
           
-          <p className="mt-2.5 sm:mt-3.5 text-xs sm:text-base font-body max-w-2xl mx-auto leading-relaxed text-neutral-300">
+          <p className={`mt-2.5 sm:mt-3.5 text-xs sm:text-base font-body max-w-2xl mx-auto leading-relaxed ${
+            isDark ? 'text-neutral-300' : 'text-slate-700 font-semibold'
+          }`}>
             Khám phá 4 phong thái màu sắc đương đại được chế tác tỉ mỉ cho từng đẳng cấp phong cách và uy quyền của thủ lĩnh.
           </p>
 
           {/* Minimalist Centered Scroll Indicator */}
           <div 
             onClick={scrollToVariants}
-            className="mt-8 sm:mt-12 flex flex-col items-center justify-center gap-2.5 text-xs font-body cursor-pointer transition-all duration-300 group select-none text-neutral-400 hover:text-white"
+            className={`mt-8 sm:mt-12 flex flex-col items-center justify-center gap-2.5 text-xs font-body cursor-pointer transition-all duration-300 group select-none ${
+              isDark ? 'text-neutral-400 hover:text-white' : 'text-slate-700 hover:text-slate-950'
+            }`}
           >
             <span className="tracking-[0.25em] text-[11px] sm:text-xs uppercase font-bold text-center">
               Cuộn xuống để khám phá
             </span>
-            <div className="w-8 h-8 rounded-full border flex items-center justify-center group-hover:scale-110 transition-transform border-white/20 bg-white/[0.04] group-hover:border-red-500/60">
+            <div className={`w-8 h-8 rounded-full border flex items-center justify-center group-hover:scale-110 transition-transform ${
+              isDark 
+                ? 'border-white/20 bg-white/[0.04] group-hover:border-red-500/60' 
+                : 'border-slate-300 bg-white group-hover:border-red-600 shadow-xs'
+            }`}>
               <ArrowDown size={15} className="text-red-600 animate-bounce" />
             </div>
           </div>

@@ -25,9 +25,9 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
       const bannerEl = document.getElementById('banner');
       const st = ScrollTrigger.getAll().find(t => t.trigger === bannerEl);
       if (st) {
-        setIsOverBanner(st.progress < 0.85);
+        setIsOverBanner(st.progress < 0.35);
       } else {
-        setIsOverBanner(window.scrollY < window.innerHeight * 3.0);
+        setIsOverBanner(window.scrollY < window.innerHeight * 0.8);
       }
 
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
