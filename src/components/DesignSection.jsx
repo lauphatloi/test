@@ -75,37 +75,6 @@ export default function DesignSection() {
   const [activeStep, setActiveStep] = useState(0);
   const { isDark } = useTheme();
 
-  // Touch gesture handling for Mobile
-  const [touchStartX, setTouchStartX] = useState(null);
-  const [touchDeltaX, setTouchDeltaX] = useState(0);
-
-  const handleTouchStart = (e) => {
-    setTouchStartX(e.touches[0].clientX);
-    setTouchDeltaX(0);
-  };
-
-  const handleTouchMove = (e) => {
-    if (touchStartX !== null) {
-      setTouchDeltaX(e.touches[0].clientX - touchStartX);
-    }
-  };
-
-  const handleTouchEnd = () => {
-    if (touchStartX !== null) {
-      if (touchDeltaX < -40) {
-        // Swipe left -> Next card
-        soundFx.playClick();
-        setActiveStep((prev) => (prev + 1) % DESIGN_COMPONENTS.length);
-      } else if (touchDeltaX > 40) {
-        // Swipe right -> Previous card
-        soundFx.playClick();
-        setActiveStep((prev) => (prev - 1 + DESIGN_COMPONENTS.length) % DESIGN_COMPONENTS.length);
-      }
-      setTouchStartX(null);
-      setTouchDeltaX(0);
-    }
-  };
-
   useEffect(() => {
     const mm = gsap.matchMedia();
 
@@ -279,9 +248,9 @@ export default function DesignSection() {
     <section 
       id="design" 
       ref={sectionRef} 
-      className={`relative w-full overflow-hidden select-none transition-colors duration-500 flex flex-col justify-between ${
+      className={`relative w-full overflow-hidden select-none transition-colors duration-500 scroll-mt-20 ${
         isDark ? 'bg-[#07090e]' : 'bg-[#eef2f6]'
-      } min-h-0 py-6 sm:py-8 lg:py-0 lg:h-screen`}
+      } py-14 sm:py-20 lg:py-0 lg:h-screen lg:flex lg:flex-col lg:justify-between`}
     >
       {/* Background ambient lighting */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -295,198 +264,134 @@ export default function DesignSection() {
       </div>
 
       {/* ============================================================ */}
-      {/* 1. MOBILE VIEW (lg:hidden) - 100% NATIVE SMOOTH SCROLL (NO PIN)*/}
+      {/* 1. MOBILE VIEW (lg:hidden) - 3 HIGH-TECH VERTICAL CARDS      */}
       {/* ============================================================ */}
-      <div className="lg:hidden relative z-20 w-full max-w-md mx-auto px-4 flex flex-col gap-3.5 my-auto">
-        {/* Header Bar */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="w-5 h-[2px] bg-red-600" />
-            <span className={`text-[10px] font-black tracking-[0.18em] uppercase font-body ${
-              isDark ? 'text-neutral-300' : 'text-slate-950'
-            }`}>
-              KIẾN TRÚC THIẾT KẾ
-            </span>
+      <div className="lg:hidden relative z-20 w-full max-w-lg mx-auto px-4 sm:px-6 flex flex-col gap-6">
+        {/* Section Header */}
+        <div className="text-center flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider mb-2.5 bg-red-600/10 border border-red-600/25 text-red-600 dark:text-red-400 font-body">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
+            <span>KIẾN TRÚC NGOẠI THẤT</span>
           </div>
-          <div className="flex items-center gap-1 font-mono text-[11px] font-bold">
-            <span className="text-red-500">0{activeStep + 1}</span>
-            <span className={isDark ? 'text-neutral-500' : 'text-slate-400'}>/</span>
-            <span className={isDark ? 'text-neutral-400' : 'text-slate-800'}>03</span>
-          </div>
+
+          <h2 className={`font-display text-2xl sm:text-3xl font-black uppercase tracking-tight ${
+            isDark ? 'text-white' : 'text-slate-950'
+          }`}>
+            3 Điểm Nhấn Thiết Kế Đỉnh Cao
+          </h2>
+
+          <p className={`mt-2 text-xs sm:text-sm font-body max-w-sm ${
+            isDark ? 'text-neutral-400' : 'text-slate-600'
+          }`}>
+            Từng đường nét được tạo tác tinh xảo, tôn vinh vị thế thủ lĩnh và phong thái sang trọng của SH350i.
+          </p>
         </div>
 
-        {/* Swipeable Card Stage */}
-        <div 
-          className="relative w-full touch-pan-y"
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
-          <div className="w-full overflow-hidden rounded-2xl">
-            <div 
-              className="flex transition-transform duration-300 ease-out will-change-transform"
-              style={{ transform: `translateX(-${activeStep * 100}%)` }}
-            >
-              {DESIGN_COMPONENTS.map((comp, idx) => {
-                const Icon = comp.icon;
-                return (
-                  <div 
-                    key={`mob-item-${comp.id}`} 
-                    className="w-full shrink-0"
-                  >
-                    <div className={`w-full rounded-2xl p-3 border shadow-md ${
-                      isDark 
-                        ? 'bg-slate-900/95 border-white/15 text-white' 
-                        : 'bg-white border-slate-300 text-slate-900 shadow-slate-900/10'
-                    }`}>
-                      {/* Tech Card Box with 4 Corner Brackets */}
-                      <div className="relative w-full">
-                        <span className="absolute top-1 left-1 w-2 h-2 border-t-2 border-l-2 border-red-500/90 rounded-tl-xs pointer-events-none" />
-                        <span className="absolute top-1 right-1 w-2 h-2 border-t-2 border-r-2 border-red-500/90 rounded-tr-xs pointer-events-none" />
-                        <span className="absolute bottom-1 left-1 w-2 h-2 border-b-2 border-l-2 border-red-500/90 rounded-bl-xs pointer-events-none" />
-                        <span className="absolute bottom-1 right-1 w-2 h-2 border-b-2 border-r-2 border-red-500/90 rounded-br-xs pointer-events-none" />
-
-                        {/* Top Code Bar */}
-                        <div className="flex items-center justify-between px-2 py-1 mb-1.5 border-b border-white/10 dark:border-white/10 text-[9px] font-mono tracking-wider">
-                          <div className="flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                            <span className="font-bold">{comp.code}</span>
-                          </div>
-                          <span className={isDark ? 'text-neutral-400' : 'text-slate-600'}>
-                            SH350i • 2026
-                          </span>
-                        </div>
-
-                        {/* Image */}
-                        <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden bg-black">
-                          <img
-                            src={comp.image}
-                            alt={comp.title}
-                            className="w-full h-full object-cover object-center"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
-                          <div className="absolute bottom-2 left-2.5 right-2.5 flex items-center justify-between">
-                            <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase backdrop-blur-md bg-black/60 text-white border border-white/20">
-                              {comp.tag}
-                            </span>
-                            <span className="text-[11px] font-black text-white font-display">
-                              0{idx + 1}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Content Readout Below Image */}
-                      <div className="mt-3 px-0.5">
-                        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider mb-1 bg-red-600/10 border border-red-600/25 text-red-600 dark:text-red-400">
-                          <Icon size={11} className="text-red-500 shrink-0" />
-                          <span>{comp.category}</span>
-                        </div>
-
-                        <h3 className="font-display text-base font-black tracking-tight uppercase leading-snug">
-                          {comp.shortTitle}
-                        </h3>
-
-                        <p className={`mt-1 text-xs leading-relaxed font-body ${
-                          isDark ? 'text-neutral-300' : 'text-slate-700'
-                        }`}>
-                          {comp.shortSummary}
-                        </p>
-
-                        <div className="mt-2.5 flex items-center gap-1.5 font-body">
-                          {comp.mobileTags.map((tag, tIdx) => (
-                            <span
-                              key={tIdx}
-                              className={`px-2 py-0.5 rounded-md text-[10px] font-bold border flex items-center gap-1 ${
-                                isDark
-                                  ? 'bg-white/[0.05] border-white/15 text-neutral-200'
-                                  : 'bg-slate-100 border-slate-300 text-slate-800'
-                              }`}
-                            >
-                              <span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                    </div>
+        {/* 3 Sequential Tech Cards */}
+        <div className="flex flex-col gap-5">
+          {DESIGN_COMPONENTS.map((comp, idx) => {
+            const Icon = comp.icon;
+            return (
+              <div 
+                key={`mob-card-${comp.id}`} 
+                className={`w-full rounded-2xl p-4 sm:p-5 border transition-all ${
+                  isDark 
+                    ? 'bg-slate-900/95 border-white/15 text-white shadow-xl shadow-black/40' 
+                    : 'bg-white border-slate-300 text-slate-900 shadow-lg shadow-slate-900/5'
+                }`}
+              >
+                {/* Tech Bar Header with Code and Counter */}
+                <div className="flex items-center justify-between pb-2.5 mb-3 border-b border-slate-200 dark:border-white/10 text-[11px] font-mono tracking-wider">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
+                    <span className="font-bold text-red-600 dark:text-red-400 font-display">
+                      {comp.code}
+                    </span>
                   </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Control Navigation Bar */}
-        <div className="flex items-center justify-between gap-1.5 pt-0.5">
-          <div className="flex items-center gap-1.5 flex-1">
-            {DESIGN_COMPONENTS.map((comp, idx) => {
-              const isActive = activeStep === idx;
-              return (
-                <button
-                  key={`mob-nav-${comp.id}`}
-                  onClick={() => {
-                    soundFx.playClick();
-                    setActiveStep(idx);
-                  }}
-                  className={`flex-1 py-2 px-1 rounded-xl text-[11px] font-bold transition-all text-center cursor-pointer font-body flex items-center justify-center gap-1 ${
-                    isActive
-                      ? (isDark 
-                          ? 'bg-white text-black shadow-md' 
-                          : 'bg-slate-900 text-white shadow-md')
-                      : (isDark 
-                          ? 'bg-white/[0.06] text-neutral-400 border border-white/10' 
-                          : 'bg-slate-200/90 text-slate-700 border border-slate-300')
-                  }`}
-                >
-                  <span>0{idx + 1}</span>
-                  <span className="truncate">
-                    {idx === 0 ? 'Mặt Nạ' : idx === 1 ? 'Đồng Hồ' : 'Đèn Hậu'}
+                  <span className={`text-[10px] font-bold font-body px-2.5 py-0.5 rounded-full ${
+                    isDark ? 'bg-white/10 text-neutral-300' : 'bg-slate-100 text-slate-700'
+                  }`}>
+                    CHI TIẾT 0{idx + 1} / 03
                   </span>
-                </button>
-              );
-            })}
-          </div>
+                </div>
 
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => {
-                soundFx.playClick();
-                setActiveStep((prev) => (prev - 1 + DESIGN_COMPONENTS.length) % DESIGN_COMPONENTS.length);
-              }}
-              aria-label="Xem chi tiết trước"
-              className={`w-8 h-8 rounded-xl flex items-center justify-center border transition-colors cursor-pointer ${
-                isDark 
-                  ? 'border-white/15 bg-white/[0.05] text-neutral-300 active:bg-white/20' 
-                  : 'border-slate-300 bg-white text-slate-700 shadow-xs active:bg-slate-100'
-              }`}
-            >
-              <ChevronLeft size={16} />
-            </button>
-            <button
-              onClick={() => {
-                soundFx.playClick();
-                setActiveStep((prev) => (prev + 1) % DESIGN_COMPONENTS.length);
-              }}
-              aria-label="Xem chi tiết tiếp theo"
-              className={`w-8 h-8 rounded-xl flex items-center justify-center border transition-colors cursor-pointer ${
-                isDark 
-                  ? 'border-white/15 bg-white/[0.05] text-neutral-300 active:bg-white/20' 
-                  : 'border-slate-300 bg-white text-slate-700 shadow-xs active:bg-slate-100'
-              }`}
-            >
-              <ChevronRight size={16} />
-            </button>
-          </div>
+                {/* Tech Card Box with 4 Corner Brackets & Image */}
+                <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden bg-black border border-white/10">
+                  <span className="absolute top-1.5 left-1.5 w-2.5 h-2.5 border-t-2 border-l-2 border-red-500 rounded-tl pointer-events-none z-10" />
+                  <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 border-t-2 border-r-2 border-red-500 rounded-tr pointer-events-none z-10" />
+                  <span className="absolute bottom-1.5 left-1.5 w-2.5 h-2.5 border-b-2 border-l-2 border-red-500 rounded-bl pointer-events-none z-10" />
+                  <span className="absolute bottom-1.5 right-1.5 w-2.5 h-2.5 border-b-2 border-r-2 border-red-500 rounded-br pointer-events-none z-10" />
+
+                  <img
+                    src={comp.image}
+                    alt={comp.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover object-center"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
+
+                  <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between z-10">
+                    <span className="px-2.5 py-1 rounded text-[10px] font-bold uppercase backdrop-blur-md bg-black/70 text-white border border-white/20">
+                      {comp.tag}
+                    </span>
+                    <span className="text-xs font-black text-white font-display">
+                      SH350i • 2026
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content Section */}
+                <div className="mt-3.5">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider mb-2 bg-red-600/10 border border-red-600/25 text-red-600 dark:text-red-400 font-body">
+                    <Icon size={12} className="text-red-500 shrink-0" />
+                    <span>{comp.category}</span>
+                  </div>
+
+                  <h3 className={`font-display text-lg font-black tracking-tight uppercase leading-snug ${
+                    isDark ? 'text-white' : 'text-slate-950'
+                  }`}>
+                    {comp.title}
+                  </h3>
+
+                  <p className={`mt-1.5 text-[13px] leading-relaxed font-body ${
+                    isDark ? 'text-neutral-300' : 'text-slate-700'
+                  }`}>
+                    {comp.summary}
+                  </p>
+
+                  {/* 3 Tech Specs Chips */}
+                  <div className="mt-3 grid grid-cols-3 gap-1.5 sm:gap-2">
+                    {comp.specs.map((s, sIdx) => (
+                      <div
+                        key={sIdx}
+                        className={`p-2 rounded-xl border flex flex-col justify-between ${
+                          isDark
+                            ? 'bg-white/[0.04] border-white/10 text-white'
+                            : 'bg-slate-50 border-slate-200 text-slate-900'
+                        }`}
+                      >
+                        <span className={`text-[9px] font-bold uppercase tracking-wider ${
+                          isDark ? 'text-neutral-400' : 'text-slate-500'
+                        }`}>
+                          {s.label}
+                        </span>
+                        <span className="font-bold text-[11px] sm:text-xs mt-0.5 font-display line-clamp-2">
+                          {s.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+            );
+          })}
         </div>
 
-        {/* Mobile Swipe Hint */}
-        <div className="flex items-center justify-center gap-2 text-[10px] font-body text-slate-400">
-          <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse" />
-          <span className={isDark ? 'text-neutral-400' : 'text-slate-600'}>
-            Chạm số hoặc vuốt ngang để đổi chi tiết
-          </span>
+        {/* Subtle Bottom Guidance */}
+        <div className="pt-2 pb-1 flex items-center justify-center gap-2 text-xs font-body tracking-wider text-slate-500 dark:text-neutral-400">
+          <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
+          <span>Cuộn tiếp để khám phá Động cơ eSP+ 330cc</span>
         </div>
       </div>
 
