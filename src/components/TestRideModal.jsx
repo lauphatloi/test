@@ -65,17 +65,17 @@ export default function TestRideModal({ isOpen, onClose, preselectedEdition }) {
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2 h-2 rounded-full bg-red-600 animate-ping" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-red-600">
-                ĐẶC QUYỀN TRẢI NGHIỆM HONDA SH350i
+                TRẢI NGHIỆM HONDA SH350i - HEAD OSC
               </span>
             </div>
             
             <h3 className={`font-display text-2xl sm:text-3xl font-extrabold ${
               isDark ? 'text-white' : 'text-slate-950'
             }`}>
-              Đăng Ký Lái Thử & Nhận Ưu Đãi
+              Đăng Ký Tư Vấn & Nhận Ưu Đãi
             </h3>
             <p className={`mt-1 text-xs ${isDark ? 'text-neutral-400' : 'text-slate-600'}`}>
-              Nhận ngay voucher phụ kiện cao cấp 5.000.000 VNĐ khi hoàn tất đăng ký.
+              Nhận ngay voucher khuyến mãi khi hoàn tất đăng ký.
             </p>
 
             {/* Form */}
@@ -142,23 +142,7 @@ export default function TestRideModal({ isOpen, onClose, preselectedEdition }) {
                   </select>
                 </div>
 
-                <div>
-                  <label className={`block text-xs font-semibold mb-1.5 flex items-center gap-1.5 ${
-                    isDark ? 'text-neutral-300' : 'text-slate-700'
-                  }`}>
-                    <Calendar size={13} className="text-cyan-500" /> Ngày Dự Kiến Lái Thử
-                  </label>
-                  <input
-                    type="date"
-                    value={formData.date}
-                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    className={`w-full px-3 py-2 rounded-xl border text-xs focus:outline-none focus:border-red-600 transition-colors ${
-                      isDark 
-                        ? 'bg-[#11131a] border-white/10 text-white' 
-                        : 'bg-slate-50 border-slate-200 text-slate-900'
-                    }`}
-                  />
-                </div>
+                
               </div>
 
               <div>

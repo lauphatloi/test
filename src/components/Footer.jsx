@@ -59,10 +59,10 @@ export default function Footer({ onOpenTestRide }) {
               onClick={() => { soundFx.playRev(); onOpenTestRide(); }}
               className="px-6 py-3 rounded-xl honda-red-btn text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer font-display"
             >
-              Đăng Ký Lái Thử
+              Đăng Ký Tư Vấn
             </button>
             <a
-              href="tel:18008001"
+              href="tel:0329701818"
               className={`px-5 py-3 rounded-xl border text-xs font-semibold transition-colors flex items-center gap-2 font-body ${
                 isDark 
                   ? 'bg-white/[0.04] border-white/10 text-white hover:bg-white/[0.08]' 
@@ -70,7 +70,7 @@ export default function Footer({ onOpenTestRide }) {
               }`}
             >
               <Phone size={13} className={isDark ? 'text-neutral-400' : 'text-red-600'} />
-              <span>Hotline: 1800 8001 (Miễn phí)</span>
+              <span>Hotline: 0329 701 818</span>
             </a>
           </div>
         </div>
@@ -143,15 +143,15 @@ export default function Footer({ onOpenTestRide }) {
             <div className={`space-y-2.5 ${isDark ? 'text-neutral-400' : 'text-slate-700 font-medium'}`}>
               <div className="flex items-center gap-2">
                 <Phone size={14} className="text-red-600" />
-                <span className={`font-mono font-bold ${isDark ? 'text-white' : 'text-slate-950'}`}>1800 8001 (Miễn phí)</span>
+                <span className={`font-mono font-bold ${isDark ? 'text-white' : 'text-slate-950'}`}>0329 701 818</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail size={14} className="text-red-600" />
-                <span>cr@honda.com.vn</span>
+                <span>hondahead42023@gmail.com</span>
               </div>
               <div className="flex items-start gap-2">
                 <MapPin size={14} className="text-red-600 shrink-0 mt-0.5" />
-                <span>Mạng lưới hơn 800 đại lý HEAD trên toàn quốc</span>
+                <span>182 Đ. Hoàng Văn Thụ, Phường 9, Phú Nhuận, Thành phố Hồ Chí Minh</span>
               </div>
             </div>
           </div>
@@ -162,7 +162,7 @@ export default function Footer({ onOpenTestRide }) {
         <div className={`pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] ${
           isDark ? 'text-neutral-500' : 'text-slate-600 font-medium'
         }`}>
-          <p>© 2026 Honda Motor Vietnam Co., Ltd. Tất cả quyền được bảo lưu. Thiết kế phong cách Scrollytelling Nghệ Thuật GSAP.</p>
+          <p>© 2026 Honda Head OSC.</p>
 
           <button
             onClick={scrollToTop}

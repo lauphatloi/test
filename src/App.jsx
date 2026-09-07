@@ -14,6 +14,7 @@ import Footer from './components/Footer';
 import TestRideModal from './components/TestRideModal';
 import SpecsModal from './components/SpecsModal';
 import ThemeToggle from './components/ThemeToggle';
+import FloatingContactButtons from './components/FloatingContactButtons';
 
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 
@@ -124,6 +125,9 @@ function MainApp() {
 
       {/* Minimalist Floating Day/Night Theme Toggle at Bottom-Left Corner */}
       <ThemeToggle />
+
+      {/* Floating Action Buttons: Map, Zalo, Hotline at Bottom-Right Corner */}
+      <FloatingContactButtons />
     </div>
   );
 }

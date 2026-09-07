@@ -697,7 +697,7 @@ export default function DesignSection() {
         <div className="relative z-30 w-full pb-3 flex items-center justify-center gap-2 text-xs font-body tracking-wider text-slate-400">
           <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
           <span className={isDark ? 'text-neutral-400' : 'text-slate-800'}>
-            Cuộn chuột để xoay chuyển góc nhìn 3D
+            Cuộn xuống để xoay chuyển góc nhìn 3D
           </span>
         </div>
       </div>

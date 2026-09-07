@@ -232,7 +232,7 @@ export default function BannerSection({ onOpenTestRide }) {
           </div>
 
           {/* Banner Interactive Buttons */}
-          <div className="mt-5 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4">
+          <div className="mt-4 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4 max-w-[280px] xs:max-w-[320px] sm:max-w-none mx-auto sm:mx-0">
             <button
               onClick={scrollToVariants}
               className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-full honda-red-btn text-xs font-semibold tracking-wider uppercase flex items-center justify-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer font-display"
