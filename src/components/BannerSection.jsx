@@ -245,7 +245,7 @@ export default function BannerSection({ onOpenTestRide }) {
               onClick={() => { soundFx.playRev(); onOpenTestRide(); }}
               className="w-full sm:w-auto px-5 sm:px-6 py-2.5 sm:py-3.5 rounded-full text-xs font-semibold tracking-wide transition-all cursor-pointer font-body text-center bg-white/15 hover:bg-white/25 border border-white/30 text-white backdrop-blur-md shadow-md"
             >
-              Đăng Ký Lái Thử
+              Đăng Ký Tư vấn
             </button>
           </div>
         </div>
@@ -329,7 +329,7 @@ export default function BannerSection({ onOpenTestRide }) {
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 sm:mb-4 backdrop-blur-md font-body bg-white/[0.08] border border-white/15 text-neutral-200 shadow-sm">
             <Sparkles size={14} className="text-red-500" />
-            <span>KHÔNG GIAN TRƯNG BÀY XE SANG</span>
+            <span>KHÔNG GIAN TRƯNG BÀY</span>
           </div>
 
           <h2 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl tracking-tight uppercase leading-tight text-white drop-shadow-md">
@@ -341,17 +341,19 @@ export default function BannerSection({ onOpenTestRide }) {
           </p>
         </div>
 
-        {/* Minimalist Bottom Centered Scroll Indicator */}
-        <div 
-          ref={portalScrollCueRef}
-          onClick={scrollToVariants}
-          className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 z-20 pointer-events-auto flex flex-col items-center justify-center gap-2 sm:gap-2.5 text-xs font-body cursor-pointer transition-all duration-300 group select-none text-neutral-400 hover:text-white"
-        >
-          <span className="tracking-[0.25em] text-[10px] sm:text-[11px] uppercase font-bold text-center opacity-85 group-hover:opacity-100 transition-opacity">
-            Cuộn xuống để khám phá
-          </span>
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border flex items-center justify-center group-hover:scale-110 transition-all border-white/20 bg-white/[0.04] group-hover:border-red-500/60 group-hover:bg-red-500/10 shadow-lg">
-            <ArrowDown size={15} className="text-red-500 animate-bounce" />
+        {/* Minimalist Bottom Centered Scroll Indicator (Guaranteed 100% horizontally centered) */}
+        <div className="absolute bottom-6 sm:bottom-10 left-0 right-0 w-full flex justify-center z-20 pointer-events-none px-4">
+          <div 
+            ref={portalScrollCueRef}
+            onClick={scrollToVariants}
+            className="pointer-events-auto flex flex-col items-center justify-center gap-2 sm:gap-2.5 text-xs font-body cursor-pointer transition-all duration-300 group select-none text-neutral-400 hover:text-white"
+          >
+            <span className="tracking-[0.25em] pl-[0.25em] text-[10px] sm:text-[11px] uppercase font-bold text-center opacity-85 group-hover:opacity-100 transition-opacity">
+              Cuộn xuống để khám phá
+            </span>
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border flex items-center justify-center group-hover:scale-110 transition-all border-white/20 bg-white/[0.04] group-hover:border-red-500/60 group-hover:bg-red-500/10 shadow-lg">
+              <ArrowDown size={15} className="text-red-500 animate-bounce" />
+            </div>
           </div>
         </div>
 

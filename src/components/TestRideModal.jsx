@@ -4,13 +4,7 @@ import { soundFx } from '../utils/audio';
 import { useTheme } from '../context/ThemeContext';
 
 const CITIES = [
-  'Hà Nội (HEAD Kường Ngân, Thắng Lợi...)',
-  'TP. Hồ Chí Minh (HEAD Phát Tiến, Visacoop...)',
-  'Đà Nẵng (HEAD Tiến Thu...)',
-  'Hải Phòng (HEAD Hương Giang...)',
-  'Cần Thơ (HEAD Hóa Cần Thơ...)',
-  'Bình Dương (HEAD Giáp Bình Dương...)',
-  'Đồng Nai (HEAD Nam Hưng...)'
+ 'Phú Nhuận - HEAD OSC'
 ];
 
 export default function TestRideModal({ isOpen, onClose, preselectedEdition }) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Volume2, VolumeX, Sliders, Calendar, ArrowUpRight, Menu, X } from 'lucide-react';
+import { Volume2, VolumeX, Sliders, Calendar, ArrowUpRight, Menu, X, Phone } from 'lucide-react';
 import { soundFx } from '../utils/audio';
 import { useTheme } from '../context/ThemeContext';
 import gsap from 'gsap';
@@ -198,17 +198,18 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
               <span>Thông Số</span>
             </button>
 
-            {/* Book Test Ride CTA - Clean Refined Honda Red */}
-            <button
-              onClick={() => { soundFx.playRev(); onOpenTestRide(); }}
-              className="relative group overflow-hidden px-5 py-2 rounded-full honda-red-btn text-xs font-semibold tracking-wide uppercase transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer flex items-center gap-1.5 font-display"
+            {/* Hotline CTA - Clean Refined Honda Red */}
+            <a
+              href="tel:0329701818" 
+              onClick={() => soundFx.playRev()}
+              className="relative group overflow-hidden px-5 py-2 rounded-full honda-red-btn text-xs font-semibold tracking-wide uppercase transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer flex items-center gap-1.5 font-display text-white"
             >
               <span className="relative z-10 flex items-center gap-1.5">
-                <Calendar size={13} />
-                Lái Thử Xe
+                <Phone size={13} />
+                Hotline
                 <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </span>
-            </button>
+            </a>
           </div>
 
           {/* Mobile Right Controls: Mobile Menu Trigger */}
@@ -268,12 +269,14 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
                 >
                   Xem Thông Số Kỹ Thuật
                 </button>
-                <button
-                  onClick={() => { onOpenTestRide(); setMobileMenuOpen(false); }}
-                  className="w-full py-3.5 rounded-xl honda-red-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-red-600/30"
+                <a
+                  href="tel:18001234" // Điền số điện thoại của bạn ở đây (ví dụ: tel:0901234567)
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full py-3.5 rounded-xl honda-red-btn text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-red-600/30 text-center flex items-center justify-center gap-2"
                 >
-                  Đăng Ký Lái Thử Ngay
-                </button>
+                  <Phone size={14} />
+                  Hotline: 1800 1234
+                </a>
               </div>
             </div>
           </div>
