@@ -68,17 +68,18 @@ const VARIANTS = [
 
 export default function VehicleVariantsSection({ onOpenTestRide }) {
   const containerRef = useRef(null);
+  const unifiedStageRef = useRef(null);
+  const splitDoorsContainerRef = useRef(null);
   const doorLeftRef = useRef(null);
   const doorRightRef = useRef(null);
-  const centerSeamRef = useRef(null);
   const [activeVariant, setActiveVariant] = useState(0);
   const { isDark } = useTheme();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Scrollytelling timeline:
-      // - 0.0s to 10.2s: Showcase of the 4 vehicle versions with comfortable dwell times
-      // - 10.2s to 12.2s: The Grand Gate Split (tách đôi sang 2 bên như cánh cổng mở ra)
+      // - 0.0s to 10.0s: Showcase of the 4 vehicle versions on unifiedStage (zero seam, zero divider)
+      // - 10.0s to 12.0s: The Surprise Gate Split (tách đôi sang 2 bên như cánh cổng mở ra)
       // - Simultaneously pushes up and scales DesignSection from underneath
       const totalScroll = 560;
 
@@ -106,6 +107,10 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
       const isMobile = window.innerWidth < 640;
       const bikeScale = isMobile ? 1.15 : 1;
 
+      gsap.set(unifiedStageRef.current, { autoAlpha: 1 });
+      gsap.set(splitDoorsContainerRef.current, { autoAlpha: 0 });
+      gsap.set([doorLeftRef.current, doorRightRef.current], { xPercent: 0, force3D: true });
+
       gsap.set('.variant-bike-0', { opacity: 1, x: 0, y: 0, scale: bikeScale, filter: 'none', force3D: true });
       gsap.set(['.variant-bike-1', '.variant-bike-2', '.variant-bike-3'], { opacity: 0, x: 0, y: 0, scale: bikeScale, filter: 'none', force3D: true });
 
@@ -117,10 +122,6 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
       // 3. Ground floor glows
       gsap.set('.variant-floor-0', { opacity: 1 });
       gsap.set(['.variant-floor-1', '.variant-floor-2', '.variant-floor-3'], { opacity: 0 });
-
-      // 4. Split gates initial state (closed, zero translation)
-      gsap.set([doorLeftRef.current, doorRightRef.current], { xPercent: 0, pointerEvents: 'auto', force3D: true });
-      gsap.set(centerSeamRef.current, { opacity: 0 });
 
       // =========================================================================
       // BẢN 01 (Xám Đương Đại): Dừng tĩnh thư thái từ 0.0s đến 1.2s (Buffer 1.2s)
@@ -188,31 +189,22 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
       // =========================================================================
 
       // =========================================================================
-      // GIAI ĐOẠN 4: THE GRAND GATE SPLIT (TÁCH ĐÔI SANG 2 BÊN RA KHI CUỘN)
-      // Lấy cảm hứng từ cổng mở của Fame Estate:
-      // - 10.0s: Đường rãnh trung tâm phát sáng nhẹ báo hiệu cổng chuẩn bị mở
-      // - 10.2s -> 12.2s: Cánh cổng trái trượt sang trái, cánh phải trượt sang phải
-      // - Section Thiết kế (#design) bên dưới được đẩy lên đầy uy lực và chiều sâu
+      // GIAI ĐOẠN 4: THE SURPRISE GATE SPLIT (TÁCH ĐÔI BẤT NGỜ KHI CUỘN TỚI)
+      // - Suốt từ 0.0s đến 10.0s: Hoàn toàn bình thường mượt mà trên unifiedStage (KHÔNG CÓ VÁCH NGĂN)
+      // - Đúng 10.0s: Chuyển giao sang 2 cánh cổng khép kín hoàn hảo
+      // - 10.0s -> 12.0s: Cánh cổng tách đôi sang 2 bên như cánh cổng mở ra bất ngờ
+      // - Section Thiết kế (#design) bên dưới được đẩy lên đầy uy lực
       // =========================================================================
-      tl.to(centerSeamRef.current, {
-        opacity: 1,
-        duration: 0.2,
-        ease: 'power1.in',
-      }, 10.0);
+      tl.set(splitDoorsContainerRef.current, { autoAlpha: 1 }, 10.0);
+      tl.set(unifiedStageRef.current, { autoAlpha: 0 }, 10.0);
 
       // Fade out bottom swatches controls during split
       tl.to('.variant-controls', {
         opacity: 0,
         scale: 0.94,
-        duration: 0.45,
-        ease: 'power1.out',
-      }, 10.2);
-
-      tl.to(centerSeamRef.current, {
-        opacity: 0,
         duration: 0.35,
         ease: 'power1.out',
-      }, 10.25);
+      }, 10.0);
 
       // Cánh cổng trái tách sang trái
       tl.to(doorLeftRef.current, {
@@ -220,7 +212,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
         duration: 2.0,
         ease: 'power2.inOut',
         force3D: true,
-      }, 10.2);
+      }, 10.0);
 
       // Cánh cổng phải tách sang phải
       tl.to(doorRightRef.current, {
@@ -228,7 +220,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
         duration: 2.0,
         ease: 'power2.inOut',
         force3D: true,
-      }, 10.2);
+      }, 10.0);
 
       // Phần DesignSection (#design) bên dưới được đẩy lên như cánh cổng mở ra
       const revealEl = document.getElementById('design-reveal-stage') || document.getElementById('design');
@@ -246,7 +238,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
           duration: 2.0,
           ease: 'power2.out',
           force3D: true,
-        }, 10.2);
+        }, 10.0);
       }
 
     }, containerRef);
@@ -269,23 +261,20 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
     }
   };
 
-  const currentData = VARIANTS[activeVariant];
+  const renderVehicleStage = (side, fixedVariantIndex) => {
+    const isSplit = side === 'split-left' || side === 'split-right';
+    const displayIndex = fixedVariantIndex !== undefined ? fixedVariantIndex : activeVariant;
+    const currentData = VARIANTS[displayIndex];
+    const isMobile = typeof window !== 'undefined' ? window.innerWidth < 640 : false;
 
-  // Helper renderer: Generates the full 100vw vehicle showroom stage content
-  // Rendered identically inside both Left Door and Right Door for zero-seam split
-  const renderVehicleStage = (side) => {
     return (
       <div className={`relative w-full h-full flex flex-col justify-between overflow-hidden transition-colors duration-500 border-t border-slate-200 dark:border-white/15 ${
         isDark ? 'bg-[#07090e]' : 'bg-[#f8fafc]'
       }`}>
-        {/* ============================================================ */}
-        {/* 1. OCTAGONAL BACKGROUND LAYERS                               */}
-        {/* ============================================================ */}
         <div 
           className="absolute inset-0 pointer-events-none overflow-hidden"
           style={{ contain: 'paint layout', transform: 'translateZ(0)' }}
         >
-          {/* Base Background (Xám Đương Đại) */}
           <div 
             className="absolute inset-0 z-0 transition-opacity duration-500"
             style={{
@@ -295,85 +284,103 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
             }}
           />
 
-          {/* Bleed 2: Trắng Ngọc Trai (z-10) */}
-          <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none">
-            <div
-              className="variant-bleed-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-none flex items-center justify-center"
-              style={{
-                width: '180vmax',
-                height: '180vmax',
-                backfaceVisibility: 'hidden',
-                WebkitBackfaceVisibility: 'hidden',
-              }}
-            >
-              <div 
-                className="w-full h-full"
+          {isSplit ? (
+            <div className="absolute inset-0 z-30 overflow-hidden pointer-events-none">
+              <div
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none flex items-center justify-center"
                 style={{
-                  clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-                  background: isDark 
-                    ? 'radial-gradient(circle at 50% 50%, #ffffff 0%, #e2e8f0 18%, #93c5fd 40%, #1e3a8a 68%, #0f172a 85%, #07090e 95%)'
-                    : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #f0f9ff 35%, #e2e8f0 70%, #cbd5e1 100%)',
+                  width: '180vmax',
+                  height: '180vmax',
+                  transform: 'translate(-50%, -50%) scale(1.35) rotate(18deg)',
+                  transformOrigin: '50% 50%',
                 }}
-              />
+              >
+                <div 
+                  className="w-full h-full"
+                  style={{
+                    clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
+                    background: isDark 
+                      ? 'radial-gradient(circle at 50% 50%, #34d399 0%, #10b981 18%, #059669 38%, #047857 58%, #032d22 78%, #07090e 92%)'
+                      : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #ecfdf5 30%, #f1f5f9 70%, #e2e8f0 100%)',
+                  }}
+                />
+              </div>
             </div>
-          </div>
+          ) : (
+            <>
+              <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none">
+                <div
+                  className="variant-bleed-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-none flex items-center justify-center"
+                  style={{
+                    width: '180vmax',
+                    height: '180vmax',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                  }}
+                >
+                  <div 
+                    className="w-full h-full"
+                    style={{
+                      clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
+                      background: isDark 
+                        ? 'radial-gradient(circle at 50% 50%, #ffffff 0%, #e2e8f0 18%, #93c5fd 40%, #1e3a8a 68%, #0f172a 85%, #07090e 95%)'
+                        : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #f0f9ff 35%, #e2e8f0 70%, #cbd5e1 100%)',
+                    }}
+                  />
+                </div>
+              </div>
 
-          {/* Bleed 1: Đen Nhám Doanh Nhân (z-20) */}
-          <div className="absolute inset-0 z-20 overflow-hidden pointer-events-none">
-            <div
-              className="variant-bleed-1 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-none flex items-center justify-center"
-              style={{
-                width: '180vmax',
-                height: '180vmax',
-                backfaceVisibility: 'hidden',
-                WebkitBackfaceVisibility: 'hidden',
-              }}
-            >
-              <div 
-                className="w-full h-full"
-                style={{
-                  clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-                  background: isDark
-                    ? 'radial-gradient(circle at 50% 50%, #f59e0b 0%, #d97706 18%, #b45309 35%, #78350f 55%, #1f1206 75%, #07090e 92%)'
-                    : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #fef3c7 30%, #f3f4f6 70%, #e2e8f0 100%)',
-                }}
-              />
-            </div>
-          </div>
+              <div className="absolute inset-0 z-20 overflow-hidden pointer-events-none">
+                <div
+                  className="variant-bleed-1 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-none flex items-center justify-center"
+                  style={{
+                    width: '180vmax',
+                    height: '180vmax',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                  }}
+                >
+                  <div 
+                    className="w-full h-full"
+                    style={{
+                      clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
+                      background: isDark
+                        ? 'radial-gradient(circle at 50% 50%, #f59e0b 0%, #d97706 18%, #b45309 35%, #78350f 55%, #1f1206 75%, #07090e 92%)'
+                        : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #fef3c7 30%, #f3f4f6 70%, #e2e8f0 100%)',
+                    }}
+                  />
+                </div>
+              </div>
 
-          {/* Bleed 3: Xanh Lục Bảo (z-30) */}
-          <div className="absolute inset-0 z-30 overflow-hidden pointer-events-none">
-            <div
-              className="variant-bleed-3 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-none flex items-center justify-center"
-              style={{
-                width: '180vmax',
-                height: '180vmax',
-                backfaceVisibility: 'hidden',
-                WebkitBackfaceVisibility: 'hidden',
-              }}
-            >
-              <div 
-                className="w-full h-full"
-                style={{
-                  clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-                  background: isDark
-                    ? 'radial-gradient(circle at 50% 50%, #34d399 0%, #10b981 18%, #059669 38%, #047857 58%, #032d22 78%, #07090e 92%)'
-                    : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #ecfdf5 30%, #f1f5f9 70%, #e2e8f0 100%)',
-                }}
-              />
-            </div>
-          </div>
+              <div className="absolute inset-0 z-30 overflow-hidden pointer-events-none">
+                <div
+                  className="variant-bleed-3 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform pointer-events-none flex items-center justify-center"
+                  style={{
+                    width: '180vmax',
+                    height: '180vmax',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                  }}
+                >
+                  <div 
+                    className="w-full h-full"
+                    style={{
+                      clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
+                      background: isDark
+                        ? 'radial-gradient(circle at 50% 50%, #34d399 0%, #10b981 18%, #059669 38%, #047857 58%, #032d22 78%, #07090e 92%)'
+                        : 'radial-gradient(circle at 50% 50%, #ffffff 0%, #ecfdf5 30%, #f1f5f9 70%, #e2e8f0 100%)',
+                    }}
+                  />
+                </div>
+              </div>
+            </>
+          )}
 
-          {/* Tech Grid Texture Overlay */}
           <div className={`absolute inset-0 bg-tech-grid z-40 pointer-events-none ${isDark ? 'opacity-10' : 'opacity-[0.04]'}`} />
         </div>
 
-        {/* ============================================================ */}
-        {/* 2. MAIN STAGE CONTENT CONTAINER                              */}
-        {/* ============================================================ */}
         <div className="relative z-50 w-full max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-[68px] sm:pt-20 lg:pt-24 pb-2 sm:pb-6 flex flex-col justify-between h-full pointer-events-auto">
           
-          {/* Section Top Header Tag */}
           <div className={`flex items-center justify-between border-b pb-2 sm:pb-3 shrink-0 transition-colors ${
             isDark ? 'border-white/[0.08]' : 'border-slate-400'
           }`}>
@@ -392,10 +399,8 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
             </span>
           </div>
 
-          {/* Center 2-Zone Layout */}
           <div className="relative w-full my-auto grid grid-cols-1 lg:grid-cols-12 gap-2 sm:gap-6 lg:gap-10 items-center">
             
-            {/* ZONE 1: Left Column (5 Cols) - Vehicle Name, Description, Telemetry */}
             <div className="lg:col-span-5 order-2 lg:order-1 z-30">
               <div className={`p-3.5 sm:p-5 lg:p-7 rounded-2xl backdrop-blur-xl transition-all duration-300 flex flex-col justify-between lg:min-h-[410px] ${
                 isDark 
@@ -404,7 +409,6 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
               }`}>
                 
                 <div>
-                  {/* Badge & Edition Tag Row */}
                   <div className="flex items-center justify-between gap-2 mb-1.5 sm:mb-2">
                     <div className="flex items-center gap-1.5 sm:gap-2">
                       <span 
@@ -431,27 +435,24 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                     </span>
                   </div>
 
-                  {/* Vehicle Name Headline */}
-                  <h2 className={`font-display text-xl sm:text-2xl lg:text-3xl font-black tracking-tight leading-tight flex items-center ${
-                    isDark ? 'text-white' : 'text-slate-950'
-                  }`}>
-                    {currentData.name}
-                  </h2>
+                  <div className="mb-1 sm:mb-2">
+                    <h3 className={`text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-black font-display tracking-tight transition-colors ${
+                      isDark ? 'text-white' : 'text-slate-950'
+                    }`}>
+                      {currentData.name}
+                    </h3>
+                  </div>
 
-                  {/* Description */}
-                  <p className={`mt-1 sm:mt-2 text-xs sm:text-sm leading-relaxed font-body line-clamp-2 sm:line-clamp-3 lg:line-clamp-none ${
-                    isDark ? 'text-neutral-300' : 'text-slate-800 font-semibold'
+                  <p className={`text-[11px] sm:text-xs lg:text-sm font-body leading-relaxed mb-2 sm:mb-4 line-clamp-2 sm:line-clamp-3 transition-colors ${
+                    isDark ? 'text-neutral-300' : 'text-slate-900 font-semibold'
                   }`}>
                     {currentData.desc}
                   </p>
                 </div>
 
-                <div>
-                  {/* Specs Telemetry Row */}
-                  <div className={`my-2.5 sm:my-3 py-2 sm:py-2.5 px-2.5 sm:px-4 rounded-xl border grid grid-cols-3 divide-x transition-colors ${
-                    isDark 
-                      ? 'bg-white/[0.03] border-white/[0.08] divide-white/[0.08]' 
-                      : 'bg-slate-100/90 border border-slate-300 divide-slate-300'
+                <div className="space-y-2 sm:space-y-3 pt-1">
+                  <div className={`grid grid-cols-3 gap-1 sm:gap-2 py-2 sm:py-2.5 px-2 rounded-xl transition-colors ${
+                    isDark ? 'bg-white/[0.05] border border-white/[0.08]' : 'bg-slate-100/90 border border-slate-300/80 shadow-sm'
                   }`}>
                     <div className="flex flex-col items-center text-center px-1">
                       <span className={`text-[9px] sm:text-[10px] flex items-center gap-1 font-body font-bold ${
@@ -466,7 +467,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                       </span>
                       <span className={`text-[9px] font-mono hidden xs:block font-bold ${
                         isDark ? 'text-neutral-500' : 'text-slate-700'
-                      }`}>eSP+ 4 van</span>
+                      }`}>eSP+ 4-van</span>
                     </div>
                     <div className="flex flex-col items-center text-center px-1">
                       <span className={`text-[9px] sm:text-[10px] flex items-center gap-1 font-body font-bold ${
@@ -500,7 +501,6 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                     </div>
                   </div>
 
-                  {/* Price & Action Button inside card */}
                   <div className={`pt-2 sm:pt-3 border-t flex items-center justify-between gap-3 transition-colors ${
                     isDark ? 'border-white/[0.08]' : 'border-slate-300'
                   }`}>
@@ -531,61 +531,85 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
               </div>
             </div>
 
-            {/* ZONE 2: Right Column (7 Cols) - Dedicated Vehicle Stage */}
             <div className="lg:col-span-7 order-1 lg:order-2 relative flex items-center justify-center h-[28vh] sm:h-[38vh] lg:h-[54vh] max-h-[255px] sm:max-h-[360px] lg:max-h-none w-full z-20 my-1 sm:my-0">
               
-              {/* Khung Xe: ĐỨNG IM TUYỆT ĐỐI TẠI TÂM */}
               <div className="relative w-full h-full flex items-center justify-center pointer-events-none">
                 
-                {/* Studio Ground Shadow & Floor Color Bleed Reflections */}
-                {VARIANTS.map((variant, idx) => (
-                  <div 
-                    key={`${side}-floor-${variant.id}`}
-                    className={`variant-floor-${idx} absolute bottom-1 sm:bottom-4 w-[86%] sm:w-[78%] h-10 sm:h-12 rounded-full blur-2xl pointer-events-none will-change-opacity`}
-                    style={{
-                      backgroundColor: variant.floorGlow,
-                    }}
-                  />
-                ))}
-                <div className={`absolute bottom-2 sm:bottom-6 w-[76%] sm:w-[68%] h-4 sm:h-5 rounded-full blur-md pointer-events-none z-10 ${
-                  isDark ? 'bg-black/95' : 'bg-slate-950/45'
-                }`} />
+                {isSplit ? (
+                  <>
+                    <div 
+                      className="absolute bottom-1 sm:bottom-4 w-[86%] sm:w-[78%] h-10 sm:h-12 rounded-full blur-2xl pointer-events-none"
+                      style={{ backgroundColor: VARIANTS[3].floorGlow }}
+                    />
+                    <div className={`absolute bottom-2 sm:bottom-6 w-[76%] sm:w-[68%] h-4 sm:h-5 rounded-full blur-md pointer-events-none z-10 ${
+                      isDark ? 'bg-black/95' : 'bg-slate-950/45'
+                    }`} />
+                    <img
+                      src={VARIANTS[3].image}
+                      alt={`Honda SH350i ${VARIANTS[3].name}`}
+                      className={`absolute inset-0 m-auto max-w-full max-h-full object-contain select-none pointer-events-none z-20 ${
+                        isDark 
+                          ? 'drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)]' 
+                          : 'drop-shadow-[0_20px_35px_rgba(15,23,42,0.45)]'
+                      }`}
+                      style={{ transform: `scale(${isMobile ? 1.15 : 1})` }}
+                    />
+                  </>
+                ) : (
+                  <>
+                    {VARIANTS.map((variant, idx) => (
+                      <div 
+                        key={`${side}-floor-${variant.id}`}
+                        className={`variant-floor-${idx} absolute bottom-1 sm:bottom-4 w-[86%] sm:w-[78%] h-10 sm:h-12 rounded-full blur-2xl pointer-events-none will-change-opacity`}
+                        style={{
+                          backgroundColor: variant.floorGlow,
+                        }}
+                      />
+                    ))}
+                    <div className={`absolute bottom-2 sm:bottom-6 w-[76%] sm:w-[68%] h-4 sm:h-5 rounded-full blur-md pointer-events-none z-10 ${
+                      isDark ? 'bg-black/95' : 'bg-slate-950/45'
+                    }`} />
 
-                {/* 4 Sản phẩm xe ĐỨNG IM TUYỆT ĐỐI */}
-                {VARIANTS.map((variant, idx) => (
-                  <img
-                    key={`${side}-bike-${variant.id}`}
-                    src={variant.image}
-                    alt={`Honda SH350i ${variant.name}`}
-                    className={`variant-bike-${idx} absolute inset-0 m-auto max-w-full max-h-full object-contain will-change-opacity select-none pointer-events-none z-20 ${
-                      isDark 
-                        ? 'drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)]' 
-                        : 'drop-shadow-[0_20px_35px_rgba(15,23,42,0.45)]'
-                    }`}
-                  />
-                ))}
+                    {VARIANTS.map((variant, idx) => (
+                      <img
+                        key={`${side}-bike-${variant.id}`}
+                        src={variant.image}
+                        alt={`Honda SH350i ${variant.name}`}
+                        className={`variant-bike-${idx} absolute inset-0 m-auto max-w-full max-h-full object-contain will-change-opacity select-none pointer-events-none z-20 ${
+                          isDark 
+                            ? 'drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)]' 
+                            : 'drop-shadow-[0_20px_35px_rgba(15,23,42,0.45)]'
+                        }`}
+                      />
+                    ))}
+                  </>
+                )}
               </div>
 
             </div>
 
           </div>
 
-          {/* Bottom Controls: Centered Swatches Dock & Centered Scroll Prompt */}
           <div className="variant-controls flex flex-col items-center justify-center gap-1 sm:gap-2 pt-1 sm:pt-2 shrink-0 transition-opacity">
-            {/* Swatches Dock */}
             <div className={`flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-full backdrop-blur-2xl transition-all duration-300 ${
               isDark 
                 ? 'glass-panel border border-white/[0.09] shadow-xl' 
                 : 'bg-white/95 border border-slate-300 shadow-md'
             }`}>
               {VARIANTS.map((v, i) => {
-                const isActive = activeVariant === i;
+                const isActive = (isSplit ? displayIndex : activeVariant) === i;
                 return (
                   <button
                     key={`${side}-swatch-${v.id}`}
-                    onClick={() => jumpToVariant(i)}
-                    onMouseEnter={() => soundFx.playHover()}
-                    className={`group relative flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    onClick={() => {
+                      if (!isSplit) jumpToVariant(i);
+                    }}
+                    onMouseEnter={() => {
+                      if (!isSplit) soundFx.playHover();
+                    }}
+                    className={`group relative flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full transition-all duration-300 ${
+                      isSplit ? 'cursor-default pointer-events-none' : 'cursor-pointer'
+                    } ${
                       isActive 
                         ? (isDark ? 'bg-white/15 shadow-sm border border-white/20' : 'bg-slate-200 shadow-sm border border-slate-400 text-slate-950')
                         : (isDark ? 'hover:bg-white/[0.04] opacity-70 hover:opacity-100' : 'hover:bg-slate-100 opacity-80 hover:opacity-100')
@@ -607,9 +631,9 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
               })}
             </div>
 
-            {/* Centered Scroll Prompt: Mũi tên đỏ và chữ "Cuộn xuống" */}
             <div 
               onClick={() => {
+                if (isSplit) return;
                 const trigger = ScrollTrigger.getAll().find(t => t.trigger === containerRef.current);
                 if (trigger) {
                   gsap.to(window, {
@@ -642,46 +666,42 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
     <section 
       id="colors" 
       ref={containerRef} 
-      className="relative z-30 w-full h-screen overflow-hidden select-none bg-transparent pointer-events-none"
+      className="relative z-30 w-full h-screen overflow-hidden select-none bg-transparent"
       style={{
         marginTop: '-100vh',
       }}
     >
-      {/* ============================================================ */}
-      {/* LEFT DOOR (CÁNH CỔNG TRÁI: 0% -> 50% WIDTH)                  */}
-      {/* Khi cuộn mở, cánh cổng trượt mượt sang trái (-102%)           */}
-      {/* ============================================================ */}
       <div 
-        ref={doorLeftRef}
-        className="absolute inset-y-0 left-0 w-[calc(50%+1px)] overflow-hidden z-30 pointer-events-none will-change-transform shadow-[8px_0_30px_rgba(0,0,0,0.12)] border-r border-red-500/10"
-        style={{ transform: 'translate3d(0, 0, 0)' }}
+        ref={unifiedStageRef}
+        className="absolute inset-0 w-full h-full z-20 pointer-events-auto"
       >
-        <div className="absolute inset-y-0 left-0 w-[100vw] h-full pointer-events-auto">
-          {renderVehicleStage('left')}
-        </div>
+        {renderVehicleStage('main')}
       </div>
 
-      {/* ============================================================ */}
-      {/* RIGHT DOOR (CÁNH CỔNG PHẢI: 50% -> 100% WIDTH)               */}
-      {/* Khi cuộn mở, cánh cổng trượt mượt sang phải (102%)           */}
-      {/* ============================================================ */}
       <div 
-        ref={doorRightRef}
-        className="absolute inset-y-0 right-0 w-1/2 overflow-hidden z-30 pointer-events-none will-change-transform shadow-[-8px_0_30px_rgba(0,0,0,0.12)] border-l border-red-500/10"
-        style={{ transform: 'translate3d(0, 0, 0)' }}
+        ref={splitDoorsContainerRef}
+        className="absolute inset-0 w-full h-full z-30 pointer-events-none opacity-0 invisible"
       >
-        <div className="absolute inset-y-0 right-0 w-[100vw] h-full pointer-events-auto">
-          {renderVehicleStage('right')}
+        <div 
+          ref={doorLeftRef}
+          className="absolute inset-y-0 left-0 w-1/2 overflow-hidden pointer-events-none will-change-transform"
+          style={{ transform: 'translate3d(0, 0, 0)' }}
+        >
+          <div className="absolute inset-y-0 left-0 w-[100vw] h-full pointer-events-none">
+            {renderVehicleStage('split-left', 3)}
+          </div>
+        </div>
+
+        <div 
+          ref={doorRightRef}
+          className="absolute inset-y-0 right-0 w-1/2 overflow-hidden pointer-events-none will-change-transform"
+          style={{ transform: 'translate3d(0, 0, 0)' }}
+        >
+          <div className="absolute inset-y-0 right-0 w-[100vw] h-full pointer-events-none">
+            {renderVehicleStage('split-right', 3)}
+          </div>
         </div>
       </div>
-
-      {/* ============================================================ */}
-      {/* CENTER SEAM LINE (Tia laser trung tâm báo hiệu khi mở cổng)  */}
-      {/* ============================================================ */}
-      <div 
-        ref={centerSeamRef}
-        className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[2px] z-40 pointer-events-none bg-gradient-to-b from-transparent via-red-600/70 to-transparent opacity-0"
-      />
     </section>
   );
 }
