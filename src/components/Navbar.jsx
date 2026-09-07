@@ -52,6 +52,19 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
     soundFx.playClick();
     setMobileMenuOpen(false);
 
+    if (window.__lenis) {
+      if (targetId === '#colors' || targetId === '#design') {
+        const elId = targetId.replace('#', '');
+        const st = ScrollTrigger.getAll().find(t => t.trigger && (t.trigger.id === elId || t.trigger === document.getElementById(elId)));
+        if (st) {
+          window.__lenis.scrollTo(st.start + 2, { duration: 1.2 });
+          return;
+        }
+      }
+      window.__lenis.scrollTo(targetId, { offset: -70, duration: 1.2 });
+      return;
+    }
+
     if (targetId === '#colors' || targetId === '#design') {
       const elId = targetId.replace('#', '');
       const st = ScrollTrigger.getAll().find(t => t.trigger && (t.trigger.id === elId || t.trigger === document.getElementById(elId)));

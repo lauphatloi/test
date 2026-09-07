@@ -253,11 +253,15 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
     const trigger = ScrollTrigger.getAll().find(t => t.trigger === containerRef.current);
     if (trigger) {
       const targetScroll = trigger.start + (trigger.end - trigger.start) * targets[index];
-      gsap.to(window, {
-        duration: 1.2,
-        scrollTo: targetScroll,
-        ease: 'power3.inOut'
-      });
+      if (window.__lenis) {
+        window.__lenis.scrollTo(targetScroll, { duration: 1.2 });
+      } else {
+        gsap.to(window, {
+          duration: 1.2,
+          scrollTo: targetScroll,
+          ease: 'power3.inOut'
+        });
+      }
     }
   };
 
@@ -636,14 +640,24 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                 if (isSplit) return;
                 const trigger = ScrollTrigger.getAll().find(t => t.trigger === containerRef.current);
                 if (trigger) {
-                  gsap.to(window, {
-                    duration: 1.4,
-                    scrollTo: trigger.end + 5,
-                    ease: 'power2.inOut'
-                  });
+                  if (window.__lenis) {
+                    window.__lenis.scrollTo(trigger.end + 5, { duration: 1.4 });
+                  } else {
+                    gsap.to(window, {
+                      duration: 1.4,
+                      scrollTo: trigger.end + 5,
+                      ease: 'power2.inOut'
+                    });
+                  }
                 } else {
                   const el = document.getElementById('design');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  if (el) {
+                    if (window.__lenis) {
+                      window.__lenis.scrollTo(el, { duration: 1.4 });
+                    } else {
+                      el.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }
                 }
               }}
               className={`flex items-center justify-center gap-1 text-[10px] sm:text-xs font-body cursor-pointer transition-colors ${

@@ -47,8 +47,9 @@ export default function SpecsModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl animate-in fade-in duration-300">
+    <div data-lenis-prevent className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl animate-in fade-in duration-300">
       <div 
+        data-lenis-prevent
         className={`relative w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-3xl p-6 sm:p-10 shadow-2xl transition-all duration-300 ${
           isDark 
             ? 'glass-panel-glow border border-white/20 text-white' 

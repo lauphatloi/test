@@ -43,8 +43,9 @@ export default function TestRideModal({ isOpen, onClose, preselectedEdition }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl animate-in fade-in duration-300">
+    <div data-lenis-prevent className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl animate-in fade-in duration-300">
       <div 
+        data-lenis-prevent
         className={`relative w-full max-w-lg rounded-3xl p-6 sm:p-8 transition-all duration-300 ${
           isDark 
             ? 'glass-panel-glow border border-white/20 text-white shadow-[0_25px_60px_rgba(0,0,0,0.9)]' 

@@ -17,6 +17,9 @@ import ThemeToggle from './components/ThemeToggle';
 
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
+
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 function MainApp() {
@@ -26,6 +29,30 @@ function MainApp() {
   const [preselectedEdition, setPreselectedEdition] = useState('');
 
   useEffect(() => {
+    // Initialize Lenis Smooth Scroll integrated with GSAP ScrollTrigger
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.2,
+      infinite: false,
+    });
+
+    window.__lenis = lenis;
+
+    // Synchronize Lenis scroll position with GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+
+    // Feed Lenis RAF into GSAP's high-precision internal ticker
+    const updateTicker = (time) => {
+      lenis.raf(time * 1000);
+    };
+    gsap.ticker.add(updateTicker);
+    gsap.ticker.lagSmoothing(0);
+
     // Refresh ScrollTrigger after fonts/images load
     const handleLoad = () => {
       ScrollTrigger.refresh();
@@ -37,6 +64,9 @@ function MainApp() {
     }, 1000);
 
     return () => {
+      gsap.ticker.remove(updateTicker);
+      lenis.destroy();
+      window.__lenis = null;
       window.removeEventListener('load', handleLoad);
       clearTimeout(timeout);
     };

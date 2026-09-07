@@ -41,12 +41,52 @@ const ENGINE_MODES = [
   }
 ];
 
+const ROLLING_TEXTS = [
+  {
+    prefix: 'ĐỘNG CƠ',
+    highlight: 'eSP+ 330CC',
+    suffix: 'THẾ HỆ MỚI',
+    subtext: '4-Van SOHC • Xi-lanh đơn làm mát bằng dung dịch hiệu suất cao',
+    badge: '329.6 CC • 4-VAN',
+    color: '#ef4444',
+  },
+  {
+    prefix: 'CÔNG SUẤT',
+    highlight: '21.5 kW (29 HP)',
+    suffix: '@ 7.500 VÒNG/PHÚT',
+    subtext: 'Bứt phá tốc độ dũng mãnh, dẫn đầu phân khúc tay ga cao cấp',
+    badge: 'MAX POWER',
+    color: '#f59e0b',
+  },
+  {
+    prefix: 'MÔ-MEN XOẮN',
+    highlight: '31.8 Nm CỰC ĐẠI',
+    suffix: '@ 5.250 VÒNG/PHÚT',
+    subtext: 'Gia tốc tức thì, phản hồi tay ga nhạy bén vượt bậc mọi cung đường',
+    badge: 'PEAK TORQUE',
+    color: '#10b981',
+  },
+  {
+    prefix: 'CÔNG NGHỆ',
+    highlight: 'HSTC & PGM-FI',
+    suffix: 'CHUẨN KHÍ THẢI EURO 5',
+    subtext: 'Kiểm soát lực kéo chống trượt độc quyền và phun xăng điện tử 32-bit',
+    badge: 'SMART TECH',
+    color: '#06b6d4',
+  },
+];
+
 export default function EngineHighlight() {
   const containerRef = useRef(null);
+  const titleContainerRef = useRef(null);
+  const marquee1Ref = useRef(null);
+  const marquee2Ref = useRef(null);
   const shockwaveRef = useRef(null);
   const imageFrameRef = useRef(null);
   const hudCircleRef = useRef(null);
   const [activeMode, setActiveMode] = useState(0);
+  const [activeRollIdx, setActiveRollIdx] = useState(0);
+  const [scrollPower, setScrollPower] = useState(0);
   const [rpmVal, setRpmVal] = useState(1200);
   const [isRevving, setIsRevving] = useState(false);
   const [counters, setCounters] = useState([0, 0, 0, 0]);
@@ -54,6 +94,53 @@ export default function EngineHighlight() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // 1. Kinetic Parallax Typography Streams (Scroll-Driven)
+      if (marquee1Ref.current) {
+        gsap.to(marquee1Ref.current, {
+          xPercent: -15,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.8,
+          }
+        });
+      }
+
+      if (marquee2Ref.current) {
+        gsap.to(marquee2Ref.current, {
+          xPercent: 15,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.8,
+          }
+        });
+      }
+
+      // 2. Title Kinetic 3D Roll & Power Tachometer (Scroll-Driven)
+      if (titleContainerRef.current) {
+        ScrollTrigger.create({
+          trigger: titleContainerRef.current,
+          start: 'top 85%',
+          end: 'bottom 20%',
+          scrub: true,
+          onUpdate: (self) => {
+            const p = self.progress;
+            setScrollPower(Math.round(p * 100));
+            let idx = 0;
+            if (p < 0.25) idx = 0;
+            else if (p < 0.5) idx = 1;
+            else if (p < 0.75) idx = 2;
+            else idx = 3;
+            setActiveRollIdx((prev) => (prev !== idx ? idx : prev));
+          }
+        });
+      }
+
       // Surprising scroll-triggered transition: screen enters dark high-voltage void,
       // shockwave expands, HUD draws in, and engine image bursts with 3D depth
       const tl = gsap.timeline({
@@ -168,7 +255,7 @@ export default function EngineHighlight() {
     <section 
       id="engine" 
       ref={containerRef} 
-      className={`relative w-full min-h-screen py-24 sm:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden transition-colors duration-500 ${
+      className={`relative w-full min-h-screen pt-28 sm:pt-36 lg:pt-40 pb-24 sm:pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden transition-colors duration-500 ${
         isDark ? 'bg-black text-white' : 'bg-white text-slate-900'
       }`}
     >
@@ -177,6 +264,28 @@ export default function EngineHighlight() {
       <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full blur-[160px] pointer-events-none ${
         isDark ? 'bg-slate-700/10' : 'bg-red-500/5'
       }`} />
+
+      {/* Full-width Background Kinetic Typography Scroll Streams (Parallax Scrub) */}
+      <div className="absolute top-8 sm:top-12 left-0 right-0 overflow-hidden pointer-events-none select-none z-0 opacity-20 dark:opacity-15">
+        <div 
+          ref={marquee1Ref}
+          className="whitespace-nowrap font-display font-black text-3xl sm:text-5xl lg:text-7xl uppercase tracking-widest text-transparent will-change-transform"
+          style={{
+            WebkitTextStroke: isDark ? '1px rgba(255,255,255,0.45)' : '1px rgba(15,23,42,0.35)',
+          }}
+        >
+          HONDA ADVANCED POWERTRAIN • 330CC eSP+ 4-VALVE SOHC • 7500 RPM • 21.5 kW POWER • LIQUID COOLED • HIGH COMPRESSION 10.5:1 • HONDA ADVANCED POWERTRAIN • 330CC eSP+ 4-VALVE SOHC •
+        </div>
+        <div 
+          ref={marquee2Ref}
+          className="whitespace-nowrap font-display font-black text-3xl sm:text-5xl lg:text-7xl uppercase tracking-widest text-transparent mt-1 sm:mt-2 will-change-transform"
+          style={{
+            WebkitTextStroke: isDark ? '1px rgba(239,68,68,0.45)' : '1px rgba(220,38,38,0.35)',
+          }}
+        >
+          • 31.8 Nm TORQUE @ 5250 RPM • PGM-FI FUEL INJECTION • HSTC TRACTION CONTROL • EURO 5 EMISSION • RACING PRECISION • 31.8 Nm TORQUE @ 5250 RPM •
+        </div>
+      </div>
       
       {/* Shockwave expanding ring (Clean mechanical pulse on scroll) */}
       <div 
@@ -188,26 +297,140 @@ export default function EngineHighlight() {
 
       <div className="relative max-w-7xl mx-auto z-10">
         
-        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
-          <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-bold tracking-[0.2em] uppercase mb-4 font-body border transition-colors ${
+        {/* Scroll-Driven Title Header with 3D Kinetic Roll & Power Tachometer */}
+        <div ref={titleContainerRef} className="relative text-center max-w-4xl mx-auto mb-14 sm:mb-20 px-2 sm:px-4">
+          
+          {/* Top Tech Badge */}
+          <div className={`inline-flex items-center gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-[11px] font-bold tracking-[0.2em] uppercase mb-3 sm:mb-4 font-body border transition-colors ${
             isDark 
               ? 'bg-white/[0.04] border-white/[0.08] text-neutral-300' 
               : 'bg-slate-100 border-slate-300 text-slate-800'
           }`}>
-            <Cpu size={13} className={isDark ? 'text-neutral-400' : 'text-red-600'} />
-            CƠ KHÍ CHÍNH XÁC • HONDA ADVANCED POWERTRAIN
+            <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping" />
+            <Cpu size={12} className={isDark ? 'text-red-400' : 'text-red-600'} />
+            <span>CƠ KHÍ CHÍNH XÁC • HONDA ADVANCED POWERTRAIN</span>
           </div>
 
-          <h2 className={`font-display text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight uppercase ${
-            isDark ? 'text-white' : 'text-slate-950'
-          }`}>
-            ĐỘNG CƠ <span className="text-gradient-platinum">eSP+ 330CC</span> THẾ HỆ MỚI
-          </h2>
-          <p className={`mt-3 text-xs sm:text-sm leading-relaxed max-w-2xl mx-auto font-body ${
-            isDark ? 'text-neutral-400' : 'text-slate-800 font-semibold'
-          }`}>
-            Sức mạnh bền bỉ, phản hồi ga êm ái và hiệu suất đốt cháy nhiên liệu tối ưu dựa trên triết lý kỹ thuật cơ khí chính xác hàng đầu của Honda.
-          </p>
+          {/* 3D Kinetic Rolling Drum Container */}
+          <div className="relative py-1 sm:py-2">
+            
+            {/* Dynamic Prefix and Spec Pill */}
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <span className={`text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase px-2 sm:px-2.5 py-0.5 rounded-md border transition-all duration-300 ${
+                isDark ? 'bg-white/10 border-white/15 text-neutral-300' : 'bg-slate-200 border-slate-300 text-slate-800'
+              }`}>
+                {ROLLING_TEXTS[activeRollIdx].prefix}
+              </span>
+              <span 
+                className="text-[10px] sm:text-xs font-mono font-black uppercase tracking-wider px-2 py-0.5 rounded-md text-white shadow-sm transition-colors duration-300"
+                style={{ backgroundColor: ROLLING_TEXTS[activeRollIdx].color }}
+              >
+                {ROLLING_TEXTS[activeRollIdx].badge}
+              </span>
+            </div>
+
+            {/* 3D Cylinder Text Roller Viewport */}
+            <div 
+              className="relative h-14 xs:h-16 sm:h-20 lg:h-24 w-full overflow-hidden flex items-center justify-center"
+              style={{ perspective: '1100px' }}
+            >
+              {/* Mechanical Drum housing gradient masks */}
+              <div className="absolute top-0 left-0 right-0 h-2 sm:h-3 bg-gradient-to-b from-white dark:from-black to-transparent z-10 pointer-events-none opacity-80" />
+              <div className="absolute bottom-0 left-0 right-0 h-2 sm:h-3 bg-gradient-to-t from-white dark:from-black to-transparent z-10 pointer-events-none opacity-80" />
+
+              {ROLLING_TEXTS.map((item, idx) => {
+                const diff = idx - activeRollIdx;
+                const isCurrent = diff === 0;
+                return (
+                  <div
+                    key={idx}
+                    className="absolute inset-0 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none will-change-transform px-2"
+                    style={{
+                      transform: `translate3d(0, ${diff * 110}%, ${-Math.abs(diff) * 65}px) rotateX(${-diff * 75}deg)`,
+                      opacity: isCurrent ? 1 : Math.max(0, 0.2 - Math.abs(diff) * 0.1),
+                      filter: isCurrent ? 'none' : 'blur(4px)',
+                    }}
+                  >
+                    <h2 
+                      className={`font-display text-2xl xs:text-3xl sm:text-4xl lg:text-6xl font-black tracking-tight uppercase select-none transition-colors text-center ${
+                        isCurrent 
+                          ? (isDark ? 'text-white' : 'text-slate-950')
+                          : 'text-neutral-500'
+                      }`}
+                    >
+                      <span className="text-gradient-platinum inline-block mr-1.5 sm:mr-3">
+                        {item.highlight}
+                      </span>
+                      <span className={`text-xs xs:text-sm sm:text-2xl lg:text-3xl font-black tracking-normal opacity-90 inline-block ${
+                        isDark ? 'text-neutral-300' : 'text-slate-800'
+                      }`}>
+                        {item.suffix}
+                      </span>
+                    </h2>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Subtext describing the active rolled state */}
+            <p className={`mt-1.5 text-xs sm:text-sm font-body font-semibold max-w-2xl mx-auto transition-all duration-300 min-h-[22px] px-2 ${
+              isDark ? 'text-neutral-400' : 'text-slate-700'
+            }`}>
+              {ROLLING_TEXTS[activeRollIdx].subtext}
+            </p>
+          </div>
+
+          {/* Interactive Mechanical Swatch Selector Tabs */}
+          <div className="flex items-center justify-center gap-1 sm:gap-2 mt-3.5 sm:mt-4 flex-wrap">
+            {ROLLING_TEXTS.map((item, idx) => {
+              const isActive = activeRollIdx === idx;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    soundFx.playClick();
+                    setActiveRollIdx(idx);
+                  }}
+                  className={`group relative flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-[11px] font-mono font-bold uppercase transition-all duration-300 cursor-pointer ${
+                    isActive
+                      ? (isDark 
+                          ? 'bg-white/15 text-white border border-white/30 shadow-lg' 
+                          : 'bg-slate-900 text-white border border-slate-950 shadow-md')
+                      : (isDark 
+                          ? 'bg-white/[0.04] text-neutral-400 hover:text-white border border-white/[0.08] hover:bg-white/[0.08]' 
+                          : 'bg-slate-100 text-slate-700 hover:text-slate-950 border border-slate-300 hover:bg-slate-200/70')
+                  }`}
+                >
+                  <span 
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${isActive ? 'scale-125 ring-2 ring-white/30' : 'opacity-60'}`}
+                    style={{ backgroundColor: item.color }}
+                  />
+                  <span>0{idx + 1} {item.highlight.split(' ')[0]}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Mechanical Power Tachometer Line (Scrubbed with Scroll) */}
+          <div className="max-w-md mx-auto mt-5 px-3">
+            <div className="flex items-center justify-between text-[9px] sm:text-[10px] font-mono font-bold tracking-wider mb-1.5 transition-colors">
+              <span className={isDark ? 'text-neutral-400' : 'text-slate-600'}>0 RPM</span>
+              <span className="text-red-500 font-extrabold flex items-center gap-1">
+                <Flame size={11} className="animate-pulse text-red-500" />
+                REV {Math.round(1200 + (scrollPower / 100) * 6300)} RPM
+              </span>
+              <span className="text-red-600 font-black tracking-widest">7.5K REDLINE</span>
+            </div>
+            <div className={`relative h-2 w-full rounded-full overflow-hidden p-0.5 border ${
+              isDark ? 'bg-white/[0.06] border-white/10' : 'bg-slate-200 border-slate-300'
+            }`}>
+              <div 
+                className="h-full rounded-full bg-gradient-to-r from-amber-500 via-rose-500 to-red-600 transition-all duration-100 ease-out shadow-[0_0_12px_rgba(239,68,68,0.7)]"
+                style={{ width: `${Math.max(6, scrollPower)}%` }}
+              />
+            </div>
+          </div>
+
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
