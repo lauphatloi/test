@@ -115,6 +115,7 @@ export default function TechFeaturesSection() {
         const tween = gsap.to(track, {
           x: -distanceToMove,
           ease: 'none',
+          force3D: true,
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top top',
@@ -135,6 +136,7 @@ export default function TechFeaturesSection() {
           }, {
             rotateY: -8,
             scale: 1,
+            force3D: true,
             scrollTrigger: {
               trigger: card,
               containerAnimation: tween,
@@ -217,6 +219,7 @@ export default function TechFeaturesSection() {
                     src={item.image}
                     alt={item.title}
                     loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-center"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/30 pointer-events-none" />
@@ -437,6 +440,8 @@ export default function TechFeaturesSection() {
                   <img
                     src={item.image}
                     alt={item.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/30" />

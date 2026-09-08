@@ -247,7 +247,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
   }, []);
 
   // Jump to specific variant scroll position
-  const jumpToVariant = (index) => {
+  const jumpToVariant = React.useCallback((index) => {
     soundFx.playClick();
     const targets = [0.05, 0.28, 0.52, 0.77];
     const trigger = ScrollTrigger.getAll().find(t => t.trigger === containerRef.current);
@@ -263,13 +263,21 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
         });
       }
     }
-  };
+  }, []);
 
-  const renderVehicleStage = (side, fixedVariantIndex) => {
-    const isSplit = side === 'split-left' || side === 'split-right';
-    const displayIndex = fixedVariantIndex !== undefined ? fixedVariantIndex : activeVariant;
-    const currentData = VARIANTS[displayIndex];
-    const isMobile = typeof window !== 'undefined' ? window.innerWidth < 640 : false;
+// Memoized stage view to prevent re-rendering the split doors when variant changes
+const VehicleStageView = React.memo(function VehicleStageView({
+  side,
+  activeVariant,
+  fixedVariantIndex,
+  isDark,
+  jumpToVariant,
+  onOpenTestRide
+}) {
+  const isSplit = side === 'split-left' || side === 'split-right';
+  const displayIndex = fixedVariantIndex !== undefined ? fixedVariantIndex : activeVariant;
+  const currentData = VARIANTS[displayIndex];
+  const isMobile = typeof window !== 'undefined' ? window.innerWidth < 640 : false;
 
     return (
       <div className={`relative w-full h-full flex flex-col justify-between overflow-hidden transition-colors duration-500 border-t border-slate-200 dark:border-white/15 ${
@@ -551,12 +559,14 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                     <img
                       src={VARIANTS[3].image}
                       alt={`Honda SH350i ${VARIANTS[3].name}`}
+                      decoding="async"
+                      loading="eager"
                       className={`absolute inset-0 m-auto max-w-full max-h-full object-contain select-none pointer-events-none z-20 ${
                         isDark 
                           ? 'drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)]' 
                           : 'drop-shadow-[0_20px_35px_rgba(15,23,42,0.45)]'
                       }`}
-                      style={{ transform: `scale(${isMobile ? 1.15 : 1})` }}
+                      style={{ transform: `scale(${isMobile ? 1.15 : 1}) translate3d(0,0,0)` }}
                     />
                   </>
                 ) : (
@@ -579,11 +589,14 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
                         key={`${side}-bike-${variant.id}`}
                         src={variant.image}
                         alt={`Honda SH350i ${variant.name}`}
+                        decoding="async"
+                        loading="eager"
                         className={`variant-bike-${idx} absolute inset-0 m-auto max-w-full max-h-full object-contain will-change-opacity select-none pointer-events-none z-20 ${
                           isDark 
                             ? 'drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)]' 
                             : 'drop-shadow-[0_20px_35px_rgba(15,23,42,0.45)]'
                         }`}
+                        style={{ transform: 'translate3d(0,0,0)' }}
                       />
                     ))}
                   </>
@@ -674,7 +687,7 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
         </div>
       </div>
     );
-  };
+});
 
   return (
     <section 
@@ -689,7 +702,13 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
         ref={unifiedStageRef}
         className="absolute inset-0 w-full h-full z-20 pointer-events-auto"
       >
-        {renderVehicleStage('main')}
+        <VehicleStageView
+          side="main"
+          activeVariant={activeVariant}
+          isDark={isDark}
+          jumpToVariant={jumpToVariant}
+          onOpenTestRide={onOpenTestRide}
+        />
       </div>
 
       <div 
@@ -702,7 +721,13 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
           style={{ transform: 'translate3d(0, 0, 0)' }}
         >
           <div className="absolute inset-y-0 left-0 w-[100vw] h-full pointer-events-none">
-            {renderVehicleStage('split-left', 3)}
+            <VehicleStageView
+              side="split-left"
+              fixedVariantIndex={3}
+              isDark={isDark}
+              jumpToVariant={jumpToVariant}
+              onOpenTestRide={onOpenTestRide}
+            />
           </div>
         </div>
 
@@ -712,7 +737,13 @@ export default function VehicleVariantsSection({ onOpenTestRide }) {
           style={{ transform: 'translate3d(0, 0, 0)' }}
         >
           <div className="absolute inset-y-0 right-0 w-[100vw] h-full pointer-events-none">
-            {renderVehicleStage('split-right', 3)}
+            <VehicleStageView
+              side="split-right"
+              fixedVariantIndex={3}
+              isDark={isDark}
+              jumpToVariant={jumpToVariant}
+              onOpenTestRide={onOpenTestRide}
+            />
           </div>
         </div>
       </div>

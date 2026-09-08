@@ -51,10 +51,10 @@ export default function EngineHighlight() {
   const shockwaveRef = useRef(null);
   const imageFrameRef = useRef(null);
   const hudCircleRef = useRef(null);
+  const counterRefs = useRef([]);
   const [activeMode, setActiveMode] = useState(0);
   const [rpmVal, setRpmVal] = useState(1200);
   const [isRevving, setIsRevving] = useState(false);
-  const [counters, setCounters] = useState([0, 0, 0, 0]);
   const { isDark } = useTheme();
 
   useEffect(() => {
@@ -160,7 +160,7 @@ export default function EngineHighlight() {
           end: 'top 20%',
           scrub: 1,
           onEnter: () => {
-            // Trigger numeric counter roll up
+            // Trigger numeric counter roll up with direct DOM update (zero render thrashing)
             gsap.to({ val0: 0, val1: 0, val2: 0, val3: 0 }, {
               val0: ENGINE_SPECS[0].value,
               val1: ENGINE_SPECS[1].value,
@@ -169,12 +169,11 @@ export default function EngineHighlight() {
               duration: 2,
               ease: 'power2.out',
               onUpdate: function() {
-                setCounters([
-                  this.targets()[0].val0.toFixed(1),
-                  this.targets()[0].val1.toFixed(1),
-                  this.targets()[0].val2.toFixed(1),
-                  Math.round(this.targets()[0].val3)
-                ]);
+                const t = this.targets()[0];
+                if (counterRefs.current[0]) counterRefs.current[0].textContent = t.val0.toFixed(1);
+                if (counterRefs.current[1]) counterRefs.current[1].textContent = t.val1.toFixed(1);
+                if (counterRefs.current[2]) counterRefs.current[2].textContent = t.val2.toFixed(1);
+                if (counterRefs.current[3]) counterRefs.current[3].textContent = Math.round(t.val3);
               }
             });
           }
@@ -189,7 +188,8 @@ export default function EngineHighlight() {
         scale: 2.2,
         opacity: 0,
         duration: 1.5,
-        ease: 'power2.out'
+        ease: 'power2.out',
+        force3D: true,
       }, 0);
 
       // Engine image frame 3D reveal
@@ -206,7 +206,8 @@ export default function EngineHighlight() {
         opacity: 1,
         filter: 'brightness(1) blur(0px)',
         duration: 1.5,
-        ease: 'power3.out'
+        ease: 'power3.out',
+        force3D: true,
       }, 0.2);
 
       // HUD Circle rotation
@@ -348,6 +349,8 @@ export default function EngineHighlight() {
               <img 
                 src="./images/dong-co.jpg" 
                 alt="Động cơ Honda eSP+ 330cc" 
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-center transform group-hover:scale-102 transition-transform duration-700"
               />
 
@@ -469,7 +472,7 @@ export default function EngineHighlight() {
               <div className={`flex items-baseline gap-1.5 font-display text-3xl sm:text-4xl lg:text-5xl font-black ${
                 isDark ? 'text-white' : 'text-slate-950'
               }`}>
-                <span>{counters[idx] || spec.value}</span>
+                <span ref={(el) => (counterRefs.current[idx] = el)}>{spec.value}</span>
                 <span className={`text-sm sm:text-base font-bold font-body ${
                   isDark ? 'text-neutral-400' : 'text-slate-700'
                 }`}>{spec.unit}</span>

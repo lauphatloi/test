@@ -30,6 +30,12 @@ function MainApp() {
   const [preselectedEdition, setPreselectedEdition] = useState('');
 
   useEffect(() => {
+    // Configure ScrollTrigger for performance
+    ScrollTrigger.config({
+      limitCallbacks: true,
+      syncInterval: 16,
+    });
+
     // Initialize Lenis Smooth Scroll integrated with GSAP ScrollTrigger
     const lenis = new Lenis({
       duration: 1.15,
@@ -37,8 +43,8 @@ function MainApp() {
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.2,
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.1,
       infinite: false,
     });
 
@@ -52,17 +58,18 @@ function MainApp() {
       lenis.raf(time * 1000);
     };
     gsap.ticker.add(updateTicker);
-    gsap.ticker.lagSmoothing(0);
+    // Smooth out frame drops instead of hard jumps
+    gsap.ticker.lagSmoothing(500, 33);
 
     // Refresh ScrollTrigger after fonts/images load
     const handleLoad = () => {
       ScrollTrigger.refresh();
     };
 
-    window.addEventListener('load', handleLoad);
+    window.addEventListener('load', handleLoad, { passive: true });
     const timeout = setTimeout(() => {
       ScrollTrigger.refresh();
-    }, 1000);
+    }, 600);
 
     return () => {
       gsap.ticker.remove(updateTicker);

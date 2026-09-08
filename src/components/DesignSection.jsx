@@ -210,6 +210,7 @@ function MobileDesignCard({ comp, idx, isDark }) {
           src={comp.image}
           alt={comp.title}
           loading="lazy"
+          decoding="async"
           className={`w-full h-full object-cover object-center transition-transform duration-1000 ease-out will-change-transform ${
             revealed ? 'scale-100' : 'scale-108'
           }`}
@@ -390,9 +391,9 @@ export default function DesignSection() {
       });
 
       // Giai đoạn 1: Card 1 -> Slot -1, Card 2 -> Slot 0, Card 3 -> Slot 1
-      tl.to(cardRefs.current[0], { ...getPose(-1), duration: 1.0, ease: 'power1.inOut' }, 0.3);
-      tl.to(cardRefs.current[1], { ...getPose(0), duration: 1.0, ease: 'power1.inOut' }, 0.3);
-      tl.to(cardRefs.current[2], { ...getPose(1), duration: 1.0, ease: 'power1.inOut' }, 0.3);
+      tl.to(cardRefs.current[0], { ...getPose(-1), duration: 1.0, ease: 'power1.inOut', force3D: true }, 0.3);
+      tl.to(cardRefs.current[1], { ...getPose(0), duration: 1.0, ease: 'power1.inOut', force3D: true }, 0.3);
+      tl.to(cardRefs.current[2], { ...getPose(1), duration: 1.0, ease: 'power1.inOut', force3D: true }, 0.3);
 
       tl.to(textRefs.current[0], {
         opacity: 0,
@@ -401,6 +402,7 @@ export default function DesignSection() {
         duration: 0.55,
         ease: 'power1.inOut',
         pointerEvents: 'none',
+        force3D: true,
       }, 0.3);
       tl.to(textRefs.current[1], {
         opacity: 1,
@@ -409,12 +411,13 @@ export default function DesignSection() {
         duration: 0.65,
         ease: 'power2.out',
         pointerEvents: 'auto',
+        force3D: true,
       }, 0.65);
 
       // Giai đoạn 2: Card 1 -> Slot -2, Card 2 -> Slot -1, Card 3 -> Slot 0
-      tl.to(cardRefs.current[0], { ...getPose(-2), duration: 1.0, ease: 'power1.inOut' }, 1.6);
-      tl.to(cardRefs.current[1], { ...getPose(-1), duration: 1.0, ease: 'power1.inOut' }, 1.6);
-      tl.to(cardRefs.current[2], { ...getPose(0), duration: 1.0, ease: 'power1.inOut' }, 1.6);
+      tl.to(cardRefs.current[0], { ...getPose(-2), duration: 1.0, ease: 'power1.inOut', force3D: true }, 1.6);
+      tl.to(cardRefs.current[1], { ...getPose(-1), duration: 1.0, ease: 'power1.inOut', force3D: true }, 1.6);
+      tl.to(cardRefs.current[2], { ...getPose(0), duration: 1.0, ease: 'power1.inOut', force3D: true }, 1.6);
 
       tl.to(textRefs.current[1], {
         opacity: 0,
@@ -423,6 +426,7 @@ export default function DesignSection() {
         duration: 0.55,
         ease: 'power1.inOut',
         pointerEvents: 'none',
+        force3D: true,
       }, 1.6);
       tl.to(textRefs.current[2], {
         opacity: 1,
@@ -431,6 +435,7 @@ export default function DesignSection() {
         duration: 0.65,
         ease: 'power2.out',
         pointerEvents: 'auto',
+        force3D: true,
       }, 1.95);
     });
 
@@ -576,6 +581,8 @@ export default function DesignSection() {
                     <img
                       src={comp.image}
                       alt={comp.title}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent pointer-events-none" />

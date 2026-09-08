@@ -100,6 +100,7 @@ export default function PricingSection({ onOpenTestRide }) {
         duration: 1,
         stagger: 0.2,
         ease: 'power3.out',
+        force3D: true,
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top 70%',
@@ -117,6 +118,7 @@ export default function PricingSection({ onOpenTestRide }) {
         opacity: 1,
         duration: 0.9,
         ease: 'power2.out',
+        force3D: true,
         scrollTrigger: {
           trigger: calcRef.current,
           start: 'top 80%',

@@ -14,30 +14,56 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
   const [isOverBanner, setIsOverBanner] = useState(true);
   const [soundActive, setSoundActive] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const progressBarRef = useRef(null);
+  const lastScrolledRef = useRef(false);
+  const lastOverBannerRef = useRef(true);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const isScrolled = window.scrollY > 40;
-      setScrolled(isScrolled);
+    let ticking = false;
+
+    const updateScrollState = () => {
+      const scrollY = window.scrollY;
+      const isScrolled = scrollY > 40;
+      if (isScrolled !== lastScrolledRef.current) {
+        lastScrolledRef.current = isScrolled;
+        setScrolled(isScrolled);
+      }
 
       // Detect if user is still over the banner or reached subsequent sections
       const bannerEl = document.getElementById('banner');
-      const st = ScrollTrigger.getAll().find(t => t.trigger === bannerEl);
-      if (st) {
-        setIsOverBanner(st.progress < 0.85);
-      } else {
-        setIsOverBanner(window.scrollY < window.innerHeight * 2.8);
+      let overBanner = true;
+      if (bannerEl) {
+        const st = ScrollTrigger.getAll().find(t => t.trigger === bannerEl);
+        if (st) {
+          overBanner = st.progress < 0.85;
+        } else {
+          overBanner = scrollY < window.innerHeight * 2.8;
+        }
+      }
+      if (overBanner !== lastOverBannerRef.current) {
+        lastOverBannerRef.current = overBanner;
+        setIsOverBanner(overBanner);
       }
 
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalHeight > 0) {
-        setScrollProgress((window.scrollY / totalHeight) * 100);
+      // Direct DOM progress bar update - zero React re-renders!
+      if (progressBarRef.current) {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = totalHeight > 0 ? Math.min(1, Math.max(0, scrollY / totalHeight)) : 0;
+        progressBarRef.current.style.transform = `scaleX(${progress})`;
+      }
+
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateScrollState);
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    updateScrollState();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -97,10 +123,11 @@ export default function Navbar({ onOpenTestRide, onOpenSpecs }) {
   return (
     <>
       {/* Top Scroll Indicator - Clean refined Honda red */}
-      <div className="fixed top-0 left-0 right-0 z-50 h-[2px] bg-white/5">
+      <div className="fixed top-0 left-0 right-0 z-50 h-[2px] bg-white/5 pointer-events-none">
         <div 
-          className="h-full bg-gradient-to-r from-red-600 via-rose-500 to-slate-200 transition-all duration-75"
-          style={{ width: `${scrollProgress}%` }}
+          ref={progressBarRef}
+          className="h-full w-full bg-gradient-to-r from-red-600 via-rose-500 to-slate-200 origin-left will-change-transform"
+          style={{ transform: 'scaleX(0)' }}
         />
       </div>
 

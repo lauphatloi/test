@@ -32,6 +32,7 @@ export default function FloatingContactButtons() {
           pointerEvents: 'auto',
           duration: 0.55,
           ease: 'back.out(2.6)', // Hiệu ứng nảy lò xo búng ra cực bắt mắt
+          force3D: true,
           stagger: {
             each: 0.09,
             from: 'end', // Nút Hotline nảy trước từ dưới lên, rồi Zalo, rồi Map
@@ -45,6 +46,7 @@ export default function FloatingContactButtons() {
           pointerEvents: 'none',
           duration: 0.35,
           ease: 'back.in(1.8)',
+          force3D: true,
           stagger: 0.06,
         });
       },

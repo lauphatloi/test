@@ -65,6 +65,7 @@ export default function BannerSection({ onOpenTestRide }) {
         y: isMobile ? '2%' : '5%',
         ease: 'none',
         duration: 1.1,
+        force3D: true,
       }, 0);
 
       // Banner text elements gently fade out and scale up
@@ -76,6 +77,7 @@ export default function BannerSection({ onOpenTestRide }) {
         duration: 0.5,
         ease: 'power2.inOut',
         pointerEvents: 'none',
+        force3D: true,
       }, 0.05);
 
       // Stage 2: Central white vector ring appears cleanly at center
@@ -117,6 +119,7 @@ export default function BannerSection({ onOpenTestRide }) {
           filter: 'blur(5px)',
           duration: 1.0,
           ease: 'power1.inOut',
+          force3D: true,
         }, 2.2);
       }
 
